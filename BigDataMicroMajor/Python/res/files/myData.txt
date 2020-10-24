@@ -1,0 +1,4 @@
+learn python
+hard work
+文本文件
+二进制文件

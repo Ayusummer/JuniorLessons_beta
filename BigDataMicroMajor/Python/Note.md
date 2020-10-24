@@ -1,8 +1,31 @@
+# 前言
+- 含有运行代码及结果的代码可复制粘贴在本文档同目录下的globalTest.py运行
 # 作业相关
 - 作业上传至 服务器：
   - ftp://211.65.95.251
   - 登陆用户名：student_wll
   - 密码：student_wll
+# 换源操作
+- [参考文档](https://github.com/winrey/EasyConnectedInChina)
+```python
+py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencc  
+py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
+```
+- 镜像源地址
+  - 阿里云   
+    https://mirrors.aliyun.com/pypi/simple/
+  - 中国科技大学  
+    https://pypi.mirrors.ustc.edu.cn/simple/
+  - 豆瓣(douban)  
+    http://pypi.douban.com/simple/
+  - 清华大学  
+    https://pypi.tuna.tsinghua.edu.cn/simple/
+  - 中国科学技术大学  
+    http://pypi.mirrors.ustc.edu.cn/simple/   
+
+
+
 # Pycharm相关
 ## 快捷键
 ### 查找替换
@@ -647,4 +670,44 @@ del dict          # 删除字典
 | read([size]) | 从文本文件中读取并返回size个字符，或从二进制文件中读取并返回size个字节，省略size参数表示读取文件中全部内容 |
 | readline() | 从文本文件中读取并返回一行内容 |
 | readlines() | 返回包含文本文件中每行内容的列表 |
+| seek(cookie, whence=0, /) | 定位文件指针，把文件指针移动到相对于whence的偏移量为cookie的位置。其中whence为0表示文件头，1表示当前位置，2表示文件尾。对于文本文件，whence=2时cookie必须为0；对于二进制文件，whence=2时cookie可以为负数 |
+| write(s) | 把s的内容写入文件，如果写入文本文件则s应该是字符串，如果写入二进制文件则s应该是字节串 |
+| writelines(s) | 把列表s中的所有字符串写入文本文件，并不在s中每个字符串后面自动增加换行符。也就是说，如果确实想让s中的每个字符串写入文本文件之后各占一行，应由程序员保证每个字符串以换行符结束 |
 
+### 上下文管理语句with
+- 在实际开发中，读写文件应优先考虑使用上下文管理语句with。关键字with可以自动管理资源，不论因为什么原因跳出with块，总能保证文件被正确关闭。除了用于文件操作，with关键字还可以用于数据库连接、网络连接或类似场合。用于文件内容读写时，with语句的语法形式如下：
+  - ```python 
+    with open(filename, mode, encoding) as fp:
+    # 这里写通过文件对象fp读写文件内容的语句块
+    ```
+
+---
+## 文件的打开或创建的访问模式
+```python 
+#以只读方式打开
+>>> file2=open(“c1.py”,”r”)
+#以读/写方式打开，指明文件路径
+>>> file3=open(“d:\\python35\\test.txt”,”w+”)
+#以读/写方式二进制文件
+ >>> file4=open(“tu3.jpg”,”ab+”)
+```
+```python
+import os
+file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/files/myData.txt'))
+with open(file_path, 'r', encoding='GBK') as f:
+    my1 = f.read(9)
+    my2 = f.readline()    # 从当前指针处读写
+    my3 = f.readlines()
+print("f.read(9):", my1)
+print("f.readline():", my2)
+print("f.readlines():", my3)
+f.close()
+
+
+
+## 执行结果:
+f.read(9): learn pyt
+f.readline(): hon
+
+f.readlines(): ['hard work\n', '文本文件\n', '二进制文件']
+```
