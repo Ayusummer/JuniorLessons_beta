@@ -45,6 +45,7 @@ int main()
 1. 设计一个程序，从键盘输入十位同学的成绩（0-100），计算其中及格学生的平均成绩。
 ```C++
 #include <iostream>
+#include<iomanip>
 using namespace std;
 int main()
 {
@@ -61,8 +62,14 @@ int main()
 		}
 	}
 	averPass = sumPass / countPass;
-	cout << "10名同学中有" << countPass << "位学生及格,总分为:" << sumPass << "及格学生均分为:" << averPass << endl;
+	cout << "10名同学中有" << countPass << "位学生及格,总分为:" << sumPass << "及格学生均分为:" << setprecision(4) << averPass << endl;
 	system("pause");
 	return 0;
 }
 ```
+- setpresision(i)
+  - ```C++
+    #include<iomainp>
+    ```
+  - 保留有效位数i位
+    - > 注意:不是保留小数后有效位数而是整体的有效位数
