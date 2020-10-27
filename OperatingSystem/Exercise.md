@@ -537,21 +537,24 @@ cobegin{
 ### 进程控制块结构
 ```C++
 typedef struct Pcb {
-	string name;		    // 进程名
-	string state;		    // 运行状态
-	string block_reason;// 阻塞原因
-	int breakp;			    // 断点保护
-}Pcb,*Process;			  // 定义struct Pcb 为 Pcb,Pcb*为Process
+	string name;		// 进程名
+	char state;		    // 运行状态(阻塞,就绪,运行,完成)
+	string wait_reason;	// 等待原因(两个信号量)
+	int breakp;			// 断点
+}Pcb, * Process;		// 定义struct Pcb 为 Pcb,Pcb*为Process
+
 ```
 - name
   - 进程名
   - 类型设置成string是因为可能有多个进程名,用字符串比较方便管理
     - 虽然这里只有两个进程,完全可以定义为char类型,但是为了情况的普适性而选择了string
-- state
-  - 运行状态
-  - 只有两种状态,阻塞(B)或者就绪(W)
-    - 因为这里的模型比较简单,就两种状态
-    - 实际上应该设置多种进程状态,但是在这里完全用不到,就简化了
+- state  
+  运行状态
+  - 阻塞(B)
+  - 就绪(W)
+  - 运行(R)
+  - 完成(C)
+    
 - block_reason
   - 题目中程序阻塞的原因只有一个,那就是信号量与零的关系,所以可以设置成char类型
   - s表示题设中的等待信号量s的状态
