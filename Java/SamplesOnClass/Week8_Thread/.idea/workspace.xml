@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="49b691b6-578a-4b0c-95ba-eaccf2770d25" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Note.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Note.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/listener/CompanyListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/listener/VersionListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/A.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/ListFile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/Main1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/Main2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/Main3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/Main4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/Main5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/PreMain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/bin/edu/ujs/li/main/TestFile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/mydir1/mydir2/myfile.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/listener/CompanyListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/listener/VersionListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/ListFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/Main1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/Main2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/Main3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/Main4.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/Main5.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/PreMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/testSwing/src/edu/ujs/li/main/TestFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/FileCopy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/T.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TTT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestBufferStream1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestBufferStream2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestDataStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestFileInputStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestFileOutputStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestFileReader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestFileWriter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestFileWriter2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestObjectIO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestPrintStream1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/TestPrintStream3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/bin/edu/ujs/li/main/testobjectio.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/FileCopy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TTT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestBufferStream1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestBufferStream2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestDataStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestFileInputStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestFileOutputStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestFileReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestFileWriter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestFileWriter2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestObjectIO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestPrintStream1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/TestPrintStream3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IOStream/testIO/src/edu/ujs/li/main/testobjectio.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/BankAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/Main1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/Main3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/Parent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/SonDaughter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/T_Callable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/T_Runnable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SmallTestOnClass/Week7_Thread/T_Thread.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="1jS0xmBhGXHJw680mFC3oJeThaQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="49b691b6-578a-4b0c-95ba-eaccf2770d25" name="Default Changelist" comment="" />
+      <created>1603782433549</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1603782433549</updated>
+      <workItem from="1603782434880" duration="45000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+</project>

@@ -338,6 +338,85 @@ void write(byte[] b, int off, int len) throws IOException
     - 创建线程对象并用该对象调用start()方法则线程开始运行。
       - start()方法提供了启动线程和线程运行所需要的框架。
 
+---
+## 加锁
+- 关键字:
+  ```Java
+  synchronized
+  ```
+### 给代码段加锁
+```Java
+        // 对类的当前对象加锁
+        synchronized(this){
+            temp = count;
+            temp = temp - 500;
+            count = temp;
+            System.out.println("kids:The current count is:"+count);
+        }
+```
+
+---
+## 线程随笔
+- ```Java 
+  object.wait();
+  ```
+  - 该对象执行该操作后,该对象释放占用资源的占有权
+  - 该对象进入深睡眠状态直至被唤醒
+- ```java
+  Object.notify();    // 只能通知一个沉睡的对象
+  Object.notifyAll(); // 通知所有沉睡的对象
+  ```
+  唤醒需要占用该对象占用资源的深睡眠状态的对象
+- > 需要注意的是无论是wait还是notify,都需要放在synchronized代码块中
+  - > 毕竟要限制资源访问嘛
+
+
+- ```Java
+  Math.random();
+  ```
+  生成一个0-1之间的数据
+
+
+
+
+---
+### 给函数加锁
+- 锁加在了当前函数所在类的当前实例上
+  - 即与之前加在 this 上的效果是一致的
+
+
+---
+# 网络编程
+- 网络编程与网站编程
+  - 网络编程
+    - 构建多台电脑之间的通信
+    - 主(Server)从(Client)
+      - C/S架构
+  - 网站编程
+    - 构建一台电脑与多台电脑之间的通信
+      - 主(Server)和Browser
+        - B/S架构
+
+---
+## Socket编程
+- 电脑端口
+  - 65535个端口
+    - 1-1024基本上都被系统使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ----
 # Java基础备课笔记学习
