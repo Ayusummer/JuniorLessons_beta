@@ -1,0 +1,432 @@
+# API文档
+- [在线文档链接](https://www.matools.com/api/java8)
+# 各种类的介绍
+- Week4
+## 任务
+- 常用类
+- 容器类
+- 异常类
+## 实验课任务
+- 字符串相关类(String StringBuffer)
+- 基本数据类型包装类
+- Math类
+- File类
+- 枚举类
+
+## 常用类
+### String类
+java.lang.String
+```java
+public final class String
+extends Object
+implements Serializable, Comparable<String>, CharSequence
+```
+
+---
+#### 实现了以下接口
+- Serializable
+- CharSequence
+- Comparable< String >
+
+---
+#### 概述
+- String类代表字符串。   
+  Java程序中的所有字符串文字（例如"abc" ）都被实现为此类的实例。 
+-  字符串不变; 它们的值在创建后不能被更改。 
+-  字符串缓冲区支持可变字符串。 因为String对象是不可变的，它们可以被共享。 例如： 
+```java
+ String str = "abc";
+```
+相当于： 
+```java
+     char data[] = {'a', 'b', 'c'};
+     String str = new String(data);
+```
+
+---
+#### String类型与其他类型的转换
+- [原文链接](https://www.cnblogs.com/mingbai/p/intToString.html)
+- 其他类型转String
+  ```Java
+  String s = String.valueOf( value); // 其中 value 为任意一种数字类型。 
+  ```
+- String转其他类型
+  ```Java
+  String s = "169"; 
+  byte b = Byte.parseByte( s ); 
+  short t = Short.parseShort( s ); 
+  int i = Integer.parseInt( s ); 
+  long l = Long.parseLong( s ); 
+  Float f = Float.parseFloat( s ); 
+  Double d = Double.parseDouble( s );
+  ```
+
+
+
+---
+## 随笔
+
+
+# JavaGUI
+- Week5  
+## 内容包括
+- AWT(Abstract Window Toolkit)
+- 组件和容器 
+- 布局管理器
+- 事件处理
+- Java图形
+- Window事件
+
+---
+## AWT
+- 使用AWT所涉及的类一把在java.awt包及其子包中;
+- Container和Component是AWT中的两个核心类;
+  ![](R./../res/awtclass.png)
+     
+## Component&Container
+- java图形界面最基本的组成成分是Component,该类及其子类对象是可视化的可交互的GUI元素;
+- 而Component不能独立存在,要放在Container中存在
+- Container子类对象可以容纳其他Component对象
+- Container对象使用add方法添加其他Component对象
+  - Container作为Component的子类自然地一个Container对象也可添加到另一个Container对象中
+- 有两种常用的Container
+  - Window  
+    其对象表示自由停泊的顶级窗口
+  - Panel  
+    其对象作为可容纳其他Container的对象不能独立存在,需要放在其他Container中(如Window或Applet)
+
+
+
+## Frame&JFrame
+- Frame是Window的子类,由Frame或其子类创建的对象为一个窗体
+- 常用构造方法
+  - 空参
+  - Frame(String s) //创建标题栏为字符串s的窗口
+  -  
+
+---
+## JTextField
+文本输入框
+- 获取文本输入框内容
+  ```Java
+  textField.getText();
+  ```
+  - 获取到的内容判空
+  ```Java
+  if(textField.getText().equals(""))
+  ```
+
+---
+## 本周作业:记事本
+### 任务
+用javaGUI完成记事本的程序功能。
+
+### 具体要求：
+- 具有以下菜单项：文件、编辑、设置、版本
+- 文件菜单中有：打开、保存、退出的功能，其中涉及到流操作可以只将文件的路径答应出来。
+- 编辑菜单中有拷贝、黏贴、剪切功能。
+- 设置菜单中可以设置文档文字大小、颜色。
+- 版本菜单能够显示版本信息。
+- 文本域中提供右键菜单功能。
+### 提交方式
+项目文件打包作为答案上传
+
+---
+### 要求解构分析
+- 结构分析
+  - 不采用分层结构JLayeredPane仅采用一层结构就够用了
+    - 毕竟记事本做得太臃肿也不是什么好事 
+  - > 下面自下而上将GUI分层
+  - JFrame baseFrame(采用默认的BorderLayout)
+    -  baseFrame.add(菜单栏)
+      - 菜单栏:Menubar
+      - 因为菜单栏可能后续会有扩展,所以将菜单栏的创建封装成一个函数
+      - 文件菜单中有：打开、保存、退出的功能，其中涉及到流操作可以只将文件的路径答应出来。
+        - 文件菜单file
+          -  打开open
+          -  新建newFile
+          -  保存save
+          -  退出
+       - 编辑菜单
+         - 拷贝copy
+         - 粘贴paste
+         - 剪切cut
+       - 设置菜单
+          - 设置文档文字大小setTextSize
+          - 设置文字颜色setTextColor
+       - 版本version
+         - 显示版本信息   
+
+    -  baseFrame.add(文本区域)
+      - 文本区域始终不改变形态,设置成一个静态对象 
+        - static TextArea textArea;  
+      - 文本区域也要添加功能,所以添加文本区域也封装成一个函数
+      - 可以右键菜单
+
+---
+### 实验随笔
+- JTextField
+  - 获取内容
+    ```Java
+    textField.getText();
+    ```
+    - 判空
+      ```Java
+      if(textField.getText().equals(""))
+      ```
+- 界面构建好之后重新设置组件大小或者加入新的组件应当重载面板
+  ```Java
+  containerName.revalidate();
+  ```
+- 弹出简单的提示对话框
+  ```Java
+
+
+  ```
+  - ![](R./../res/简单的提示对话框.png)
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 随笔
+- 不等列的二维数组
+  - java中可以使用不等长的二维数组
+    ```java
+        public static void main(String[] args){
+          int a[][]=new int[5][];
+          a[0]=new int[4];
+          for(int i=0;i<a.length;i++){
+            System.out.println(a[i]);
+          }
+        }
+    ```
+   - 输出结果:
+      ```
+      [I@1b6d3586
+      null
+      null
+      null
+      null
+      ```
+- JFrmae默认布局模式为BoarderLayout
+
+---
+# 流
+- Week6
+## 本节内容
+
+---
+## Java流输入输出原理
+![](R./../res/Java流式输入输出原理.png)
+- 在java程序中,对于数据的输入/输出操作以"流"(stream)方式进行;
+- J2SDK提供了各种各样的"流"类,用以获取不同种类的数据;
+- 程序中通过**标准**的方法输入或输出数据
+---
+- java.io 包中定义了多个流类型(类或抽象类)来实现输入/输出功能;  
+  可以从不同的角度对其进行分类:
+  - 按数据流的方向不同可以分为输入流和输出流
+  - 按数据单位不同可以分为字节流和字符流
+  - 按照功能不同可以分为节点流和处理流
+---
+- J2SDK 所提供的所有流类型位于包java.io内部分别继承自一下四种抽象流类型
+  |   | 字节流 | 字符流 |
+  | - | - | - |
+  | 输入流 | InputStream | Reader |
+  | 输出流 | OutputStream | Writer |
+---
+- 节点流为可以从一个特定的数据源(节点)读写数据(如:文件,内存)
+  ![](R./../res/节点流.png)
+- 处理流是"连接"在已存在的流(节点流或处理流)之上,通过对数据的处理为程序提供更为强大的读写功能;
+  ![](R./../res/处理流.png)
+
+---
+##  InputStream
+- 继承自InputStream的流都是用于向程序输入数据,且数据的单位为字节(8 bit):  
+  下图中深色为节点流,浅色为处理流
+  ![](R./../res/InputStream.png)
+```Java
+这里应当有一个示例
+```
+
+---
+## OutputStream
+- 继承自OutputStream的流适用于程序中输入数据,且数据的单位为字节(8 bit);  
+  下图中深色为节点流,浅色为处理流
+  ![](R./../res/OutputStream.png)
+```Java 
+// 向输出流中写入一个字节数据,该字节数据为参数b的低8位
+void write(int b) throws IOException
+
+// 将一个字节类型的数组中的数据写入输出流
+void write(byte[] b) throws IOException
+
+// 将一个字节类型的数组中的从指定位置(off)开始的
+// len个字节写入到输出流
+void write(byte[] b, int off, int len) throws IOException
+
+// 关闭流释放内存资源
+
+```
+
+---
+# 线程
+- Week7
+## 线程概述
+- 线程与进程
+  - 进程就是一个运行中的程序。
+  - 一个进程中可以有多个线程，线程是CPU调度和分派的基本单位。
+    - 我们可以理解为线程就是程序运行中的一条路径。
+
+---
+- 多线程存在的意义
+  - 允许多个线程并发执行，提高程序运行效率。
+    - 例如：迅雷多线程下载，QQ多个人同时聊天，凌波多个人同时共享屏幕。
+
+---
+- 线程是操作系统的概念，线程也称为轻量级进程（light-weight process，LWP），是CPU的基本使用单元，它的轻量级名称是和进程相关的。
+  - 线程由线程ID、程序计数器、寄存器和堆栈组成
+  - 多个线程可以共享代码段、数据段和诸如打开的文件等系统资源。  
+    - 而传统的进程其实就是单线程控制程序，每个进程都有自己的代码段、数据段和其他系统资源。
+      - 这无疑使得每个进程管理更多的内容，从而称为重量级进程。
+      - “轻量”是指线程没有独自的存储空间，而是和同一个进程的多个线程共享存储空间。
+
+---
+## 线程的使用
+- Java的多线程机制提供了两种方式实现多线程编程：
+  - 一种是通过继承 java.long.Thread 类来实现，
+  - 另一种是通 过实现Runnable接口实现。
+
+---
+###  继承Thread类创建线程
+- Thread类为Java实现多线程提供了简单的方法。
+  - Thread类已经具备了运行多线程所需要的资源，
+    - 用户只需要重载该类的run()方法，把需要使用多线程运行的代码放入该方法。这样这些代码就可以和 其他线程“同时”存在，
+    - 创建线程对象并用该对象调用start()方法则线程开始运行。
+      - start()方法提供了启动线程和线程运行所需要的框架。
+
+
+----
+# Java基础备课笔记学习
+## 1.2 Java开发环境搭建
+### jdk与jre
+- JDK(Java Development Kit)    
+  Java开发工具，包含开发Java程序的所有组件，**包含JRE**
+- JRE(Java Runtime Environment)    
+  Java运行环境，如果要运行Java程序，就需要JRE的支持
+- 常用组件
+  - src.zip	  	  
+    Java是一门开源的语言，其源代码都在这个压缩包中  
+  - rt.jar <br/>
+    Java的基础核心类库，我们编写Java程序时使用的class都在这个jar包中
+  - javac.exe	  	  
+    编译器，将.java源代码编译为.class文件
+  - java.exe  <br/>     	  	
+    虚拟机，运行Java程序的工具
+  - jar.exe	  <br/>    	
+    将class文件打成jar包的工具
+  - javadoc.exe	     
+    生成帮助文档的工具
+---
+### 环境变量
+- 环境变量是指在操作系统中用来指定操作系统运行环境的一些参数
+#### path
+- 如果想在任意目录下运行一个程序，我们就需要将程序所在的路径配置在path环境变量中。 
+- 通常我们会将javac.exe所在目录配置到path中，因为我们需要在任意目录下都能编译Java源文件。
+- 配置完成之后可以在命令行输入javac测试，如果显式帮助信息则是配置成功。
+- ---
+#### classpath
+- Java虚拟机运行时加载类的路径。JDK5之后不配置默认为当前目录“.”。如使用JDK1.4或以下版本时需要人工配置。
+- 暂时不需要配置，默认加载当前目录下的所有class文件。 
+> 环境变量删除:
+> - CLASSPATH
+> - .;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
+---
+#### 配置方式
+- 命令行
+  - 点击屏幕左下角开始 – 运行 – 输入cmd – 在命令行中直接输入命令进行修改
+  - 查看变量值：set 变量名
+  - 设置变量值：**set 变量名=变量值**，
+    - 多个值之间使用分号“;”分割，引用变量时使用“%变量名%”形式
+  - 注意：此种方式**仅适用于当前窗口**
+- 我的电脑(此电脑)
+  - 鼠标右键点击我的电脑 – 属性 – 高级 – 环境变量
+  - 找到要修改的变量将其值修改，此种方式永久有效 
+- 注意：
+  - 配置环境变量之后可以查看编译器(javac.exe)和虚拟机(java.exe)版本，**虚拟机版本不能低于编译器**。
+  - 使用哪个版本的编译器和虚拟机取决于path环境变量，如果虚拟机版本过低，可以通过环境变量来修改。
+  - 编译器版本查看方式：javac –version
+  - 虚拟机版本查看方式：java –version
+  > 由此方法发现了我的虚拟机版本低于我的编译器版本
+  > - 原因是我装了两个jdk,配置环境变量的时候配置串了
+  > - 于是我把jdk配置改成了openjdk
+---
+## 1.3 第一个Java程序
+### 编写源代码
+- 新建文本文档，扩展名改为.java，在文件中写入代码。
+![](https://codimd.s3.shivering-isles.com/demo/uploads/upload_942861dae43922f9044eda4adef7ab6d.png)
+- 注意：
+  - windows操作系统默认是隐藏已知文件扩展名的。
+  - 请测试新建一个文本文档，如果看到的文件名是“新建 文本文档”而不是“新建 文本文档.txt”，那么说明你的扩展名被隐藏了。
+  - 请选择菜单栏中的 工具 – 文件夹选项 – 查看 – 下拉滚动条找到“隐藏已知文件扩展名” – 取消掉这一项。
+---
+### 编译字节码文件
+- 左键单机屏幕左下角开始 – 运行 – 输入cmd启动命令行窗口
+  - > 或Win+R,输入cmd并回车 
+- 使用DOS命令进入源代码所在目录
+  - cd目录路径 
+- 使用编译器（javac.exe）编译源代码
+  - javac 文件名.java
+  - 编译后在该目录中会出现扩展名为class的字节码文件
+  - > 这里我编译报错" 编码GBK的不可映射字符",因为我的项目设置里编码类型选的是UTF-8,所以这里的编码命令应当是
+    > ```
+    > javac -encoding UTF-8 文件名
+    >  ```
+
+
+
+
+
+
+---
+## 3.21 包
+- 如果一个类被声明为**public**，那么必须和文件名同名
+- 导入类的时候
+  - 直接导入该类所属包的全部类
+    - 优先匹配当前包中的类,若无再匹配导入包中的类  
+  - 导入具体类名
+    - 不论当前包中是否有同名类都匹配导入的类
+- 无包的类可以使用有包的类，有包的类不能使用无包的类。
