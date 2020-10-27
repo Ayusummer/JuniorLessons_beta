@@ -1,0 +1,5 @@
+Python  官网www.python.org
+Python  第三文库pypi.org
+清华大学开源软件镜像站mirrors.tuna.tsinghua.edu.cn
+Anacondawww.anaconda.com
+PyCharmwww.jetbrains.com/pycharm
