@@ -17,7 +17,8 @@ SBB CX, DX    ; ( X + Y)/W - S*Y (2分)
 MOV Z, BX 
 MOV Z+2, CX
 ```
-## 9.28课后练习  
+## 9.28课后练习    
+- P87,2-14(2)  
 写出实现下列计算的指令序列。（假定X、Y、Z、W、R都为有符号字变量）
 Z = 2*（W-X）/（5*Y）
 ```
@@ -35,7 +36,27 @@ MOV AX,2
 IMUL BX
 MOV Z,AX
 ```
+- 参考答案
+  ```
+  MOV AX, W
+  SUB AX, X   ; W-X,结果在AX中
+  SAL AX,1    ; 2(W-X), 结果在AX中
+  MOV BX, Y
+  MOV CL, 2
+  SAL BX, CL  ; 4Y
+  ADD BX, Y   ; 5Y
+  CWD         ; 2(W-X),扩展,结果在DX,AX中
+  IDIV BX     ; 2(W-X)/(5Y),结果在AX中
+  MOV Z, AX
 
+  ```
+- 8086乘除法指令不支持立即寻址
+  - 如IMUL 2
+    - 这条指令是错误的
+- SAL
+  - 算数左移指令
+- 当移位指令移位次数>2时用CL
+  - 移位指令第二位只能是1或者CL
 
 
 ## 2.7  8086/8088指令系统
