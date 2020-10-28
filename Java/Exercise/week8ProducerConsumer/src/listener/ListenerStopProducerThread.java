@@ -6,10 +6,10 @@ import thread.ProducerThread;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Listener1 implements ActionListener {
+public class ListenerStopProducerThread implements ActionListener {
     Thread t = null;
 
-    public Listener1(Thread t) {
+    public ListenerStopProducerThread(Thread t) {
         super();
         this.t = t;
     }

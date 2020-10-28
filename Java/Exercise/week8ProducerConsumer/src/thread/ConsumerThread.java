@@ -5,14 +5,14 @@ import entity.Basket;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
-public class Consumer implements Runnable{
+public class ConsumerThread implements Runnable{
     public static boolean flag1 = true;
     public static boolean flag2 = true;
     JTextArea consumerTextArea = null;
     JLabel consumerLabel = null;
     Basket basket = null;
 
-    public Consumer(JTextArea t, JLabel l, Basket basket) {
+    public ConsumerThread(JTextArea t, JLabel l, Basket basket) {
         super();
         this.consumerTextArea = t;
         this.consumerLabel = l;
@@ -23,9 +23,9 @@ public class Consumer implements Runnable{
     public void run() {
         while (flag1) {
             if(flag2){
-                basket.get();
+                int numProduce = basket.get();
                 consumerLabel.setText("篮子中馒头的数量是： " + Basket.num);
-                consumerTextArea.append("线程消费了食物。还剩" + Basket.num + "个食物\n");
+                consumerTextArea.append("线程消费了"+ numProduce +"份食物。还剩" + Basket.num + "个食物\n");
             }else{
                 try {
                     Thread.sleep(1000);
@@ -36,5 +36,9 @@ public class Consumer implements Runnable{
             }
         }
 
+    }
+
+    public void switchConsumer(){
+        flag2 = !flag2;
     }
 }
