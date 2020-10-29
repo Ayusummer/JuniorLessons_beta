@@ -1,0 +1,50 @@
+﻿  DS_SM.cpp
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(8,14): error C2275: “INT”: 将此类型用作表达式非法
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(176): message : 参见“INT”的声明
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(47,2): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(48,11): error C2562: “Producer::V”:“void”函数返回值
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(42): message : 参见“Producer::V”的声明
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(98,10): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(99,10): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(100,10): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(101,10): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(109,2): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(110,2): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(111,2): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(112,2): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(113,2): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(114,2): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(115,2): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(138,10): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(138,37): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(145,4): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(145,16): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(147,4): error C2065: “process2”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(147,16): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(151,4): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(151,16): error C2065: “consumer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(152,4): error C2065: “process2”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(152,16): error C2065: “producer”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(154,8): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(156,8): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(156,35): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(163,17): error C3861: “P”: 找不到标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(163,24): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(164,19): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(164,42): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(165,17): error C3861: “v”: 找不到标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(165,24): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(166,21): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(166,44): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(169,13): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(169,40): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(172,4): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(177,17): error C3861: “P”: 找不到标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(177,24): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(179,19): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(180,17): error C3861: “v”: 找不到标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(180,24): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(181,21): error C2065: “process1”: 未声明的标识符
+E:\GithubProject\MyProJect\JuniorLessons_beta\OperatingSystem\experiment\PV_ProducerConsumer\DS_SM.cpp(181,44): error C2065: “process1”: 未声明的标识符
+  main.cpp
+  正在生成代码...
