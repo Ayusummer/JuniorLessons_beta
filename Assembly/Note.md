@@ -181,6 +181,9 @@
 ---
 ## 2.5 汇编语言中的操作数
 ![8086Structure](R/../res/8086Structure.png)
+
+
+
 ![PSW](R./../res/PSW.png)
 > PF(Parity Flag)奇偶标志
 > TF(Trap Flag)陷阱标志
