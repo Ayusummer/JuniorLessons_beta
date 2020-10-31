@@ -24,8 +24,8 @@ public class ConsumerThread implements Runnable{
         while (flag1) {
             if(flag2){
                 int numProduce = basket.get();
-                consumerLabel.setText("篮子中馒头的数量是： " + Basket.num);
-                consumerTextArea.append("线程消费了"+ numProduce +"份食物。还剩" + Basket.num + "个食物\n");
+                consumerLabel.setText("篮子中馒头的数量是： " + Basket.getNum);
+                consumerTextArea.append("线程消费了"+ numProduce +"份食物。还剩" + Basket.getNum + "个食物\n");
             }else{
                 try {
                     Thread.sleep(1000);

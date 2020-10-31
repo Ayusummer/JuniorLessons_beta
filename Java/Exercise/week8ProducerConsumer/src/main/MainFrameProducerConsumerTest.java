@@ -35,7 +35,7 @@ public class MainFrameProducerConsumerTest {
         frame = new JFrame("生产和消费同步问题");
 
         label = new JLabel();
-        label.setText("篮子中馒头的数量是： "+Basket.num);
+        label.setText("篮子中馒头的数量是： "+Basket.getNum);
         frame.add(label, BorderLayout.NORTH);
 
         textArea = new JTextArea();

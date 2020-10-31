@@ -30,8 +30,8 @@ public class ProducerThread implements Runnable{
         while (flag1) {
             if(flag2){
                 int numProduce = basket.put();
-                label.setText("篮子中馒头的数量是： " + Basket.num);
-                textArea.append("线程生产"+numProduce+"份食物。还剩" + Basket.num + "个食物\n");
+                label.setText("篮子中馒头的数量是： " + Basket.getNum);
+                textArea.append("线程生产"+numProduce+"份食物。还剩" + Basket.getNum + "个食物\n");
             }
             else{
                 try {

@@ -139,6 +139,36 @@ baseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   jScrollPane = new JScrollPane(textArea,VERTICAL_SCROLLBAR_AS_NEEDED,HORIZONTAL_SCROLLBAR_AS_NEEDED);
   ```
 
+---
+### Synchronized
+- [参考文章](https://blog.csdn.net/zjy15203167987/article/details/82531772)
+---
+#### 为什么要使用synchronized
+- 在并发编程中存在线程安全问题，主要原因有：
+  - 1.存在共享数据 
+  - 2.多线程共同操作共享数据。
+- 关键字synchronized可以保证在同一时刻，只有一个线程可以执行某个方法或某个代码块，同时synchronized可以保证一个线程的变化可见（可见性），即可以代替volatile。
+
+---
+#### 实现原理
+- synchronized可以保证方法或者代码块在运行时，同一时刻只有一个方法可以进入到临界区，同时它还可以保证共享变量的内存可见性
+
+---
+#### 临界区
+- 交往的进程会产生错误的原因：  
+  两个进程交叉访问的共享变量count或X。
+- 我们把并发进程中与共享变量有关的程序段称为“**临界区**”（Critical section)。
+- 一次只允许一个进程使用的资源称**临界资源**。
+- 为保证临界资源的正确使用，可把临界资源的访问过程分成四个部分：  
+  进入区->临界区->退出区->剩余区
+- 进程中访问临界资源的那段代码称临界区。 
+
+---
+#### synchronized的三种应用方式
+Java中每一个对象都可以作为锁，这是synchronized实现同步的基础：
+
+
+
 
 ### 断点记录
 - 10.29.7:24
