@@ -1,10 +1,14 @@
-import os
-file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/files/myData.txt'))
-with open(file_path, 'r', encoding='GBK') as f:
-    my1 = f.read(9)
-    my2 = f.readline()    # 从当前指针处读写
-    my3 = f.readlines()
-print("f.read(9):", my1)
-print("f.readline():", my2)
-print("f.readlines():", my3)
-f.close()
+fName = "program0805.py"
+file = None
+try:
+    file = open(fName, "r", encoding="utf-8")
+    for line in file:
+        print(line, end="")
+except FileNotFoundError:
+    print("您要读取的文件不存在，请确认")
+else:
+    print("文件读取正常结束")
+finally:
+    print("文件正常关闭")
+    if file != None:
+        file.close()

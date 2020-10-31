@@ -753,7 +753,49 @@ f.readlines(): ['hard work\n', '文本文件\n', '二进制文件']
 
 ---
 # 异常处理
+## 异常的概念
+- 异常（Exception）就是程序在运行过程中发生的，由于硬件故障、软件设计错误、运行环境不满足等原因导致的程序错误。
+  - 比如网络中断、文件找不到等
+- 代码运行时如果发生了异常，将生成代表该异常的一个对象，并交由Python解释器寻找相应的代码来处理这一异常。
+- Python异常处理优点
+  - 异常处理代码和正常执行的程序代码分离
+  - 多个异常统一处理，具有灵活性
+  - 可以从try-except之间的代码段中快速定位异常出现的位置
+
+---
+## 示例
+```python
+weekday = ["Mon", "Tues", "Weds", "Thurs", "Fri", "Sat", "Sun"]
+print(weekday[2])
+print(weekday[7])
+
+# 执行结果:
+Weds
+Traceback (most recent call last):
+  File "E:/GithubProject/MyProJect/JuniorLessons_beta/BigDataMicroMajor/Python/globalTest.py", line 3, in <module>
+    print(weekday[7])
+IndexError: list index out of range
+```
+```python
+try:
+    weekday = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Satur", "Sun"]
+    print(weekday[2])
+    print(weekday[7])
+except IndexError:
+    print("列表索引可能超出范围")
+
+# 运行结果:
+Wed
+列表索引可能超出范围
+
+```
+
+---
 ## 异常类型
+- [图源](https://www.cnblogs.com/yonyong/p/9327663.html)
+- ![](./res/python异常体系结构.jpg)
+
+---
 | 异常名称 | 描述 |
 | -- | -- |
 | BaseException |	所有异常的基类 |
@@ -804,3 +846,124 @@ f.readlines(): ['hard work\n', '文本文件\n', '二进制文件']
 |RuntimeWarning|	可疑的运行时行为(runtime behavior)的警告
 |SyntaxWarning|	可疑的语法的警告
 |UserWarning	|用户代码生成的警告
+
+---
+## 异常处理机制
+- 程序执行过程中如果出现异常，会自动生成一个异常对象，该异常对象被提交给Python解释器，这个过程称为抛出异常。抛出异常也可以由用户程序自行定义。
+- 当Python解释器接收到异常对象时，会寻找处理这一异常的代码并处理，这一过程叫捕获异常。
+- 如果Python解释器找不到可以处理异常的方法，则运行时系统终止，应用程序退出。
+
+---
+### try-except语句
+- 用于处理异常，帮助用户准确定位异常发生的位置和原因。
+- 格式如下
+    ```python
+    try：
+	    语句块
+    except ExceptionName1:
+	    异常处理代码1
+    except ExceptionName2:
+	    异常处理代码2
+    ……
+
+    ```
+
+---- 
+#### try语句
+- 指定捕获异常的范围，由try所限定的代码块中的语句在执行过程中，可能会生成异常对象并抛出。
+
+---
+#### except语句
+- 每个try代码块必须有一个或多个except语句，用于处理try代码块中所生成的异常。
+- except语句后的参数指明它能够捕获的异常类型。except块中包含的是异常处理的代码。
+- 示例:
+  ```python
+  while True:
+    try:
+        x = int(input("请输入数据"))
+        print(100/x)
+    except ZeroDivisionError:
+        print("异常信息：除数不能为0")
+    except ValueError:
+        print("异常信息：输入数据必须是阿拉伯数字")
+
+  # 运行结果:
+  请输入数据0
+  异常信息：除数不能为0
+  请输入数据s
+  异常信息：输入数据必须是阿拉伯数字
+  请输入数据11.1
+  异常信息：输入数据必须是阿拉伯数字
+  ```
+
+---
+### else语句和finally语句
+- 完整的异常处理结构还可以包括else语句和finally语句。
+```python
+try：
+	语句块
+except ExceptionName:
+	异常处理代码
+……                          # except可以有多条语句
+else:
+   无异常发生时的语句块
+finally:
+   必须处理的语句块
+
+```
+
+---
+#### else语句
+- 与循环中的else语句类似，当try语句没有捕获到任何异常信息，将不执行except语句块，而是执行else语句块。
+
+---
+#### finally语句
+- 为异常处理提供一个统一的出口，使得在控制流转到程序的其他部分以前，能够对程序的状态作统一的管理。
+- 不论在try代码块中是否发生了异常，finally块中的语句都会被执行。
+
+---
+#### 示例
+- 从键盘输入一个整数，求100除以它的商，并显示。
+  - 对从键盘输入的数进行异常处理,若无异常发生，打印提示信息。
+```python 
+while True:
+    try:
+        x = int(input("请输入数据"))
+        print(100 / x)
+    except ZeroDivisionError:
+        print("异常信息：除数不能为0")
+    except ValueError:
+        print("异常信息：输入数据必须是阿拉伯数字")
+    else:
+        print("程序正常结束，未捕获到异常")
+
+# 运行结果:
+请输入数据0
+异常信息：除数不能为0
+请输入数据11.1
+异常信息：输入数据必须是阿拉伯数字
+请输入数据5
+20.0
+程序正常结束，未捕获到异常
+请输入数据
+```
+```python
+fName = "program0805.py"
+file = None
+try:
+    file = open(fName, "r", encoding="utf-8")
+    for line in file:
+        print(line, end="")
+except FileNotFoundError:
+    print("您要读取的文件不存在，请确认")
+else:
+    print("文件读取正常结束")
+finally:
+    print("文件正常关闭")
+    if file != None:
+        file.close()
+
+# 运行结果:
+您要读取的文件不存在，请确认
+文件正常关闭
+```
