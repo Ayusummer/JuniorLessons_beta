@@ -1,14 +1,13 @@
-fName = "program0805.py"
-file = None
-try:
-    file = open(fName, "r", encoding="utf-8")
-    for line in file:
-        print(line, end="")
-except FileNotFoundError:
-    print("您要读取的文件不存在，请确认")
-else:
-    print("文件读取正常结束")
-finally:
-    print("文件正常关闭")
-    if file != None:
-        file.close()
+list_x = [3, 8, 2, 6, 8]
+list_w = [2000, 3000, 2500, 1000, 1500]
+list_c = [0.050, 0.050, 0.075, 0.075, 0.075]
+wc = map(lambda w, c: w * c, list_c, list_w)
+wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x)
+a = sum(wcx)
+b = sum(wc)
+print(type(a), type(b))
+x1 = a / b
+print(x1)
+print(sum(wc), type(sum(wcx)), type(sum(wc)))
+x1 = sum(wcx) / sum(wc)
+print(x1)

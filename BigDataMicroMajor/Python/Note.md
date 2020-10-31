@@ -385,6 +385,154 @@ map(function, iterable, ...)
 - 返回值
   - Python 2.x 返回列表。
   - Python 3.x 返回迭代器。
+---
+#### 示例:
+```python
+>>>def square(x) :            # 计算平方数
+...     return x ** 2
+... 
+>>> map(square, [1,2,3,4,5])   # 计算列表各个元素的平方
+[1, 4, 9, 16, 25]
+>>> map(lambda x: x ** 2, [1, 2, 3, 4, 5])  # 使用 lambda 匿名函数
+[1, 4, 9, 16, 25]
+ 
+# 提供了两个列表，对相同位置的列表数据进行相加
+>>> map(lambda x, y: x + y, [1, 3, 5, 7, 9], [2, 4, 6, 8, 10])
+[3, 7, 11, 15, 19]
+```
+
+---
+#### 注意点:map对象只能访问一次
+- [原文链接](https://www.cnblogs.com/stonenox/p/11171080.html)
+```python
+A_object = map(str,range(3))
+A_list = list(A_object)
+B_list = list(A_object)
+# 观察A_list,其值为  ['1','2','3']
+# 观察B_list,其值为  []
+```
+- 这是由于，map函数返回的，是一个“可迭代对象”。
+  - 这种对象，被访问的同时，也在修改自己的值。
+    -  类似于 a = a+1 
+    -  这样。对于map来说，就是每次访问，都把自己变为List中的下一个元素。
+  - 循环取得对象中的值 ，实际上是会调用内部函数__next__，将值改变，或者指向下一个元素。
+  - 当多次调用，代码认为到达终点了，返回结束，或者__next__指向空，此时可迭代对象（链表） 就算到终点了，不能再用了。
+```python
+实验：
+
+>>A_object = map(str,range(3))
+>>num = A_object.__next__()
+>>num
+'0'
+>>num = A_object.__next__()
+>>num
+'1'
+>>A_list = List(A_object)
+>>A_list
+['2']
+#此时，A_object已经指向最末尾，空元素了。再次调用next试试
+>>num = A_object.__next__()
+Traceback( most recent call last):
+ Filr "<stdin>" ,line 1 , in <module>
+StopIteration
+可见，该对象已经到了终点了，不能用了。
+```
+- 类似于 list(A_object) 或者 for num in A_object 这样的语句，就是调用了迭代器，执行了__next__,消耗了迭代对象。所以，再次使用A_object后，会发现它已经空了。
+
+---
+#### 示例
+```python
+list_x = [3, 8, 2, 6, 8]
+print("list_x = [3, 8, 2, 6, 8]")
+list_w = [2000, 3000, 2500, 1000, 1500]
+print("list_w = [2000, 3000, 2500, 1000, 1500]")
+list_c = [0.050, 0.050, 0.075, 0.075, 0.075]
+print("list_c = [0.050, 0.050, 0.075, 0.075, 0.075]")
+wc = map(lambda w, c: w * c, list_c, list_w)
+print("wc = map(lambda w, c: w * c, list_c, list_w) = {0}".format(wc))
+print("list(wc):{0}".format(list(wc)))
+wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x)
+print("wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x) = {0}".format(wcx))
+print("list(wcx):{0}".format(list(wcx)))
+a = sum(wcx)
+print("a = sum(wcx) = {0} ; wcx = {1}".format(a, wcx))
+b = sum(wc)
+print("b = sum(wc) = {0}".format(b))
+print("wc = {0}".format(wc))
+print("type(a) = {0}, type(b) = {1}".format(type(a), type(b)))
+x1 = a / b
+print("x1 = a / b = {0}".format(x1))
+print("sum(wc):{0} \n type(sum(wcx)):{1} \n type(sum(wc)):{2} \n".format(sum(wc), type(sum(wcx)), type(sum(wc))))
+print("wc:{0}".format(wc))
+print("wcx:{0}".format(wcx))
+x1 = sum(wcx) / sum(wc)
+print("x1 = sum(wcx) / sum(wc) = {0}".format(x1))
+
+# 运行结果:
+list_x = [3, 8, 2, 6, 8]
+list_w = [2000, 3000, 2500, 1000, 1500]
+list_c = [0.050, 0.050, 0.075, 0.075, 0.075]
+wc = map(lambda w, c: w * c, list_c, list_w) = <map object at 0x00000210CFA9A070>
+list(wc):[100.0, 150.0, 187.5, 75.0, 112.5]
+wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x) = <map object at 0x00000210CFA9A040>
+list(wcx):[300.0, 1200.0, 375.0, 450.0, 900.0]
+a = sum(wcx) = 0 ; wcx = <map object at 0x00000210CFA9A040>
+b = sum(wc) = 0
+wc = <map object at 0x00000210CFA9A070>
+type(a) = <class 'int'>, type(b) = <class 'int'>
+Traceback (most recent call last):
+  File "E:/GithubProject/MyProJect/JuniorLessons_beta/BigDataMicroMajor/Python/globalTest.py", line 19, in <module>
+    x1 = a / b
+ZeroDivisionError: division by zero
+```
+
+---
+#### 问题示例
+```python
+list_x = [3, 8, 2, 6, 8]
+list_w = [2000, 3000, 2500, 1000, 1500]
+list_c = [0.050, 0.050, 0.075, 0.075, 0.075]
+wc = map(lambda w, c: w * c, list_c, list_w)
+wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x)
+a = sum(wcx)
+b = sum(wc)
+print(type(a), type(b))
+x1 = a / b
+print(x1)
+print(sum(wc), type(sum(wcx)), type(sum(wc)))
+x1 = sum(wcx) / sum(wc)
+print(x1)
+
+# 运行结果:
+Traceback (most recent call last):
+  File "E:/GithubProject/MyProJect/JuniorLessons_beta/BigDataMicroMajor/Python/globalTest.py", line 12, in <module>
+    x1 = sum(wcx) / sum(wc)
+ZeroDivisionError: division by zero
+<class 'float'> <class 'float'>
+5.16
+0 <class 'int'> <class 'int'>
+```
+```python
+# 原因解释:
+list_x = [3, 8, 2, 6, 8]
+list_w = [2000, 3000, 2500, 1000, 1500]
+list_c = [0.050, 0.050, 0.075, 0.075, 0.075]
+wc = map(lambda w, c: w * c, list_c, list_w)
+wcx = map(lambda w, c, x: w * c * x, list_c, list_w, list_x)
+a = sum(wcx)
+print("list(wcx) = {0}".format(list(wcx)))
+print("wcx._next_() : {0}".format(wcx.__next__()))
+
+# 运行结果:
+Traceback (most recent call last):
+  File "E:/GithubProject/MyProJect/JuniorLessons_beta/BigDataMicroMajor/Python/globalTest.py", line 8, in <module>
+    print("wcx._next_() : {0}".format(wcx.__next__()))
+StopIteration
+list(wcx) = []
+
+```
+
+
 
 ---
 ### filter
