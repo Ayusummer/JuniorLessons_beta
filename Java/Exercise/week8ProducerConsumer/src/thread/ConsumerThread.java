@@ -38,7 +38,11 @@ public class ConsumerThread implements Runnable{
 
     }
 
-    public void switchConsumer(){
-        flag2 = !flag2;
+    public void switchOffConsumer(){
+        flag2 = false;
+    }
+
+    public void switchOnConsumer(){
+        flag2 = true;
     }
 }

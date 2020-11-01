@@ -21,8 +21,12 @@ public class ProducerThread implements Runnable{
     }
 
     // 线程开关
-    public void switchProducer(){
-        flag2 = !flag2;
+    public void switchOffProducer(){
+        flag2 = false;
+    }
+
+    public void switchOnProducer(){
+        flag2 = true;
     }
 
     // 定义Runnable接口的run()方法

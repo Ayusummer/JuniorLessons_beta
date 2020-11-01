@@ -180,8 +180,7 @@ implements Serializable, Comparable<String>, CharSequence
   ```
 - 弹出简单的提示对话框
   ```Java
-
-
+  JOptionPane.showMessageDialog(baseFrame, "请输入特殊点纵坐标");
   ```
   - ![](R./../res/简单的提示对话框.png)
 - 

@@ -1,8 +1,8 @@
 package listener;
 // 导入自定义类
-import static main.MainFrameProducerConsumerTest.basket;
+import static main.MainFrameProducerConsumer.basket;
 import macrovalue.MacroValue;
-import main.MainFrameProducerConsumerTest;
+import main.MainFrameProducerConsumer;
 import thread.ProducerThread;
 
 // 导入Java类库
@@ -14,11 +14,11 @@ import java.awt.event.ActionListener;
 
 
 // 线程生产开关(实现方式是循环调用生产线成中的开关函数,因此会有一定延迟)
-public class ListenerStopProducerThreadTest implements ActionListener {
+public class ListenerStopProducerThread implements ActionListener {
     static ProducerThread[] threadsProducer = null;
     static JFrame frame = null;
 
-    public ListenerStopProducerThreadTest(ProducerThread[] t, JFrame f) {
+    public ListenerStopProducerThread(ProducerThread[] t, JFrame f) {
         super();
         threadsProducer = t;
         frame = f;
@@ -27,23 +27,23 @@ public class ListenerStopProducerThreadTest implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         synchronized (basket) {
-            System.out.println("当前生产者开关值为:" + MainFrameProducerConsumerTest.switchProducerNum);
-            if (MainFrameProducerConsumerTest.switchProducerNum % 2 == 0) {
-                MainFrameProducerConsumerTest.buttonP.setText("生产 关");
+            System.out.println("当前生产者开关值为:" + MainFrameProducerConsumer.switchProducerNum);
+            if (MainFrameProducerConsumer.switchProducerNum % 2 == 0) {
+                MainFrameProducerConsumer.buttonP.setText("生产 关");
                 JOptionPane.showMessageDialog(frame, "生产者线程正在逐一关闭,这需要一定的时间......");
                 for (int i = 0; i < MacroValue.MAX_PRODUCER_NUM; i++)
                     threadsProducer[i].switchOffProducer();
                 JOptionPane.showMessageDialog(frame, "生产者线程均已关闭");
-                MainFrameProducerConsumerTest.switchProducerNum = MainFrameProducerConsumerTest.switchProducerNum + 1;
-                System.out.println("生产者开关已关闭.当前生产者开关值为:" + MainFrameProducerConsumerTest.switchProducerNum);
+                MainFrameProducerConsumer.switchProducerNum = MainFrameProducerConsumer.switchProducerNum + 1;
+                System.out.println("生产者开关已关闭.当前生产者开关值为:" + MainFrameProducerConsumer.switchProducerNum);
             } else {
-                MainFrameProducerConsumerTest.buttonP.setText("生产 开");
+                MainFrameProducerConsumer.buttonP.setText("生产 开");
                 JOptionPane.showMessageDialog(frame, "生产者线程正在逐一开启,这需要一定的时间......");
                 for (int i = 0; i < MacroValue.MAX_PRODUCER_NUM; i++)
                     threadsProducer[i].switchOnProducer();
                 JOptionPane.showMessageDialog(frame, "生产者线程均已开启");
-                MainFrameProducerConsumerTest.switchProducerNum = MainFrameProducerConsumerTest.switchProducerNum + 1;
-                System.out.println("生产者开关已开启.当前生产者开关值为:" + MainFrameProducerConsumerTest.switchProducerNum);
+                MainFrameProducerConsumer.switchProducerNum = MainFrameProducerConsumer.switchProducerNum + 1;
+                System.out.println("生产者开关已开启.当前生产者开关值为:" + MainFrameProducerConsumer.switchProducerNum);
             }
 
             if (basket.putNum == 0 || basket.getNum == 0) {
