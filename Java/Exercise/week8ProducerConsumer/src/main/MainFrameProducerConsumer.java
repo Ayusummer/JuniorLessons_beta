@@ -6,12 +6,7 @@ import thread.*;
 import listener.*;
 
 // 导入Java类库
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,19 +16,38 @@ import java.awt.BorderLayout;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
-public class MainFrameProducerConsumerTest {
+public class MainFrameProducerConsumer {
     static JFrame frame = null;
     static JLabel label =null;
     static JTextArea textArea = null;
-    static Basket basket = null;
-    static ProducerThread[] threadsProducer = new ProducerThread[MacroValue.MAX_PRODUCER_NUM];
-    static ConsumerThread[] threadsConsumer = new ConsumerThread[MacroValue.MAX_CUSTOMER_NUM];
+    public static Basket basket = null;
+    public static ProducerThread[] threadsProducer = new ProducerThread[MacroValue.MAX_PRODUCER_NUM];
+    public static ConsumerThread[] threadsConsumer = new ConsumerThread[MacroValue.MAX_CUSTOMER_NUM];
     static JScrollPane jScrollPane = null;
+    public static int switchProducerNum = 0;
+    public static int switchConsumerNum = 0;
+    public static JPanel panel;
+    public static JButton buttonP;
+    public static JButton buttonC;
+
+    // 全局变量设置窗口组件定义
+    JFrame frameValueSet = null;
+    JLabel labelBufferVolume = null;
+    JLabel labelProducerNum = null;
+    JLabel labelConsumerNum = null;
+    JTextField textFieldBufferVolume = null;
+    JTextField textFieldProducerNum = null;
+    JTextField textFieldConsumerNum = null;
+
+    // 设置生产者消费者线程数目
+    int setMarcoValue(){
+        frameValueSet = new JFrame("全局变量设定");
+    }
 
 
-    public static void main(String[] args) {
+    // 面板初始化
+    void init(){
         frame = new JFrame("生产和消费同步问题");
-
         label = new JLabel();
         label.setText("篮子中馒头的数量是： "+Basket.getNum);
         frame.add(label, BorderLayout.NORTH);
@@ -50,13 +64,13 @@ public class MainFrameProducerConsumerTest {
         for(int i=0; i<MacroValue.MAX_CUSTOMER_NUM; i++) {
             threadsConsumer[i] = new ConsumerThread(textArea, label, basket);
         }
-        JPanel panel = new JPanel();
-        JButton button1 = new JButton("生产 开/关");
-        button1.addActionListener(new ListenerStopProducerThreadTest(threadsProducer));
-        JButton button2 = new JButton("消费 开/关");
-        button2.addActionListener(new ListenerStopConsumerThreadTest(threadsConsumer));
-        panel.add(button1);
-        panel.add(button2);
+        panel = new JPanel();
+        buttonP = new JButton("生产 开");
+        buttonP.addActionListener(new ListenerStopProducerThread(threadsProducer, frame));
+        buttonC = new JButton("消费 开");
+        buttonC.addActionListener(new ListenerStopConsumerThread(threadsConsumer, frame));
+        panel.add(buttonP);
+        panel.add(buttonC);
         frame.add(panel,BorderLayout.SOUTH);
 
         frame.setVisible(true);
@@ -64,6 +78,11 @@ public class MainFrameProducerConsumerTest {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+    }
+
+
+
+    public static void main(String[] args) {
         // 创建一个线程池
         ExecutorService eService = Executors.newCachedThreadPool();
         // 将线程加入线程池
