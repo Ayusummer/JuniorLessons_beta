@@ -47,7 +47,7 @@ START:MOV AX, DATA
 CHECK:MOV AL,[SI]   ;取出数组里的第一个数
       AND AL,AL      
       JS MS         ;判断正负(SIGN=1是负数则转移)
-      INC PLUS      ;正数的个数
+      INC PLUS      ;非负数的个数
       JMP NEXT
    MS:INC MINUS     ;负数的个数,语句体2
       JMP NEXT
@@ -64,7 +64,7 @@ PC->HLT
 
 
 
-## 代码2
+## 代码2(×)
 ```
 MAXABS PROC
         PUSH CX ; CX计数寄存器
@@ -86,4 +86,41 @@ SKIP:   ADD SI, 2
         POP CX
         RET
 MAXABS ENDP
+```
+
+---
+# 实验2 循环程序设计
+## 实验要求
+
+
+## 代码(冒泡排序)
+```
+.MODEL TINY
+.STACK 100
+.CODE
+DATA SEGMENT
+    ARRAY DW 1,-2,-4,8,6,0,127,-128,5,-3
+    N EQU 10
+DATA ENDS
+CODE SEGMENT
+  ASSUME CS:CODE, DS:DATA
+      ;先将要用的变量清零
+START:MOV AX, DATA
+      MOV DS, AX
+      MOV CX, 9
+LOOP1:PUSH CX     ; 保护计数器
+      MOV BX, 0
+LOOP2:MOV AX, ARRAY[BX]
+      CMP AX, ARRAY[BX+2]  ; 相邻元素比较(字数据所以+2)
+      JLE NEXT
+      XCHG AX, ARRAY[BX+2]    ; 交换位置
+      XCHG AX, ARRAY[BX]
+NEXT: INC BX
+      INC BX
+      LOOP LOOP2
+      POP CX
+      LOOP LOOP1
+      HLT
+CODE ENDS
+      END START
 ```
