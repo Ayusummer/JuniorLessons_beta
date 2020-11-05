@@ -410,8 +410,118 @@ void write(byte[] b, int off, int len) throws IOException
   - 65535个端口
     - 1-1024基本上都被系统使用
 
+---
+### 案例分析1 UDPTest
+#### UDP
+- Internet 协议集支持一个无连接的传输协议，
+- 该协议称为用户数据报协议（UDP，User Datagram Protocol）。
+- UDP 为应用程序提供了一种无需建立连接就可以发送封装的 IP 数据包的方法。
+- Internet 的传输层有两个主要协议，互为补充。
+  - 无连接的是 UDP，它除了给应用程序发送数据包功能并允许它们在所需的层次上架构自己的协议之外，几乎没有做什么特别的事情。
+  - 面向连接的是 TCP，该协议几乎做了所有的事情。
 
+---
+#### 功能
 
+---
+#### 发送端定义
+```Java
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+public class UDPSender {
+    public static void main(String[] args) throws Exception {
+        // 定义一个指定端口号为3000的发送端DatagramSocket对象
+        DatagramSocket client = new DatagramSocket(3000);
+        // 定义要发送的数据
+        String str = "hello world";
+        // 定义一个DatagramPacket数据报对象，封装发送端信息以及发送地址
+        DatagramPacket packet = new DatagramPacket(str.getBytes(),
+                str.getBytes().length,
+                InetAddress.getByName("localhost"),
+                8900);
+        System.out.println("开始发送信息...");
+        client.send(packet); // 发送数据
+        byte[] buff = new byte[1024];
+        DatagramPacket receivepacket =
+                new DatagramPacket(buff,buff.length);
+        client.receive(receivepacket);
+        String string = new String(receivepacket.getData(),0,receivepacket.getLength());
+        System.out.println(string);
+        client.close();      // 释放资源
+    }
+}
+```
+- Datagram 数据报
+- Socket 套接字
+  - 所谓套接字(Socket)，就是对网络中不同主机上的应用进程之间进行双向通信的端点的抽象。
+  - 一个套接字就是网络上进程通信的一端，提供了应用层进程利用网络协议交换数据的机制。
+  - 从所处的地位来讲，套接字上联应用进程，下联网络协议栈，是应用程序通过网络协议进行通信的接口，是应用程序与网络协议根进行交互的接口
+---
+- DatagramSocket
+  - 此类表示用于发送和接收数据报数据包的套接字。
+  - 数据报套接字是分组传送服务的发送或接收点。 
+    - 在数据报套接字上发送或接收的每个数据包都被单独寻址和路由。 
+      - 从一个机器发送到另一个机器的多个分组可以不同地路由，并且可以以任何顺序到达。
+  - send(DatagramPacket p)
+    - 返回类型
+      - void
+    - 功能
+      - 从此套接字发送数据报包。
+  - ```Java
+    public void receive(DatagramPacket p)
+             throws IOException
+    ```
+    - 从此套接字接收数据报包。
+    - 当此方法返回时， DatagramPacket的缓冲区将填充接收到的数据。
+
+---
+- DatagramPacket
+  - 该类表示数据报包
+  - 数据报包用于实现无连接分组传送服务。 
+  - 仅基于该数据包中包含的信息，每个消息从一台机器路由到另一台机器。 
+  - 从一台机器发送到另一台机器的多个分组可能会有不同的路由，并且可能以任何顺序到达。 
+  - 包传送不能保证。
+- InetAddress
+  - 此类表示Internet协议（IP）地址。
+  - IP地址是由IP使用的32位或128位无符号数字，构建UDP和TCP协议的低级协议。
+  - InetAddress的一个实例由一个IP地址和可能的相应主机名组成（取决于它是用主机名构造还是已经完成了反向主机名解析）。
+  - getByName(String host)
+    - 返回类型
+      - static InetAddress
+    - 功能
+      - 确定主机名称的IP地址。
+---
+```Java
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
+public class UDPReceiver {
+    public static void main(String[] args) throws Exception {
+        // 定义一个指定端口号为8900的接收端DatagramSocket对象
+        DatagramSocket server = new DatagramSocket(8900);
+        // 定义一个长度为1024的字节数组，用于接收数据
+        byte[] buf = new byte[1024];
+        // 定义一个DatagramPacket数据报对象，用于封装接收的数据
+        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        System.out.println("等待接收数据...");
+        while (true){
+            // 等待接收数据报数据，在没有接收到数据之前会处于阻塞状态
+            server.receive(packet);
+            // 调用DatagramPacket的方法获得接收到的信息,并转换为字符串形式
+            String str = new String(packet.getData(),
+                    0, packet.getLength());
+            System.out.println(packet.getAddress()+ ":"
+                    + packet.getPort()+"发送消息："+str);
+            DatagramPacket returnpacket = new DatagramPacket(
+                    "I get it".getBytes(), "I get it".length()
+                    ,packet.getAddress(),packet.getPort());
+            server.send(returnpacket);
+        }
+    }
+}
+```
 
 
 
