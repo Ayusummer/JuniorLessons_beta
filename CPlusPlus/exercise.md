@@ -80,6 +80,10 @@ int main()
   - 周四910节课(6点开始)
 - 内容:
   - 课堂练习12,13,14题
+
+## for循环
+![](./res/C++for循环流程.png)
+
 ## 题目1(T12,100内各数字之积小于各数字之和)
 ```C
 void main()
@@ -98,10 +102,63 @@ while(t!=0)
 		if(mul<sum) printf(“%d  “,i);
 }
 ```
+- 个人解决方案:
+```C++
+#include<iostream>
+using namespace std;
 
+int main()
+{
+	int i;			// 计数器
+	int mul, sum;	// 各位之积/和
+	int t;			// i的临时容器
+	cout << "100以内满足“各位数字之积小于数字之和”的整数如下:" << endl;
+	for (i = 1; i < 100; i++)	// 遍历1 -> 100
+	{
+		t = i;					// 临时取出当前遍历数i
+		mul = 1;  sum = 0;		// 初始化乘积,和
+		while (t != 0)	
+		{
+			mul *= t % 10;		// 取出当前最低位做乘
+			sum += t % 10;		// 取出当前最低位做和
+			t /= 10;			// 舍弃当前最低位
+		}
+		if (mul < sum)
+			cout << i << " ";
+	}
+	system("pause");
+	return 0;
+}
+```
+  - 运行结果
+    ![](./exerciseSave/上机3/1.100内各位数字之积小于之和/100内各位之积小于各位之和的数.png)
+
+---
 ## 题目2(T13)
 - 13.编写程序，求
   - $x=1-\frac{1}{22} + \frac{1}{333} - \frac{1}{4444} + \frac{1}{55555} ……+ \frac{1}{999999999}$
+
+```C++
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	double x = 0;				// 多项式结果
+	for (int i = 1; i < 10; i++) {
+		double denominator = 0;	// 当前项分母(用double是为了让1/denominator为double类型数据)
+		for (int t = 1; t <= i;t++) {
+			denominator += i * pow(10, t - 1);
+		}
+		x += (1 / (denominator)) * pow(-1, i + 1);
+	}
+	cout << "多项式之和为: " << x << endl;
+	system("pause");
+	return 0;
+}
+```
+- 运行结果
+  ![](exerciseSave/上机3/2.分子恒1分母豹子号位数递增符号突变多项式求解/2.分子恒1分母豹子号位数递增符号突变多项式求解.png)
 
 ## 题目3(T14)类水仙花数
 - 14.数学中有一种水仙花数（3位数），它本身恰好等于其各位数值的立方和，
@@ -109,7 +166,30 @@ while(t!=0)
     - 153便是水仙花数。
 - 那么是否存在这样的四位数，它本身也恰好等于其各位数值的四次方之和。
 	- 试编程求这样的四位数。
+```C++
+#include<iostream>
+using namespace std;
 
+int main()
+{
+	int t;			// 计数器的临时容器
+	for (int i = 1000; i < 10000; i++) {
+		t = i;
+		int sumPow = 0;	// 当前数各位4次方之和
+		while (t != 0) {
+			sumPow += pow(t % 10, 4);
+			t /= 10;	// 舍弃最低位
+		}
+		if (i == sumPow)
+			cout << i << " ";
+	}
+	cout << endl;
+	system("pause");
+	return 0;
+}
+```
+- 运行结果
+  ![](./exerciseSave/上机3/3.类水仙花数/类水仙花数.png)
 
 ## 题目4(T15)
 - 15.每个苹果0.8元，第一天买2个苹果，
