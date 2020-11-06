@@ -110,7 +110,7 @@ START:MOV AX, DATA
       MOV CX, 9
 LOOP1:PUSH CX     ; 保护计数器
       MOV BX, 0
-LOOP2:MOV AX, ARRAY[BX]
+LOOP2:MOV AX, ARRAY  [BX]
       CMP AX, ARRAY[BX+2]  ; 相邻元素比较(字数据所以+2)
       JLE NEXT
       XCHG AX, ARRAY[BX+2]    ; 交换位置
