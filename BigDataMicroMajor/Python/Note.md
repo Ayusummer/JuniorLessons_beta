@@ -21,6 +21,7 @@
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencc  
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 ```
 - 镜像源地址
   - 阿里云   
@@ -1125,3 +1126,172 @@ finally:
 您要读取的文件不存在，请确认
 文件正常关闭
 ```
+
+
+# numpy
+- Numpy是Python第三方库中最常用的科学计算库，
+  - 所谓科学计算往往是指类似Matlab那样的矩阵运算能力。
+    - 这其中包括
+      - 多维数组对象、
+      - 线性代数计算，
+      - 以及一个高性能的C/C++语言内部实现。
+  - 而 Numpy完全拥有上面的所有特性，而且还有很多方便的快捷函数，是做数据科学必不可少的工具。
+- 线性代数一个最明显的优势就是用矩阵乘法代替循环可以极大地提高运算速度。
+
+## numpy基础
+- 在Numpy中，最主要的数据结构就是ndarray，
+  - 这个数据结构不仅可以处理一维数组，还可以处理多维数组。
+  - 比如下面的数组就是一个二维数组：
+    ```python
+     [[0  1  2  3   4] 
+      [5  6  7  8   9] 
+      [10 11 12 13 14]]
+    ```
+- 通常我们称数组的维度为“秩（rank）”，
+    - 可以通过下面的代码创建并查看一个数组的秩：
+      ```python
+      import numpy as np 
+      a = np.array([(1, 2), (3.4, 5)]) 
+      print(a) 
+      print(a.ndim)
+
+      # 运行结果
+      [[1.  2. ]
+      [3.4 5. ]]
+      2
+      ``` 
+- 习惯上我们会将numpy重命名为np并进行使用。
+  - 创建二维数组就使用Python中“列表的列表”这种结构，
+  - 如果创建三维数组就是使用“列表中的列表中的列表”的结构。
+  - 有时为了方便，我们也会使 用一些手段快速创建数组，可参考下面的代码：
+    ```python
+    import numpy as np
+
+    a = np.arange(15).reshape(3, 5)
+    b = np.arange(1, 30, 5)
+    c = np.arange(0, 1, 0.2)
+    d = np.linspace(0, np.e * 10, 5)
+    e = np.random.random((3, 2))
+    print('a = ', a)
+    print('b = ', b)
+    print('c = ', c)
+    print('d = ', d)
+    print('e = ', e)
+        
+    # 运行结果
+    a =  [[ 0  1  2  3  4]
+    [ 5  6  7  8  9]
+    [10 11 12 13 14]]
+    b =  [ 1  6 11 16 21 26]
+    c =  [0.  0.2 0.4 0.6 0.8]
+    d =  [ 0.          6.79570457 13.59140914 20.38711371 27.18281828]
+    e =  [[0.89648206 0.56055272]
+    [0.65490962 0.13706445]
+    [0.54199453 0.8091704 ]]
+    ``` 
+    - 使用np.arange()的方式与Python的range()类似，
+      - 会生成一个ndarray类型的数组，
+        - 只不过ndarray类型的reshape()方法会将原始的一维数组改变为一个二维数组，
+          - 比如上面的例子中就将其改变为 3×5的二维数组了。
+      - 与Python的range()函数稍有不同的是:
+        - np.arange()支持小数的步长，
+          - 比如上例中的np.arange(0,1,0.2)就生成了小数步长的数组，而使用Python的range时则会报错。
+    - Numpy还提供 了一个强大的函数np.linspace()，
+      - 这个函数的功能类似arange()，但是第三个参数不是步长，而是数量。
+      - 这个函数可以按照参数中需要生成元素的数量自动选择步长，
+        - 上例中的d就是一个例子。
+      - 另外 Numpy中也提供了与math模块中一样的两个常量，
+        - 即np.e和np.pi。
+          - np.e代表自然底数，
+          - np.pi是圆周率。
+    - 最后np.random.random()函数提供了直接生成随机元素的多维数组的方法，
+---
+- 在了解了如何使用Numpy创建数组之后，再来看看如何查看数组的各项属性，参考下面的代码
+  ```Python
+  import numpy as np
+
+  a = np.arange(15).reshape(3, 5)
+  print('a ', '=', a)
+  print('a.ndim ', '=', a.ndim)
+  print('a.shape ', '=', a.shape)
+  print('a.dtype.name ', '=', a.dtype.name)
+  print('a.itemsize ', '=', a.itemsize)
+  print('a.size ', '=', a.size)
+  print('type(a) ', '=', type(a))
+
+  # 运行结果
+  a  = [[ 0  1  2  3  4]
+        [ 5  6  7  8  9]
+        [10 11 12 13 14]]
+  a.ndim  = 2
+  a.shape  = (3, 5)
+  a.dtype.name  = int32
+  a.itemsize  = 4
+  a.size  = 15
+  type(a)  = <class 'numpy.ndarray'>
+  ```
+  - ndim()函数会返回数组的秩数，
+  - shape()函数会返回数组的形状。
+  - dtype.name属性是数组中数据的类型，
+  - itemsize是数据类型占用的内存空间，
+  - size则是数组中总共有多少个元素。
+  - numpy的对象在打印时会自动格式化，二维数组则会以矩阵的方式打印出来。
+    - 不仅如此，当数组非常大以至于不能够完整地显示出来的时候，numpy还会缩略打印结果，可参考 如下代码：
+      ```Python
+      import numpy as np
+
+      print(np.arange(10000).reshape(100, 100))
+
+      # 运行结果
+      [[   0    1    2 ...   97   98   99]
+      [ 100  101  102 ...  197  198  199]
+      [ 200  201  202 ...  297  298  299]
+      ...
+      [9700 9701 9702 ... 9797 9798 9799]
+      [9800 9801 9802 ... 9897 9898 9899]
+      [9900 9901 9902 ... 9997 9998 9999]]
+      ```
+---
+### 创建特定数组
+- Numpy还可以快速地创建一些特定的数组，参考下面的代码：
+  ```Python
+  import numpy as np
+
+  a = np.zeros((3, 4))
+  b = np.ones((2, 3, 4), dtype=np.int64)
+  c = np.empty((4, 5))
+  print('zeros\n', a)
+  print('ones \n', b)
+  print('empty\n', c)
+
+  # 运行结果
+  zeros
+  [[0. 0. 0. 0.]
+    [0. 0. 0. 0.]
+    [0. 0. 0. 0.]]
+  ones 
+  [[[1 1 1 1]
+    [1 1 1 1]
+    [1 1 1 1]]
+
+    [[1 1 1 1]
+    [1 1 1 1]
+    [1 1 1 1]]]
+  empty
+  [[3.80261646e-311 4.35210540e-306 1.78716863e-306 1.78022885e-306
+    1.16691863e-301]
+  [4.20602082e-297 3.25847851e-292 7.06199777e-292 1.21172656e-305
+    1.21200470e-305]
+  [3.82460765e-297 1.64290200e-287 1.64325271e-287 3.38208191e-292
+    7.93893540e-301]
+  [1.64290201e-287 1.64357338e-287 5.16064744e-297 3.48020045e-308
+    2.50643828e-154]]
+  ```
+  - 使用zeros()函数可以创建一个对应维度的全零矩阵[1]，
+  - ones()则是创建全1矩阵，
+  - empty()函数会自动创建一个由随机的小值组成的矩阵
+# 待更新记录点(Python数据科学实践指南)
+
+---
+## 随手记
+- arrange创建数组默认大小是50;
