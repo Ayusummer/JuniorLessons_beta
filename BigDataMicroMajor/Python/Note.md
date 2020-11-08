@@ -44,6 +44,29 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 - Ctrl + Shift + R 全局替换
 > 无意中触发了TIM快捷键:Ctrl+Alt+F(文字识别)
 
+## 创建文档注释脚本
+- File->Settings->File and Code Templates
+  - 例:Python Script
+    - 例:
+      ```
+      # -*- coding: utf-8 -*-
+      # @Time    : ${DATE} ${TIME}
+      # @Author  : 咸鱼型233
+      # @File    : ${NAME}.py
+      # @Software: ${PRODUCT_NAME}
+      ```
+
+---
+## 导入自己的模块报红
+- [参考文章](https://blog.csdn.net/qq_30622831/article/details/80978118)
+- 结论:
+  - 本地路径并未被标记“源目录”
+- 解决方案:
+  -  File | Settings | Build, Execution, Deployment | Console | Python Console 
+     -  勾选"Add source roots to PYTHONPAT"
+  - 当前程序根目录右键->“Mark Directory as”->“Sources Root”
+
+
 --- 
 # 基础杂项
 ## 深浅拷贝
@@ -87,6 +110,10 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 - 在python中not是逻辑判断词，用于布尔型True和False，notTrue为False，notFalse为True
 - 只有0、None、空、False的布尔值为False，其余的为True。
   - 参与数学运算时,True->1,False->0;
+
+---
+## 随手记
+- id是内置函数,不能作为变量名使用
 
 ---
 ## 输出
@@ -713,6 +740,33 @@ print("dict['Age']: ", dict1['Age'])
 # 运行结果
 dict1['Name']:  Zara
 dict['Age']:  7
+```
+
+---
+#### items
+- Python 字典(Dictionary) items() 函数以列表返回可遍历的(键, 值) 元组数组。
+- 用法
+  ```Python
+  dict.items()
+  ```
+  - 返回值
+    - 返回可遍历的(键, 值) 元组数组。
+- 示例
+```Python
+dict1 = {'Google': 'www.google.com', 'Runoob': 'www.runoob.com',
+         'taobao': 'www.taobao.com'}
+
+print("字典值 : %s" % dict1.items())
+
+# 遍历字典列表
+for key, values in dict1.items():
+    print(key, values)
+
+# 运行结果
+字典值 : dict_items([('Google', 'www.google.com'), ('Runoob', 'www.runoob.com'), ('taobao', 'www.taobao.com')])
+Google www.google.com
+Runoob www.runoob.com
+taobao www.taobao.com
 ```
 
 ---
