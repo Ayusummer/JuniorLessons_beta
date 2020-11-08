@@ -75,3 +75,31 @@
     - 偷懒直接采用了删+增的形式实现
   - 查
     - 从删除功能直接提取的代码
+
+---
+### 运行方法
+- 使用python运行main.py即可
+
+---
+### 随笔
+#### 创建文档注释脚本
+- File->Settings->File and Code Templates
+  - 例:Python Script
+    - 例:
+      ```
+      # -*- coding: utf-8 -*-
+      # @Time    : ${DATE} ${TIME}
+      # @Author  : 咸鱼型233
+      # @File    : ${NAME}.py
+      # @Software: ${PRODUCT_NAME}
+      ```
+
+---
+#### 导入自己的模块报红
+- [参考文章](https://blog.csdn.net/qq_30622831/article/details/80978118)
+- 结论:
+  - 本地路径并未被标记“源目录”
+- 解决方案:
+  -  File | Settings | Build, Execution, Deployment | Console | Python Console 
+     -  勾选"Add source roots to PYTHONPAT"
+  - 当前程序根目录右键->“Mark Directory as”->“Sources Root”
