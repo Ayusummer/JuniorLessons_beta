@@ -45,7 +45,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 > 无意中触发了TIM快捷键:Ctrl+Alt+F(文字识别)
 
 ## 创建文档注释脚本
-- File->Settings->File and Code Templates
+- File -> Settings -> Editor -> File and Code Templates
   - 例:Python Script
     - 例:
       ```
