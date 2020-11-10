@@ -237,3 +237,23 @@ string itos(int i){
 no malloc no free
 no new no delete
 ```
+
+
+# 第2次实验 处理器调度-时间片轮转法实现处理器调度
+
+
+
+---
+## 随笔
+### 结构体与类
+- [参考文章](https://www.cnblogs.com/starfire86/p/5367740.html)
+- 最本质的一个区别就是默认的访问控制： 
+  - 默认的继承访问权限
+    - struct是public的，
+    - class是private的。
+  - 成员/数据默认访问控制:
+    - struct作为数据结构的实现体，它默认的数据访问控制是public的，
+    - class作为对象的实现体，它默认的成员变量访问控制是private的
+  
+### C4996错误
+- 使用了弃用的库/函数
