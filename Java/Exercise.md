@@ -11,7 +11,7 @@
   
 
 ---
-# 生产者消费者
+# 第8周 生产者消费者
 - 第4次第8周作业
 - 编写代码完成生产者消费者程序，要求：
     - 1、有多个生产者和多个消费者
@@ -634,3 +634,12 @@ public class TestWait implements Runnable {
       if()
       MainFrameProducerConsumerTest.basket.notifyAll();
       ``` 
+
+---
+# 第9周 聊天室
+
+
+---
+## 随笔
+### IDEA导入jar包
+- File -> Project Structure(Ctrl + Alt + Shift + s) ->  Modules -> Dependencies -> add Jar...
