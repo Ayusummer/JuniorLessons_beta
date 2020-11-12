@@ -1181,3 +1181,52 @@ onenote:https://d.docs.live.net/13e88115c35fe227/文档/睿韬%20的笔记本/)
 ---
 - pic++
 ---
+
+---
+## 4.7 IP多播
+
+---
+### 4.7.1 IP多播的基本概念
+![不使用多播时需要 发送 90 次单播](https://codimd.s3.shivering-isles.com/demo/uploads/upload_25d372ba616a27c61e829e20162aa263.png)
+![多播可明显地减少 网络中资源的消耗](https://codimd.s3.shivering-isles.com/demo/uploads/upload_d563d5eeecf1498c6c1d05c945c3dfe9.png)
+
+---
+#### 如何实现IP多播?
+- 多播使用组地址
+  - IP 使用 D 类地址支持多播。
+    ![IP分类地址](https://codimd.s3.shivering-isles.com/demo/uploads/upload_05423038aff3920f9155445e45a29ce2.png)
+  - 多播地址只能用于目的地址，而不能用于源地址
+- 动态的组成员的管理 ——IGMP
+- 使用硬件进行多播
+- 多播路由
+
+---
+- 组地址
+  - 在局域网上进行硬件多播
+  - 因特网号码指派管理局 IANA 拥有的以太网地址块的高 24 位为 00-00-5E。
+  - 因此 TCP/IP 协议使用的以太网多播地址块的范围是：
+    - 从 **00-00-5E-00-00-00** 到 **00-00-5E-FF-FF-FF**
+  - D 类 IP 地址可供分配的有 28 位，
+    - 在这 28 位中的前 5 位不能用来 构成以太网硬件地址。
+  - D 类 IP 地址与以太网多播地址的映射关系
+    ![D 类 IP 地址与以太网多播地址的映射关系](https://codimd.s3.shivering-isles.com/demo/uploads/upload_58c7af2f32a11b0e395afefe246a5d04.png)
+
+---
+- 多播协议
+  - IP多播需要两种协议
+    - 为了使路由器知道多播组成员的信息，需要利用
+      - 网际组管理协议
+        - IGMP (Internet Group Management Protocol)
+  - 连接在局域网上的多播路由器还必须和因特网上的其他多播路由 器协同工作
+    - 以便把多播数据报用最小代价传送给所有的组成员 。
+    - 这就需要使用多播路由选择协议
+
+
+---
+### 4.7.2 在局域网上进行硬件多播
+
+---
+### 4.7.3 网际组管理协议 IGMP 和多播路由选择协议
+
+---
+## 4.8 虚拟专用网 VPN 和网络地址转换 NAT
