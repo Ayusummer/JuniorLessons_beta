@@ -124,3 +124,233 @@ NEXT: INC BX
 CODE ENDS
       END START
 ```
+
+---
+# 实验3 子程序设计
+```
+.model tiny
+.stack 100
+.code
+DATAS SEGMENT
+    PNUM DB '这是一个素数',0AH,0DH,'$'
+    NOPNUM DB '这不是一个素数  !',0AH,0DH,'$'
+    NUM DW 20 DUP(?)  
+DATAS ENDS
+STACKS SEGMENT
+STACKS ENDS
+CODES SEGMENT
+ASSUME CS:CODES, DS:DATAS, SS:STACKS
+START:
+MOV AX , DATAS
+MOV DS,AX
+EGA:LEA SI,NUM
+    CALL CODE1
+    MOV SI,NUM
+    CALL CODE2
+    CMP DX,0
+    JZ CVE
+    LEA DX,PNUM
+    MOV AH,09H
+    INT 21H
+    JMP DVE
+CVE:LEA DX,NOPNUM
+    MOV AH,09H
+    INT 21H
+DVE:MOV NUM,0
+    JMP EGA
+    MOV AH,4CH
+    INT 21H
+CODE1 PROC        ; 输入数据
+    MOV CX,10     ; 
+AGA:MOV AH,01H
+    MOV AL,00H
+    INT 21H       ; 回显字符输入
+    CMP AL,30H    ; 与1的ASCII码比较
+    JB OVE        ; 若小于则退出
+    CMP AL,39H
+    JA OVE
+    CBW
+    SUB AX,30H
+    PUSH AX
+    MOV AX,[SI]
+    MUL CX
+    POP DX
+    ADD AX,DX
+    MOV [SI],AX
+    JMP AGA
+OVE:RET
+CODE1 ENDP
+
+CODE2 PROC
+    SUB SI,2
+    MOV CX,SI
+    MOV BX,2
+    ADD SI,2
+BAG:MOV AX,SI  
+    CWD
+    DIV BX
+    CMP DX,0
+    JZ AVE
+    INC BX
+    LOOP BAG
+    MOV DX,1
+    JMP BVE
+AVE:MOV DX,0
+BVE:RET
+CODE2 ENDP
+CODES ENDS
+    END START
+```
+```
+.model tiny
+.stack 100
+.code
+DATAS SEGMENT
+    PNUM DB '这是一个素数',0AH,0DH,'$'
+    NOPNUM DB '这不是一个素数  !',0AH,0DH,'$'
+    NUM DW 20 DUP(?)  
+DATAS ENDS
+STACKS SEGMENT
+STACKS ENDS
+CODES SEGMENT
+ASSUME CS:CODES, DS:DATAS, SS:STACKS
+START:
+MOV AX , DATAS
+MOV DS,AX
+EGA:LEA SI,NUM
+    CALL CODE1
+    MOV SI,NUM
+    CALL CODE2
+    CMP DX,0
+    JZ CVE
+    LEA DX,PNUM
+    MOV AH,09H
+    INT 21H
+    JMP DVE
+CVE:LEA DX,NOPNUM
+    MOV AH,09H
+    INT 21H
+DVE:MOV NUM,0
+    JMP EGA
+    MOV AH,4CH
+    INT 21H
+CODE1 PROC        ; 输入数据
+    MOV CX,10     ; 
+AGA:MOV AH,01H
+    MOV AL,00H
+    INT 21H       ; 回显字符输入
+    CMP AL,30H    ; 与0的ASCII码比较
+    JB OVE        ; 若小于则退出
+    CMP AL,39H    ; 若不小于则与9的ASCII码比较
+    JA OVE        ; 若大于9则退出
+    CBW           ; 扩展
+    SUB AX,30H    ; AX = AX-30
+    PUSH AX       ; AX压栈保护
+    MOV AX,[SI]   ; 
+    MUL CX
+    POP DX
+    ADD AX,DX
+    MOV [SI],AX
+    JMP AGA 
+OVE:RET
+CODE1 ENDP
+
+CODE2 PROC
+    SUB SI,2
+    MOV CX,SI
+    MOV BX,2
+    ADD SI,2
+BAG:MOV AX,SI  
+    CWD
+    DIV BX
+    CMP DX,0
+    JZ AVE
+    INC BX
+    LOOP BAG
+    MOV DX,1
+    JMP BVE
+AVE:MOV DX,0
+BVE:RET
+CODE2 ENDP
+CODES ENDS
+    END START
+```
+- 修改版
+```
+.model tiny
+.stack 100
+.code
+DATAS SEGMENT
+    PNUM DB '这是一个素数',0AH,0DH,'$'	
+    NOPNUM DB '这不是一个素数',0AH,0DH,'$'	
+    NUM DW 20 DUP(?)  
+DATAS ENDS
+STACKS SEGMENT
+STACKS ENDS
+CODES SEGMENT
+ASSUME CS:CODES, DS:DATAS, SS:STACKS
+START:
+MOV AX , DATAS
+MOV DS,AX
+EGA:LEA SI,NUM
+    CALL CODE1
+    MOV SI,NUM
+    CALL CODE2
+    CMP DX,0
+    JZ CVE
+    LEA DX,PNUM
+    MOV AH,09H
+    INT 21H
+    JMP DVE
+CVE:LEA DX,NOPNUM
+    MOV AH,09H
+    INT 21H
+DVE:MOV NUM,0
+    JMP EGA
+    MOV AH,4CH
+    INT 21H
+CODE1 PROC
+    MOV CX,10
+AGA:MOV AH,01H
+    MOV AL,00H
+    INT 21H
+    CMP AL,30H
+    JB OVE
+    CMP AL,39H
+    JA OVE
+    CBW
+    SUB AX,30H
+    PUSH AX
+    MOV AX,[SI]
+    MUL CX
+    POP DX
+    ADD AX,DX
+    MOV [SI],AX
+    JMP AGA
+OVE:RET
+CODE1 ENDP
+
+CODE2 PROC
+    SUB SI,2
+    MOV CX,SI
+    MOV BX,2
+    ADD SI,2
+    MOV AX,SI
+    CMP AX,2
+    JZ TRU
+BAG:MOV AX,SI  
+    CWD
+    DIV BX
+    CMP DX,0
+    JZ AVE
+    INC BX
+    LOOP BAG
+TRU:MOV DX,1
+    JMP BVE
+AVE:MOV DX,0
+BVE:RET
+CODE2 ENDP
+CODES ENDS
+    END START
+
+```
