@@ -24,4 +24,12 @@ for i in range(5):
             array_result[i][j] = 0
 
 # 输出数组
-print(array_result)
+# print(array_result)
+
+# 老师的解法
+arr = np.ones((5, 5))
+arr[1::2, ::2] = 0
+arr[::2, 1::2] = 0
+print(arr)
+
+

@@ -1,15 +1,7 @@
 import numpy as np
-a=np.array([[1,2,3],[4,5,6]])
-b=np.array([[11,22],[33,44]])
-a1=np.array([[1,2],[3,4],[6,7],[8,9]])
-b1=np.array([[11,22],[33,44]])
-aa=np.arange(12).reshape(3,2,2)
-c=np.hstack((a,b))
-c1=np.vstack((a1,b1))
-#print('数组的形状:a:{},b:{},c:{}'.format(a.shape,b.shape,c.shape))
-#print(c,c1,sep='\n')
-#print('数组的形状:a1:{},b1:{},c1:{}'.format(a1.shape,b1.shape,c1.shape))
-arr= np.array([[1,2,4,5],[1,2,3,5]])
-arr1= np.array([[11,22,33,44],[12,12,12,12]])
-arr1_c=np.concatenate((arr,arr1))   #默认按axis=0
-arr2_c=np.concatenate((arr,arr1),axis=1)
+
+A = np.mat([(1, 2, -1), (3, 1, 0), (-1, 0, -2)])
+C = np.mat([[1, 2], [3, 4], [5, 6]])
+D = np.mat([[11, 22, 33], [44, 55, 66], [77, 88, 99]])
+print("A×3:\n{0}".format(A*3))
+print("A+D:\n{0}\nA*C:\n{1}\n".format(A+D, A*C))
