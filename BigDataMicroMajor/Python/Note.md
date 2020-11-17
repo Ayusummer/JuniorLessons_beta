@@ -1727,11 +1727,185 @@ $\hat{y} = ax + b + \epsilon$
 
 
 ---
+```python
+import numpy as np
+
+
+def create_a_linear_regressor(X, Y):
+    x_m = np.mat(X)
+    y_m = np.mat(Y)
+    top1 = float(x_m * y_m.T)
+    top2 = (X.sum() * Y.sum()) / (X.shape[0])
+    top = top1 - top2
+    bottom1 = np.multiply(X, X).sum()
+    bottom2 = ((X.sum()) * (X.sum())) / (X.shape[0])
+    bottom = bottom1 - bottom2
+    a = top / bottom
+    front = (Y.sum()) / (Y.shape[0])
+    back = (a * (X.sum())) / (X.shape[0])
+    b = front - back
+    return [a, b]
+
+
+X = np.array([1, 2, 3, 4, 5, 6])
+Y = np.array([6.0, 7.0, 7.8, 8.0, 9.0, 9.8])
+para = create_a_linear_regressor(X, Y)
+print("斜率为:{0}  截距为:{1}".format(para[0], para[1]))
+print("第6年年底储蓄总金额为:{0}".format(para[0]*7 + para[1]))
+
+# 运行结果
+斜率为:0.7200000000000013  截距为:5.413333333333329
+第6年年底储蓄总金额为:10.453333333333337
+```
+
+
+---
 ## numpy进行数据统计分析时常用的方法
 ### 去重
 - 去掉重复的数据
+- 一维数组 unique() 去掉重复数据且返回已排序的结果(只对数组)
+```python
+unique(b, return_index = True, return_counts = True)
+```
+- return_index = True
+  - 返回元素在数组中第一次出现的位置
+- 对二维数组去掉重复行
+  - 可以增加一个参数:axis = 0
 
+---
+```python
+import numpy as np
 
+A = np.random.randint(10, 15, size=(1, 7))
+print("原数组:\n{0}".format(A))
+B, index = np.unique(A, return_index=True)
+print("去重\n{}\nindex\n{}".format(B, index))
+C = np.array([[1, 2], [3, 4], [1, 2], [3, 4], [3, 4]])
+c = np.unique(C, axis=0)  # 去掉重复的行
+print('去掉数组C中重复的行\n', c)
+
+# 运行结果
+原数组:
+[[12 12 11 13 13 13 10]]
+去重
+[10 11 12 13]
+index
+[6 2 0 3]
+去掉数组C中重复的行
+ [[1 2]
+ [3 4]]
+
+```
+
+---
+- numpy进行数据统计分析时常用的方法 重复数据，需要将数据重复若干次。常用tile()和repeat() 
+  - ```Python
+    tile(arr,reps) 
+    ```
+    - 参数reps指定重复的次数 
+  - ```python
+    repeat(a,repeats,axis=None) 
+    ```
+    - a指重复的数组元素,
+    - repeats重复次数,
+    - axis指沿着哪个轴重复 
+  - 它们区别在于：
+    - tile函数对数组进行重复，
+    - repeat函数是对数组中的每个元素进行重复操作。
+
+```python
+import numpy as np
+
+arr = np.arange(5)
+arr_tile = np.tile(arr, 2)    # 将数组重复2次
+print('原数组为：', arr)
+print('重复后的数组为：', arr_tile)
+np.random.seed(42)            # 设置随机种子
+arr1 = np.random.randint(0, 10, size=(3, 3))  # 生成数组
+print('原数组：\n', arr1)
+arr1_repeat = np.repeat(arr1, 2, axis=1)
+print('重复后数组为：', arr1_repeat)  # 按行进行元素重复，axis=1.按列进行元素重复
+
+# 运行结果
+原数组为： [0 1 2 3 4]
+重复后的数组为： [0 1 2 3 4 0 1 2 3 4]
+原数组：
+ [[6 3 7]
+ [4 6 9]
+ [2 6 7]]
+重复后数组为： [[6 6 3 3 7 7]
+ [4 4 6 6 9 9]
+ [2 2 6 6 7 7]]
+```
+
+---
+## numpy中的数据常用保存与读取方法
+- 二进制的文件和文件列表形式（文本文件和csv文件） 
+  - save()函数是以二进制的格式保存数据(保存格式是.npy)。 
+    - ```python
+      np.save(filename,arr) 
+      ```
+  - load()函数是从二进制的文件中读取数据(读取npy)。 
+    - ```python
+      np.load(filename) 
+      ```
+  - savez函数可以将多个数组保存到一个文件(.npz)中。 
+    - ```python
+      np.savez(filenme,arr1,arr2) 
+      ```
+    - ```python
+      np.savez(filenme,arr1=arr1,arr2=arr2) 
+      ```
+    - 存储时可以省略扩展名，但读取时不能省略扩展名。
+  - savetxt函数是将数组写到文本文件（txt或cvs）中。
+    - ```python
+      np.savetxt(filename, arr, fmt="%d", delimiter=" ") 
+      ```
+  - loadtxt函数把文件加载到一个二维数组中。 
+    - ```python
+      np.loadtxt(filename,delimiter=",") 
+      ```
+  - genfromtxt函数面向的是结构化数组和缺失数据。 
+    - ```python 
+      np.genfromtxt(filename,delimiter = ",")
+      ```
+```python
+import numpy as np
+import os
+
+file_path_savez = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/files/prog/matrix'))
+file_path_savetxt = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/files/prog/matrix.csv'))
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/files/prog/matrix.npz'))
+
+A = np.array([1, 2, 3, 4, 5])   # A = [1 2 3 4 5]
+B = np.diag(A)                  # 利用A生成对角阵B,对角线上元素从左到右对应A中元素
+C = np.linspace(1, 50, 49, dtype=int)\
+    .reshape(7, 7)              # 生成[1,50]等间隔的49个数(去掉小数部分)并将其重构为7×7的数组
+C = np.mat(C)                   # 将数组C转换成矩阵C
+row = len(C)                    # row = 7; len(矩阵)返回矩阵的行数
+col = len(C[0, :])              # col = 1; C[0, :] = [[1 2 3 4 5 6 7]] 长度为1
+D = np.diagonal(C)              # D为C对角线上的元素,即为[ 1  9 17 25 33 41 50]
+D_diag = np.diag(D)             # D_diag是以D为对角元素生成的方阵
+E = np.diag(np.diag(C))         # np.diag(C)获取C对角线上的元素;
+E_M = np.mat(E)                 # 将E转换为矩阵E_M
+F = np.tril(C)                  # F为C的下三角(上三角置0)
+F_1 = np.tril(C, -1)            # 主对角线-1 上方元素置0,效果等效为:下三角&主对角线置0
+F1 = np.triu(C)                 # F1为C的上三角
+F1_1 = np.triu(C, 1)            # 主对角线+1 下方元素置0,效果等效为:上三角&主对角线置0
+np.savez(file_path_savez,
+         a=A, b=B, c=C)         # 将几个数组以未压缩的.npz格式保存到单个文件中。
+np.savetxt(file_path_savetxt,
+           E_M, '%d',
+           delimiter=',')       # 将数组保存到文本文件,每一个数据都用','分开
+arr = np.load(file_path_arr)    # 从.npy、.npz或pickle文件加载阵列或pickle对象。
+# 输出相应对象
+print("a:\n{0}\nb:\n{1}\nc:\n{2}\n".format(arr['a'], arr['b'], arr['c']))
+# 从文本文件加载数据。
+arr1 = np.loadtxt(file_path_savetxt, delimiter=',')
+print("E_M:\n{0}"
+      .format(arr1))            # 输出E_M
+
+```
 
 ---
 # 待更新记录点(Python数据科学实践指南)
