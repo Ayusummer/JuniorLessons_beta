@@ -1559,11 +1559,11 @@ a.H 返回自身的共轭转置
 ---
 #### 矩阵相乘实例分析
 - 某工厂生产三种产品,费用支出见表1,生产量见表2
-![](./res/矩阵相乘实例分析表1.png)  
+![](../../res/img/BigDataMicroMajor/Python/矩阵相乘实例分析表1.png)  
 
   [表1备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_e2ceb36eb9f9f825c773f116563541fb.png)
 
-  ![矩阵相乘实例分析表2](./res/矩阵相乘实例分析表2.png)
+  ![矩阵相乘实例分析表2](../../res/img/BigDataMicroMajor/Python/矩阵相乘实例分析表2.png)
 
   [矩阵相乘实例分析表2备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_a8fbeb28aebf1c6936ac9673a0ddc539.png)
 - 计算如下数据:
@@ -1618,12 +1618,12 @@ print("四个季度每类成本的总数量为:\n{0}".format(MN.sum(axis=1)))
 
 ---
 #### 矩阵乘法及其应用
-![](./res/矩阵乘法示意.png)
+![](../../res/img/BigDataMicroMajor/Python/矩阵乘法示意.png)
 
 [矩阵乘法示意备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_6c85db63360e553a9c0941e471b8d768.png)
 
 - 求解线性方程组
-![](./res/线性方程组.png)
+![](../../res/img/BigDataMicroMajor/Python/线性方程组.png)
 
   [线性方程组备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_152824e62907db7878dcc4f1454c01be.png)
   - 可以写成矩阵相乘的形式:
@@ -1631,10 +1631,61 @@ print("四个季度每类成本的总数量为:\n{0}".format(MN.sum(axis=1)))
     - 解方程求x
       - $x = ba^{-1}$
 
+
+---
+##  linalg线代模块
+- [官方文档参考链接](https://www.numpy.org.cn/reference/routines/linalg.html#%E7%9F%A9%E9%98%B5%E5%92%8C%E5%90%91%E9%87%8F%E7%A7%AF)
+- Numpy中的linalg模块包含线性代数中的函数方法;
+  - 如
+    - [求矩阵的逆矩阵](https://numpy.org/devdocs/reference/generated/numpy.linalg.inv.html#numpy.linalg.inv)
+      - ```python
+        linalg.inv(a)
+        ``` 
+    - [矩阵的特征值](https://www.numpy.org.cn/reference/routines/linalg.html#%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%80%BC)
+    - [解线性方程组](https://www.numpy.org.cn/reference/routines/linalg.html#%E8%A7%A3%E6%96%B9%E7%A8%8B%E5%92%8C%E9%80%86%E7%9F%A9%E9%98%B5)
+    - 求行列式等
+
+```python
+import numpy as np
+
+a = np.mat([[3, 1], [1, 2]])        # 系数矩阵
+b = np.mat([[9, 8]])                # 常数矩阵
+x = np.linalg.solve(a, b.T)         # 求解ax = b.T
+y = np.linalg.det(a)                # 计算数组a的行列式。
+a_I = np.linalg.inv(a)              # 求a的逆矩阵,等价于a.I
+a_eigValue = np.linalg.eigvals(a)   # 计算通用矩阵a的特征值。
+print("ax = b.T的解为:\n{0}\na的行列式为:\n{1}\n"
+      "a的特征值为:\n{2}\n".format(x, y, a_eigValue))
+print("方阵a的特征值和右特征向量为:\n{0}"
+      .format(np.linalg.eig(a)))    # 计算方阵a的特征值和右特征向量。
+print("ax为:\n{0}".format(a*x))
+print("a与其逆矩阵的乘积为:\n{0}".format(a*a_I))
+
+# 运行结果
+ax = b.T的解为:
+[[2.]
+ [3.]]
+a的行列式为:
+5.000000000000001
+a的特征值为:
+[3.61803399 1.38196601]
+
+方阵a的特征值和右特征向量为:
+(array([3.61803399, 1.38196601]), matrix([[ 0.85065081, -0.52573111],
+        [ 0.52573111,  0.85065081]]))
+ax为:
+[[9.]
+ [8.]]
+a与其逆矩阵的乘积为:
+[[1. 0.]
+ [0. 1.]]
+
+```
+
 ---
 ### 实例分析
 某地区居民连续几年的年底储蓄总金额如表所示:
-- (1)计算y关于t的回归方程$y = kt + b$的斜率与截距
+- (1)计算y关于t的回归方程$\hat{y} = kt + b$的斜率与截距
 - (2)用所求的回归方程预测该地区第6年的年底储蓄总金额
   
 | 年份 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 |
@@ -1643,13 +1694,16 @@ print("四个季度每类成本的总数量为:\n{0}".format(MN.sum(axis=1)))
 | 储蓄总金额 | 6 | 7 | 7.8 | 8 | 9 | 9.8 |
 
 
----
-##  linalg线代模块
-
-
-
 ----
 ### 一元线性回归分析是最基本的回归模型
+---
+#### 概念
+- 一元线性回归是分析只有一个自变量（自变量x和因变量y）线性相关关系的方法。
+  - 一个经济指标的数值往往受许多因素影响，若其中只有一个因素是主要的，起决定性作用，则可用一元线性回归进行预测分析。
+
+
+---
+#### 分析
 $\hat{y} = ax + b + \epsilon$
 - $\hat{y}$
   - 预测对象

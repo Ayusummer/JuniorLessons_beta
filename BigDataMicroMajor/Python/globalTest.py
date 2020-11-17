@@ -1,8 +1,18 @@
 import numpy as np
 
-M = np.mat([(0.10, 0.30, 0.15), (0.30, 0.40, 0.25), (0.10, 0.20, 0.15)])
-N = np.mat([[4000, 4500, 4500, 4000], [2000, 2600, 2400, 2200], [5800, 6200, 6000, 6000]])
-MN = M*N
-print("每一季度中每一类成本的数量为:\n{0}".format(MN))
-print("每一季度三类成本的总数量为:\n{0}".format(MN.sum(axis=0)))
-print("四个季度每类成本的总数量为:\n{0}".format(MN.sum(axis=1)))
+A = np.array([1, 2, 3, 4, 5])
+B = np.diag(A)
+C = np.linspace(1, 50, 49, dtype=int).reshape(7, 7)
+C = np.mat(C)
+row = len(C)
+col = len(C[0, :])
+D = np.diagonal(C)  # D为C对角线上的元素,即为
+D_diag = np.diag(D) # D_diag是以D为对角元素生成的方阵
+E = np.diag(np.diag(C))
+E_M = np.mat(E)
+F = np.tril(C)
+F_1 = np.tril(C, -1)
+F1 = np.triu(C)
+F1_1 = np.triu(C, 1)
+print(F1_1)
+
