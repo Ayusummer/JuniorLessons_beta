@@ -1631,6 +1631,11 @@ print("四个季度每类成本的总数量为:\n{0}".format(MN.sum(axis=1)))
     - 解方程求x
       - $x = ba^{-1}$
 
+---
+> [三种乘法运算的区别](https://blog.csdn.net/zenghaitao0128/article/details/78715140)
+
+
+
 
 ---
 ##  linalg线代模块
