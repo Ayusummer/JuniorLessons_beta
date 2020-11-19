@@ -3075,3 +3075,18 @@ cobegin{
       - 共计
         - $10ns+100ns=110ns$。
 - （2） 基于上述访问序列，虚地址1565H的物理地址是多少？请说明理由。
+
+
+---
+# Character 6 FILE SYSTEMS
+
+---
+## 6.1 File
+
+
+
+
+
+---
+## 6.2 File Directory
+
