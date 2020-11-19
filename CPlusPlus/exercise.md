@@ -361,3 +361,211 @@ int main()
 	return 0;
 }
 ```
+
+
+---
+# 上机5
+
+---
+## 题目1 验证哥德巴赫猜想
+- 给定任意一个大于6的偶数,均可以分解为两个素数之和
+  - 要求:
+    - 利用函数判断素数	
+      -就是除了1和它本身外没有一个数能够整除n
+	  	用试探法，用2到 $\sqrt{n}$ 去除这个数，只要有一个数能够整除它，则不是素数，返回false，若都不能整除则返回true。
+
+
+---
+### 判断素数
+#### 法一,$2 -> \sqrt{m}$作除法
+#### 法二,优化版
+- [原文链接](https://www.cnblogs.com/moyujiang/p/11235653.html)
+- 首先看一个关于质数分布的规律：
+  - 大于等于5的质数一定和6的倍数相邻。例如5和7，11和13,17和19等等
+  - 证明：令x≥1，将大于等于5的自然数表示如下：  
+	······ 6x-1，6x，6x+1，6x+2，6x+3，6x+4，6x+5，6(x+1），6(x+1)+1 ······
+	- 明显可以看到，不在6的倍数两侧，即6x两侧的数为6x+2，6x+3，6x+4，由于2(3x+1)，3(2x+1)，2(3x+2)，所以它们一定不是素数，再除去6x本身，显然，**素数要出现只可能出现在6x的相邻两侧**。这里要注意的一点是，**在6的倍数相邻两侧并不一定就是质数**。
+- 此时判断质数可以以6为单位快进
+  - 即将方法一循环中i++步长加大为6，加快判断速度
+    - 假如要判定的数为n，则n必定是6x-1或6x+1的形式，
+      - 对于循环中6i-1，6i，6i+1,6i+2，6i+3，6i+4，
+        - 其中如果n能被6i，6i+2，6i+4整除，则n至少得是一个偶数
+          - 但是6x-1或6x+1的形式明显是一个奇数，故不成立；
+        - 另外，如果n能被6i+3整除，则n至少能被3整除，但是6x能被3整除，故6x-1或6x+1（即n）不可能被3整除，故不成立
+  - 循环中只需要考虑6i-1和6i+1的情况，即 循环的步长可以定为6，每次判断循环变量k和k+2的情况即可。
+```C++
+bool isPrime_3(int num)
+{
+	 if(num==1)
+		return 0;
+     if(num==2||num==3)
+        return 1;
+     if(num%6!=1&&num%6!=5)
+        return 0;
+     int tmp=sqrt(num);
+     for(int i=5;i<=tmp;i+=6)
+        if(num%i==0||num%(i+2)==0)
+           return 0;
+     return 1;
+}
+```
+
+### 源码
+- GoldbachConjecture.h
+	```C++
+	#pragma once
+	#include<iostream>
+	using namespace std;
+
+	// 判断数字是否为素数
+	bool isPrime(int num);
+
+	// 判断数字是否为素数,优化版
+	bool isPrimePro(int num);
+
+	// 输出一个大于6的偶数由两个素数求和字符串
+	void out_GoldbachConjecture(int num);
+	```
+- GoldbachConjecture.cpp
+	```C++
+	#include "GoldbachConjecture.h"
+	#include<iostream>
+	#include<cmath>
+	using namespace std;
+
+	// 判断数字是否为素数并返回判断标识
+	bool isPrime(int num)
+	{
+		/* 从2->sqrt(num),依次除num,若能整除则返回false,表示该数不是素数
+			循环执行完未返回则返回true,表示该数为素数 */
+		for (int i = 2; i <= sqrt(num); i++)
+			if (num % i == 0)
+				return false;
+		return true;
+	}
+
+	// 判断数字是否为素数并返回判断标识
+	bool isPrimePro(int num){
+		/* 若该数为素数,除非该数是2或3,否则该数必定与6的倍数相邻(用因式分解不难看出) */
+		if (num == 1)
+			return 0;
+		if (num == 2 || num == 3)
+			return 1;
+		if (num % 6 != 1 && num % 6 != 5)
+			return 0;
+		int tmp = sqrt(num);
+		/* 不用判断6i, 6i+2, 6i+4,因为这些都是偶数,而num为奇数
+			不用判断 6i+3 因为 num 若能被其整除则num至少能被3整除
+				但是 num = 6k +- 1 ,不可能被3整除,故num不可能被6i+3整除*/
+		for (int i = 5; i <= tmp; i += 6)
+			if (num % i == 0 || num % (i + 2) == 0)
+				return 0;
+		return 1;
+	}
+
+
+	// 输出一个大于6的偶数由两个素数求和字符串
+	void out_GoldbachConjecture(int num){
+		if (num % 2 == 1 || num <= 6) {
+			cout << "这不是一个大于6的偶数" << endl;
+		}
+		else {
+			if (isPrimePro(num - 3))
+				cout << num << "=3+" << num - 3 << endl;
+			else {
+				for (int i = 5; i <= num / 2; i += 6) {
+					if (isPrimePro(i) && isPrimePro(num - i)){
+						cout << num << "=" << i << "+" << num - i << endl;
+						break;  // 验证式函数,找到一个即可
+					}
+					else if (isPrimePro(i + 2) && isPrimePro(num - i - 2)){
+						cout << num << "=" << i + 2 << "+" << num - i - 2 << endl;
+						break;  // 理由同上
+					}
+					else{
+						// do nothing
+					}
+				}  
+			}
+		}
+	}
+
+	```
+- 验证哥德巴赫猜想.cpp
+```C++
+#include"GoldbachConjecture.h"
+
+#include<iostream>
+using namespace std;
+
+int main() {
+	int num;			// 待输入数据
+	int break_or_not;	// 是否继续输入
+	while (1) {
+		cout << "请输入一个大于6的偶数:";
+		cin >> num;	// cin自带换行
+		out_GoldbachConjecture(num);
+		cout << "输入0并回车以退出程序,输入其他数据并回车以继续输入:";
+		cin >> break_or_not;
+		if (break_or_not == 0)
+			break;
+	}
+	system("pause");
+	return 0;
+}
+```
+
+---
+## 题目2 指数函数
+```C++
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+long long factorial(int num) {
+	int i;					// 循环计数器
+	long long answer = 1;	// 0的阶乘是1
+	for (i = 1; i <= num; i++) {
+			answer *= i;
+	}
+	return answer;
+}
+
+
+long double eExponential(double num) {
+	long double answer = 0;
+	long double current_num;
+	int i = 0;			// 计数器
+	while (true) {
+		cout << pow(num, i) <<"   " << factorial(i) <<"    " << pow(num, i) / factorial(i) << endl;
+		current_num = pow(num, i) / factorial(i);
+		if (current_num < pow(10, -6)) {
+			answer += current_num;
+			break;
+		}
+		else{
+			answer += current_num;
+			i++;
+		}
+	}
+	return answer;
+}
+
+
+
+int main() {
+	double num;			// 待输入数据
+	int break_or_not;	// 是否继续输入
+	while (true) {
+		cout << "请输入指数:";
+		cin >> num;	// cin自带换行
+		cout << "以该数为指数的自然指数的值约为:" << eExponential(num) << endl;
+		cout << "输入0并回车以退出程序,输入其他数据并回车以继续输入:";
+		cin >> break_or_not;
+		if (break_or_not == 0)
+			break;
+	}
+	system("pause");
+	return 0;
+}
+```
