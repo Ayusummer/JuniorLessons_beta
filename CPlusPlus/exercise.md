@@ -569,3 +569,25 @@ int main() {
 	return 0;
 }
 ```
+
+---
+### 随笔
+- 本题 $e^3$ 结果整数部分为19基本上从该数值开始就出了错误:
+  -  $3!=6.227 × 10^9$
+     -  超出了int,long的表示范围$2^{-31} ~ 2^{31}-1$
+- 就这题而言,阶乘数据可以用double或者long long 或者float类型来存储
+  ![](../res/img/CPlusPlus/EX5T2三种存储格式.png)
+  ![](../resimg/../res/img/CPlusPlus/C++中各类数据的表示范围.png)
+	- double的精度为15~16位有效数字
+	- float的精度为6~7位有效数字
+	- long long 的精度为19位有效数字
+	- > 详见参考链接第一条
+    - 另外在 $pow(num, i) / factorial(i)$中
+      - 由于指数函数$pow(num, i)$的返回类型为double类型,因此不管除数是什么类型,由于混合运算由自动的类型转换(自动转换为两数中有更高精度的类型),该结果的精度都至少为double类型的精度,对于这题而言精度已经够了
+      - > 类型转换见参考链接第3条
+      - > double精度不够的情况见参考链接第2条
+
+#### 参考资料
+- [C++中float和double类型的精度问题说明](https://blog.csdn.net/tiandao2009/article/details/79840017)
+- [double和long long 的精度对比](https://blog.csdn.net/nuanxin_520/article/details/41077227?utm_source=blogxgwz5)
+- [C++基础知识（三）--数据类型转换--混合运算类型转换--赋值类型转换--强制类型转换](https://www.cnblogs.com/southcyy/p/10249117.html)
