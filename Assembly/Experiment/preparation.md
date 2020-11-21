@@ -1,4 +1,6 @@
-# 前言
+ 
+ 
+ # 前言
 - 时间：8-15周，周五1,2节
 - 地点：计算机205
 - 前三个是软件编程（在同一个预习文件里），需要提前编好程序，上课时调试
@@ -354,3 +356,63 @@ CODES ENDS
     END START
 
 ```
+
+```
+.model tiny
+.stack 100
+.code
+EXTRN   initkeydisplay:near
+        display8:near
+DATAS SEGMENT
+    buf db 00h, 00h, 00h, 00h, 00h, 00h, 00h, 00h
+    done db 00h'
+DATAS ENDS
+STACKS SEGMENT
+STACKS ENDS
+CODES SEGMENT
+ASSUME CS:CODES, DS:DATAS, SS:STACKS
+start:
+    mov ax, 0
+    mov es, ax
+    mov bx, 42h * 4
+    mov ax, offset cnt
+    mov es:[bx], ax
+    mov ax, seg cnt
+    mov es:[bx + 2], ax
+    ;8255初始化
+    extrn InitKeyDisplay
+    ;8259初始化
+    mov al, 13h
+    out 80h, al
+    mov al, 40h
+    out 82h, al
+    mov al, 01h
+    out 82h, al
+    mov si, offset buf
+    mov bx, 0
+    sti
+wait0:
+    extrn Display8
+    cmp done, 9
+    jnz wait0
+    hlt
+
+cnt proc near
+    sti
+    add done, 1
+    mov al, done
+    mov [bx], al
+    cli
+    mov al, 20h
+    out 80h, al
+    iret
+cnt endp
+
+CODES ENDS
+    END START
+
+```
+
+
+
+

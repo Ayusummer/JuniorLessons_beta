@@ -1913,9 +1913,26 @@ print("E_M:\n{0}"
 ```
 
 ---
+# Matplotlib
+- 数据可视化
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+---
 # 待更新记录点(Python数据科学实践指南)
 [三种乘法](https://blog.csdn.net/zenghaitao0128/article/details/78715140)
 ---
+
 ## 随手记
 - arrange创建数组默认大小是50;
 
