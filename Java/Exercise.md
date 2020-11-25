@@ -712,6 +712,8 @@ public class TestWait implements Runnable {
 | FRIEND | 长整型 | 自动 | 这个账户拥有的好友 | 否 |
 
 
+
+
 ---
 ## 0
 
