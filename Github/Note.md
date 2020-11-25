@@ -1,10 +1,8 @@
-# 基础知识
----
-## Issues
+# Issues
 
 
 ---
-## Pull Request
+# Pull Request
 - [参考链接](https://www.zhihu.com/question/21682976)
 - 以下为文章原文:
 - 我尝试用类比的方法来解释一下 pull reqeust。想想我们中学考试，老师改卷的场景吧。
@@ -15,7 +13,21 @@
   - 你拿到试卷重新改正错误，相当于 merge。
 
 ---
-## Actions
+# Actions
 - [参考链接](http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html)
 
 
+# Markdown
+## 数学公式
+- [参考链接]
+- [访问改地址](https://github.com/orsharir/github-mathjax/releases/tag/v0.2.1)
+  - 下载`Source code(zip)`
+  - 解压到`C:/Users/"你的用户名"/AppDataLocal/Google/Chrome/User Data/Default/Extensions
+    - 注意解压后的文件夹表层和里一层都是一样的文件夹名
+      - 只要里层的
+  - 打开Chrome扩展程序,打开开发者模式
+  - 加载已解压的扩展程序
+    - 就是刚才放到上面目录里的整个文件夹
+    - ![结构示意图](../res/img/Github/Chrome插件github-mathjax文件结构示意图.png)
+  - 此时再打开Github查看源码就能显示markdown的数学公式了
+  - ![成功演示](../res/img/Github/Github查看Markdown数学公式成功演示.png)
