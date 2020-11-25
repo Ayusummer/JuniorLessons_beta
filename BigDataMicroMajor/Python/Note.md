@@ -1913,9 +1913,484 @@ print("E_M:\n{0}"
 ```
 
 ---
+# Matplotlib
+- 数据可视化
+- 是python的绘图库
+  - 可以绘制诸如散点/饼状/线/直方/误差线图
+  - 图形质量满足出版要求
+
+---
+## pyplot
+
+---
+### pyplot绘图的基本操作
+
+![pyplot绘图的基本操作](../../res/img/BigDataMicroMajor/Python/pyplot绘图基本操作.png)
+
+[pyplot绘图的基本操作备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_aa6ca071f9d619b0c934dcf9bd737568.png)
+
+---
+#### 创建画布与创建子图
+- 创建一张空白画图,并可以选择是否将整个画布划分为多个部分,方便在同一幅图上绘制多个图形
+  - 也可以省略,直接在默认的画布上进行图形绘制,通常情况下省略
+
+| 函数 | 函数作用 |
+| --   | -- |
+| plt.figure() | 创建一个空白画布,可以指定画布大小,像素 |
+| plt.subplot() | 创建并选中子图,可以指定子图的行数,列数,与选中图片编号 |
+
+
+- figure
+```python
+matplotlib.pyplot def figure(num: Union[int, str, None] = None,
+           figsize: Any = None,
+           dpi: Optional[int] = None,
+           facecolor: Any = None,
+           edgecolor: Any = None,
+           frameon: Optional[bool] = True,
+           FigureClass: Any = Figure,
+           clear: Optional[bool] = False,
+           **kwargs: Any) -> Any
+```
+> 注意:当你使用画布时,务必记得在不使用该画布时使用 .pyplot.close 来关闭画布以清理其占用的**内存**
+> - 否则你可能会因为内存溢出而头痛不已
+- num
+  - 图像编号或名称
+    - 数字为编号 
+    - 字符串为名称 
+- figsize
+  - 指定figure的宽和高
+  - 单位为英寸； 
+- dpi
+  - 指定绘图对象的分辨率
+    - 即每英寸多少个像素，缺省值为80 
+      > - 1英寸等于2.5cm
+      > - A4纸是 21*30cm的纸张 
+- facecolor
+  - 背景颜色 
+- edgecolor
+  - 边框颜色
+```python 
+import matplotlib.pyplot as plt
+import numpy as np
+
+a = np.arange(1, 13)
+b = np.array([12, 12, 34, 23, 56, 45, 24, 45, 23, 45, 21, 12])
+c = a ** 2 + 1
+plt.figure('qwqerr', figsize=(10, 5), dpi=60)  # 定义画布
+plt.plot(a, b)
+plt.figure('12', figsize=(10, 5), dpi=60)
+plt.plot(a, c)
+plt.show()
+
+```
+- 运行结果
+![](../../res/img/BigDataMicroMajor/Python/新建画布.png)
+
+  [新建画布备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_dcc66c8cc53de5a90af45842a9ac6f6c.png)
+
+
+---
+#### 添加标题
+- (图, xy轴), 设置可读与范围(x, y轴)
+- 添加图标题,坐标轴名称,设置刻度与范围
+  - 没有先后顺序
+
+| 函数 | 函数作用 |
+| --   | -- |
+| plt.title | 在当前图形中添加图表题,可以确定标题的名称,位置,颜色,字体大小等参数 |
+| plt.xlable | 在当前图形中添加x轴名称(标题),可以指定位置,颜色,字体大小等参数 |
+| plt.ylable | 在当前图形中添加y轴名称(标题),可以指定位置,颜色,字体大小等参数 |
+| plt.xlim | 指定当前x轴的范围,只能确定一个数值区间,而无法使用字符串标识 |
+| plt.ylim | 指定当前y轴的范围,只能确定一个数值区间,而无法使用字符串标识 |
+| plt.xticks | 指定x轴可读的数目与取值 |
+| plt.yticks | 指定y轴可读的书目与取值 |
+
+
+---
+#### 正常显示中文和负号
+Matplotlib内无中文字节码,需要另外添加显示中文的模块
+- 1.使用字体管理器font_manager
+```python
+from matplotlib.font_manager import FontProperties as FP
+font = FP(fname = 'C:/WINDOWS/Fonts/STKAITI.TTF', size=16)
+```
+- 2.使用matplotlib的rcParams属性
+```python
+matplotlib.rcParams['font.family'] = ['SimHei']
+```
+- 3.使用matplotlib的rcParams属性
+```python
+plt.rcParams['axes.unicode_minus'] = False
+```
+
+---
+- plt.rcParams
+
+
+---
+##### 例子:绘制$sin(x)$
+绘制sin(x)的图 ,并添加标题
+```python
+title('文本',fontsize=None,fontweight=None,fontstyle=None) 
+```
+- fontsize
+  - 默认12
+  - 可选参数 
+    ``` 
+    [‘xx-small’, ‘x-small’, ‘small’, ‘medium’, ‘large’,‘x-large’, ‘xx-large’] 
+    ```
+- fontweight
+  - 设置字体粗细
+  - 可选参数 
+    ```
+    [‘light’, ‘normal’, edium’, ‘semibold’, ‘bold’, ‘heavy’, ‘black’] 
+    ```
+  - fontstyle
+    - 设置字体类型
+    - 可选参数
+      ```
+      [ ‘normal’ | ‘italic’ | ‘oblique’ ]
+      ```
+    - italic斜体
+    - oblique倾斜 
+- backgroundcolor标题背景颜色
+
+---
+- 1.使用字体管理器font_manager
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.font_manager import FontProperties as FP
+
+font = FP(fname='C:/WINDOWS/Fonts/STKAITI.TTF', size=12)
+a1 = np.linspace(0, 2 * np.pi)
+b1 = np.sin(a1)
+plt.title('sin(x)函数图', fontproperties=font, size=18)  # 设置图的标题
+plt.xlabel('x轴', fontproperties=font)  # 设置X轴的名称
+plt.ylabel('y轴', fontproperties=font)  # 设置y轴的名称
+plt.plot(a1, b1)  # 画折线图
+plt.show()
+
+```
+- 运行结果
+  ![使用fontmanager绘制sin(x)](../../res/img/BigDataMicroMajor/Python/使用fontmanager绘制sin(x).png)
+
+  [使用fontmanager绘制sin(x)备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_13dae5dc395d4b8e084abbc6312e927a.png)
+
+---
+- 为不同标题(图、坐标轴)设置不同的字体，大小，采用字体管理器 
+  ```python
+  import matplotlib.pyplot as plt
+  import numpy as np
+  from matplotlib.font_manager import fontManager
+
+  a1 = np.linspace(0, 2 * np.pi)
+  b1 = np.sin(a1)
+  plt.title('sin(x)函数图', fontproperties='FangSong', size=16)  # 设置图的标题
+  plt.xlabel('x值', fontproperties='simhei', fontsize=10)  # 设置X轴的名称
+  plt.ylabel('函数值', fontproperties='stkaiti')  # 设置y轴的名称
+  plt.plot(a1, b1)  # 画折线图
+  plt.show()
+
+  ```
+  - 运行结果
+    ![sin(x)采用多种字体](../../res/img/BigDataMicroMajor/Python/sin(x)采用多种字体.png)
+
+    [sin(x)采用多种字体备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_409fdda16adf62e809a2655eede7d387.png)
+
+---
+- 显示图中的负号
+  - 配置rc参数 
+    ```python
+    rcParams['axes.unicode_minus']=False #修改y轴的名称（标题）
+    ```  
+
+  ```python 
+  import matplotlib.pyplot as plt
+  import numpy as np
+
+  plt.rcParams['font.family'] = ['simhei']
+  plt.rcParams['axes.unicode_minus'] = False
+  a1 = np.linspace(0, 2 * np.pi)
+  b1 = np.sin(a1)
+  plt.title('sin(x)函数图', size=16)  # 设置图的标题
+  plt.xlabel('x 值', labelpad=10)    # 设置X轴的名称
+  plt.ylabel('函\n数\n值',
+            rotation=0,          # 文本中的文字水平显示
+            linespacing=2,       # 行距
+            labelpad=20,         # 文本名称与坐标轴的距离
+            position=(10, 0.35)  # 文本名称的纵坐标（第2个数值）
+            )
+  plt.plot(a1, b1)  # 画折线图
+  plt.show()
+
+  ```
+  - 运行结果
+    ![sin(x)纵坐标旋转](../../res/img/BigDataMicroMajor/Python/sin(x)纵坐标旋转.png) 
+
+    [sin(x)纵坐标旋转备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_1636f9321d75ba33b05eb07922a51076.png)
+
+---
+- 使用matplotlib的rcParams属性
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+a1 = np.linspace(0, 2 * np.pi)
+b1 = np.sin(a1)
+plt.title('sin(x)函数图', fontsize='large')  # 设置图的标题
+plt.xlabel('x的值')    # 设置X轴的名称
+plt.ylabel('函数值')   # 设置y轴的名称
+plt.plot(a1, b1)      # 画折线图
+plt.show()
+
+# 运行结果
+C:\Users\233\AppData\Local\Programs\Python\Python38\lib\site-packages\matplotlib\backends\backend_agg.py:214: RuntimeWarning: Glyph 8722 missing from current font.
+  font.set_text(s, 0.0, flags=flags)
+C:\Users\233\AppData\Local\Programs\Python\Python38\lib\site-packages\matplotlib\backends\backend_agg.py:183: RuntimeWarning: Glyph 8722 missing from current font.
+  font.set_text(s, 0, flags=flags)
+
+```
+
+---
+###### 绘制sin(x)，cos(x)
+- 方案一：在一张图上绘两条曲线
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+plt.plot(a1, b1)
+plt.plot(a1, c1)
+plt.title('sin---cos 曲线图')
+plt.show()
+
+```
+- 运行结果
+  ![同图二线](../../res/img/BigDataMicroMajor/Python/同图二线.png)
+
+  [同图二线备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_196560d2c52b06d240d2f432a9705f59.png)
+
+---
+- 方案二：在一张图figure上画多个小图subplot 
+  - 创建画布对象 
+    - fig=plt.figure() 
+  - 在fig画布创建子图并分配子图的位置 
+    - fig.add_subplot(rawnum,colnum,stanum) 
+      - 将整个图分成rawnum行，colnum列个子图， 
+      - stanum为子图的位置
+        - 从左到右从上到下排序
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+d1 = 2 * a1 + 4
+fig = plt.figure(figsize=(12, 4))  # 定义了图对象
+fig.add_subplot(2, 2, 1)  # fig.add_subplot(221)
+plt.plot(a1, b1)
+fig.add_subplot(2, 2, 2)
+plt.plot(a1, c1)
+fig.add_subplot(223)
+plt.plot(a1, d1)
+plt.show()
+
+```
+
+- 运行结果
+  ![绘制子图](../../res/img/BigDataMicroMajor/Python/绘制子图.png)
+
+  [绘制子图备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_b01bb91975e606844d6a7654a24fa05c.png)
+
+----
+- 添加子图标题
+  - 每次调用plt.plot绘制一张子图之前调用plt.title添加一次标题
+    - 这样就可以添加到当前绘制的图上
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+d1 = 2 * a1 + 4
+fig = plt.figure(figsize=(12, 4))  # 定义了图对象
+fig.add_subplot(2, 2, 1)  # fig.add_subplot(221)
+plt.title('sin(x)')
+plt.plot(a1, b1)
+fig.add_subplot(2, 2, 2)
+plt.title('cos(x)')
+plt.plot(a1, c1)
+fig.add_subplot(223)
+plt.title('直线')
+plt.plot(a1, d1)
+plt.show()
+
+```
+- 运行结果
+  ![给子图加标题](../../res/img/BigDataMicroMajor/Python/给子图加标题.png)
+
+  [给子图加标题备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_e0b86349b199a291ed8d7c5adb3b2fbc.png)
+
+
+---
+##### 例题:营业额折线图
+- 已知某商场2019年每个月份的营业额如下所示。绘制折线图对该烧烤店全年营业额进行可视化。 
+
+| 月份 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| - |- |- |- |- |- |- |- |- |- |- |- |- |- | 
+| 营业额（万元）  | 5.2 | 4 | 3.7 | 5.2 | 4.9 | 3.6 | 5.8 | 3.8 | 6.7 | 6.1 | 4.5 | 5.7 | 
+
+
+```python 
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.sans-serif'] = ['simhei']
+a = list(range(1, 13))
+b = [5.2, 4, 3.7, 5.2, 4.9, 3.6, 5.8, 3.8, 6.7, 6.1, 4.5, 5.7]
+plt.title('烧烤店营业额')
+plt.xlabel('月')
+plt.ylabel('营\n业\n额', rotation=0, labelpad=20)
+xnum = range(1, 13)
+xlabel = [str(i) + '月' for i in range(1, 13)]
+plt.xticks(xnum, xlabel)  # 设置x轴的刻度与标签
+plt.plot(a, b)
+plt.show()
+
+```
+- 运行结果
+  ![烧烤店营业额](../../res/img/BigDataMicroMajor/Python/烧烤店营业额.png)
+
+  [烧烤店营业额备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_3c8191fee8c201d31117c42ea9fcab56.png)
+
+
+
+
+
+
+---
+#### 设置图例
+- 图例往往位于图形绘制结果的一角或一侧,主要用于对所绘制的图形中使用各种符号和颜色进行说明,便于理解图形
+- 使用方法
+  - matplotlib.pyplot中的legend()函数;
+
+legend的主要参数如下:
+- loc
+  - 用来说明图例的位置,可为整数,字符串或实数元组
+  - 可用的字符串值有
+    - best(0)
+    - upper right(1),upper left(2),
+    - lower left(3), lower right(4)
+    - right(5),left(6)
+    - lower center(8),upper center(9) 等 
+- fontsize	
+  - 用来指定图例中的文本使用的字号
+  - 可以是表示绝对大小的整数,实数或表示相对大小的字符串.
+- facecolor	
+  - 用来指定图例的背景颜色
+- edgecolor	
+  - 用来指定图例的边框颜色
+- shadow	
+  - 用来指定图例是否显示阴影的布尔值
+- framealpha	
+  - 用来指定图例背景透明度的实数
+- title	
+  - 用来指定图例标题的字符串
+
+
+---
+#### 保存与显示图
+
+---
+##### 保存：
+- ```python
+  savefig(fname, dpi=None)
+  ```
+  - 常用的两个参数：保存的文件名与像素.
+- matplotlib文件保存有格式要求，当输入一个错误的格式如.bmp，系统会显示错误，并提示其支持的格式：
+  ```python
+  ValueError: Format 'bmp' is not supported (supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff)
+  ```
+
+---
+##### 显示
+- ```python
+  show()
+  ```
+
+---
+### 绘制折线图:plot()实例
+- 折线图比较适合描述和比较
+  - 多组数据随时间变化的趋势。
+  - 或者一组数据对另外一组数据的依赖程度。
+- 使用方法
+  - matplotlib.pyplot中的plot()函数。
+- 相关参数可以设置：
+  -  折线图上图上端点的位置,标记符号的形状,大小和颜色以及线条的颜色,线型等样式。
+- pyplot绘图
+  - 1.生成源始数据，导入数据。
+  - 2.设置标签和坐标轴刻度
+  - 3.设置标题
+  - 4.确定绘制的图形形状。
+  - 5.设置图例
+  - 7.保存图
+  - 8.显示图
+- ```python
+  plot(x轴,y轴,折线形状颜色标记，设置标签显示信息）
+  ```
+  | 字符 | 描述 |
+  | - | - |
+  | '-'| 实线 | 
+  | '--' | 虚线 |
+  | '-.' | 点线 |
+  | ':' | 点虚线 |
+  | '.' | 点 |
+  |',' | 像素 |
+  | 'o' | 圆形 |
+  | 'v' | 朝下的三角形 |
+  | '^' | 朝上的三角形 |
+  | 's' | 正方形 |
+  | 'p' | 五角形 |
+
+
+---
+#### 例1 商场优惠
+- 某商品进价49元，售价75元，现在商场新品上架搞促销活动，
+  - 顾客每多买一件就给优惠1%，
+    - 但是每人最多可以购买30件。
+  - 对于商场而言
+    - 活动越火爆商品单价越低，但总收入和盈利越多。
+  - 对于顾客来说
+    - 虽然买的越多单价越低，但是消费总金额却是越来越多的
+    - 并且购买太多也会因为用不完而导致过期不得不丢弃造成浪费。
+  - 现在要求计算并使用折线图可视化
+    - 顾客购买数量num与商家收益、顾客总消费以及顾客省钱情况的关系
+      - 并标记商场收益最大的批发数量和商场收益。
+
+
+
+
+
+---
 # 待更新记录点(Python数据科学实践指南)
 [三种乘法](https://blog.csdn.net/zenghaitao0128/article/details/78715140)
 ---
+
 ## 随手记
 - arrange创建数组默认大小是50;
 

@@ -4,6 +4,8 @@
 # @File    : dijkstra.py
 # @Software: PyCharm
 # @Function: 迪杰斯特拉算法实现
+# 原文链接:    https://blog.csdn.net/weixin_41799019/article/details/98053981
+# 待看参考链接: https://www.cnblogs.com/aminor/p/13828811.html
 
 import networkx as nx               # 内置常用的图与复杂网络分析算法
 import matplotlib.pyplot as plt     # 使用matplotlib库进行绘图
