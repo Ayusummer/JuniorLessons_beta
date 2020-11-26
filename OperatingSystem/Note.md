@@ -3083,10 +3083,95 @@ cobegin{
 ---
 ## 6.1 File
 
+---
+## 6.2 File Directory
 
+---
+### 6.3.2 Implementing Files
+- Probably the most important issue in implementing file storage is keeping track of which disk blocks go with which file. Various methods are used in different operating systems. In this section, will examine a few of them
+- Contiguous allocation
+  - The simplest allocation scheme is to store each file as a contiguous run of disk blocks. Thus on a disk with 1-KB blocks, a 50-KB file would be allocated 50consecutive blocks. With 2-KB blocks, it would be allocated 25consecutive blocks.
+- We see an example of contiguous storage allocation in Fig.4-12(a). Here the first 40 disk blocks are shown, starting with block 0 on the left. Initially, the disk was empty. Then a file A, of length four blocks was written to disk starting at the beginning (block 0). After that a six-block file, B, was written starting right after the end of file A. Note that each file begins at the start of a new block, so that if file A was really 31/2 blocks,some space is wasted at the end of the last block. In the figure, a total of seven files are shown, each one starting at the block following the end of the previous one. Shading is used just to make it easier to tell the files apart.
 
+---
+#### Figure4-12
+![](../res/img/OperatingSystem/6.3.2Figure4-12.PNG)
+- (a)Contiguous allocation of disk space for seven files.
+- (b) The state of the disk after files D and F have been removed.
+- Contiguous disk space allocation has two significant advantages. First, it is simple to implement because keeping track of where a file’s blocks are is reduced to remembering two numbers: the disk address of the first block and the number of blocks in the file. Given the number of any other block can be found by a simple addition.
+- Second, the read performance is excellent because the entire file can be read from the disk in a single operation. Only one seek is needed (to the first block). After that, no more seeks or rotational delays are needed so data come in at the full bandwidth of the disk. Thus contiguous allocation is simple to implement and has high performance
+- Unfortunately, contiguous allocation also has a significant drawback: in time, the disk becomes fragmented. To see how this comes about, examine Fig.
+- 4-12(b). Here two files, D and F have been removed. When a file is removed, its blocks are freed, leaving a run of free blocks on the disk. The disk is not compacted on the spot to squeeze out the hole since that would involve copying all the blocks following the hole, potentially millions of blocks. As a result, the disk ultimately consists of files and holes, as illustrated in the figure.
 
 
 ---
-## 6.2 File Directory
+#### Figure 4-14
+- special marker (e.g.,-1) that is not a valid block number. 
+- Such a table in main memory is called a FAT (File Allocation Table)
+![](../res/img/OperatingSystem/6.3.2-Figure4-14.png)
+- Linked list allocation using a file allocation table in RAM
+- Using this organization(组织/构造), the entire(全部) block is available for data. 
+- Furthermore, random access is much easier. 
+- Although the chain must still be followed to find a given offset(偏移量) within the file, the chain is entirely in memory
+  - so it can be followed without making any disk references. 
+- Like the previous method, it is sufficient(充分/足够的) for the directory(目录) entry to keep a single integer (the starting block number) and still be able to locate all the blocks, no matter how large the file is.
+- 缺点:
+  - 需要的空间依然非常庞大
+    - 这意味着需要很大的内存空间
+  - 并且每次使用仅使用极少的一部分,但是每次都要全部加载
+  - 改进方案:
+    | 文件名 | 指针 |
+    | -- | -- |
+    - 所有的属性信息都在指针指向地址里
+
+
+---
+#### Figure 4-15
+- An example i-node
+  ![](../res/img/OperatingSystem/6.3.2-Figure4-15.png)
+  ![](../res/img/OperatingSystem/6.3.2-Figure4-15-2.png)
+
+
+---
+### 6.3.3. Implementing Directories
+- **文件目录**
+
+---
+![](../res/img/OperatingSystem/6.3.3-Figure4-16.png)
+- Figure 4-16.
+  - (a) A simple directory fixed size entries disk addresses and attributes in directory entry.
+    - 原本是像这样属性和名字放在一起
+      - 这样就显得很胖,加载时需要很大内存空间
+  - (b) Directory in which each entry just refers to an i-node.
+    - 现在后半部分存储的是指针
+      - 只有当访问到某文件时才访问其属性
+
+---
+#### Figure4-17
+![](../res/img/OperatingSystem/6.3.3-Figure%204-17.png)
+
+
+---
+### 6.3.4. Shared Files
+
+---
+#### Figure 4-18
+- File system containing a shared file.
+  ![](../res/img/OperatingSystem/6.3.4-Figure4-18.png)
+
+---
+#### Solution
+- Using same i-node (UNIX) by linking operation
+- Using symbolic linking 
+  - Having the system create a new file of type LINK
+
+---
+#### Figure 4-19
+![](../res/img/OperatingSystem/6.3.4-Figure4-19.png)
+- (a) Situation prior to linking.
+- (b) After the link is created.
+- (c) After the original owner removes the file.
+
+- 这种共享只能依托于同一个文件系统
+  - 无法实现跨设备更无法基于网络的共享
 
