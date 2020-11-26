@@ -636,3 +636,459 @@ print("E_M:\n{0}"
   - 数组的下三角
 - [np.savez](https://numpy.org/devdocs/reference/generated/numpy.savez.html#numpy.savez)
 - [np.savetxt](https://numpy.org/devdocs/reference/generated/numpy.savetxt.html#numpy.savetxt)
+
+
+---
+# 练习12 绘制人口数据图
+
+---
+## 实验内容
+- 分析1996~2015年人口数据特征间的关系。
+   - 文件populations.npz中包含了1996~2015的人口的统计数据，查看各个特征随时间（年份）推移发生的变化情况。
+     - 特征
+       - 年末总人口
+       - 男性人口
+       - 女性人口
+       - 城镇人口和乡村人口
+
+---
+## 实验要求
+- 1）使用numpy读取populations.npz中的人口数据。
+- 2）创建画布，并添加子图（2个子图）。
+- 3）在两个子图上分别绘制散点图和折线图反映各个特征变化的趋势。
+- 4）保存、显示图。
+
+---
+## 实验流程记录
+### 首先得先搞明白老师给的npz文件里到底有什么
+```python
+import numpy as np
+import os
+
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.npz'))
+arr = np.load(file_path_arr, allow_pickle=True)    # 从.npy、.npz或pickle文件加载阵列或pickle对象。
+# 输出相应对象
+print(arr.files)
+
+# 运行结果
+['data', 'feature_names']
+```
+- 文件路径采用的是相对路径的模式,npz文件在当前py文件同级目录的res文件夹中
+- `allow_pickle=True`是因为不加这一个参数会报错显示当`allow_pickle=False`时无法读取该文件
+  > `np.load`的`allow_pickle`参数默认为`False`
+- 由运行结果可知这个文件中有`data`以及`feature_names`
+  - 那么文件的这两种数据又是以什么结构组织起来的呢,可以进一步查看一下:
+
+```python
+import numpy as np
+import os
+
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.npz'))
+arr = np.load(file_path_arr, allow_pickle=True)    # 从.npy、.npz或pickle文件加载阵列或pickle对象。
+# 输出相应对象
+print(arr['feature_names'])
+print(arr['data'])
+
+# 运行结果
+['时间' '年末总人口(万人)' '男性人口(万人)' '女性人口(万人)' '城镇人口(万人)' '乡村人口(万人)']
+[['2015年' 137462.0 70414.0 67048.0 77116.0 60346.0]
+ ['2014年' 136782.0 70079.0 66703.0 74916.0 61866.0]
+ ['2013年' 136072.0 69728.0 66344.0 73111.0 62961.0]
+ ['2012年' 135404.0 69395.0 66009.0 71182.0 64222.0]
+ ['2011年' 134735.0 69068.0 65667.0 69079.0 65656.0]
+ ['2010年' 134091.0 68748.0 65343.0 66978.0 67113.0]
+ ['2009年' 133450.0 68647.0 64803.0 64512.0 68938.0]
+ ['2008年' 132802.0 68357.0 64445.0 62403.0 70399.0]
+ ['2007年' 132129.0 68048.0 64081.0 60633.0 71496.0]
+ ['2006年' 131448.0 67728.0 63720.0 58288.0 73160.0]
+ ['2005年' 130756.0 67375.0 63381.0 56212.0 74544.0]
+ ['2004年' 129988.0 66976.0 63012.0 54283.0 75705.0]
+ ['2003年' 129227.0 66556.0 62671.0 52376.0 76851.0]
+ ['2002年' 128453.0 66115.0 62338.0 50212.0 78241.0]
+ ['2001年' 127627.0 65672.0 61955.0 48064.0 79563.0]
+ ['2000年' 126743.0 65437.0 61306.0 45906.0 80837.0]
+ ['1999年' 125786.0 64692.0 61094.0 43748.0 82038.0]
+ ['1998年' 124761.0 63940.0 60821.0 41608.0 83153.0]
+ ['1997年' 123626.0 63131.0 60495.0 39449.0 84177.0]
+ ['1996年' 122389.0 62200.0 60189.0 37304.0 85085.0]
+ [nan nan nan nan nan nan]
+ [nan nan nan nan nan nan]]
+```
+
+```python
+>>> print(type(arr['data']))
+<class 'numpy.ndarray'>
+```
+- 这样我们就知道了这个文件是由一个属性名数组以及若干条记录数组组成的
+  - 并且还有两行无意义数据
+    - 只有20行有意义的数据
+
+---
+### 接下来明确要求设计图表
+- 要求为
+  - 查看各个特征（年末总人口、男性人口，女性人口、城镇人口和乡村人口）随时间（年份）推移发生的变化情况。
+- 那么分析要求
+  - 横坐标
+    - 时间(年份)
+  - 纵坐标
+    - 特征
+- 还有一个问题在于特性与时间的关系是分为一个个子图还是都绘制在一张图表里
+  - 由于特性有着非常明确的相似性:都是人口
+    - 并且这几类人口除了总人口约为其他每种人口的两倍之外,其余的人口相差并不大
+      - 因此我选择将这些图绘制到一张图表里
+- 接下来确定图表的类型
+  - 都决定了绘制在一张图里了,能够清晰地却分开这些特性的我认为是折线图或者散点图
+    - 按照题目要求就要建立两个子图,一个画折线图,一个话散点图
+
+---
+### 一切都准备就绪,开始设计程序
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# 数据源文件路径
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.npz'))
+# 图片存储路径
+file_path_save = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.png'))
+
+# 载入数据
+arr = np.load(file_path_arr, allow_pickle=True)    # 从.npy、.npz或pickle文件加载阵列或pickle对象。
+arr_data = arr['data']
+
+# 准备数据
+arr_time = arr_data[0:20, 0]
+arr_sum_population = arr_data[0:20, 1]
+arr_male = arr_data[0:20, 2]
+arr_female = arr_data[0:20, 3]
+arr_city = arr_data[0:20, 4]
+arr_village = arr_data[0:20, 5]
+
+
+# 使用黑体
+plt.rcParams['font.family'] = ['SimHei']
+
+# 创建画布
+plt.figure(figsize=(15, 5))
+plt.suptitle('1996~2015年人口数据特征间的关系', fontsize=14)
+
+# 绘制子图
+
+# 绘制散点图
+plt.tight_layout()      # 自动调整子图
+plt.subplot(2, 1, 1)    # 2行1列,第1个子图
+plt.title('散点图')
+plt.xlabel('时间')
+plt.ylabel('人\n口', rotation=0, labelpad=20)
+plt.scatter(arr_time, arr_sum_population, label='年末总人口')
+plt.scatter(arr_time, arr_male, label='男性人口')
+plt.scatter(arr_time, arr_female, label='女性人口')
+plt.scatter(arr_time, arr_city, label='城镇人口')
+plt.scatter(arr_time, arr_village, label='乡村人口')
+plt.legend()
+
+# 绘制折线图
+plt.tight_layout()      # 自动调整子图
+plt.subplot(2, 1, 2)    # 2行1列,第1个子图
+plt.title('折线图')
+plt.xlabel('时间')
+plt.ylabel('人\n口', rotation=0, labelpad=20)
+plt.plot(arr_time, arr_sum_population, label='年末总人口')
+plt.plot(arr_time, arr_male, '--', label='男性人口')     # 虚线
+plt.plot(arr_time, arr_female, '-.', label='女性人口')   # 点线
+plt.plot(arr_time, arr_city, ':', label='城镇人口')      # 点虚线
+plt.plot(arr_time, arr_village, '.', label='乡村人口')   # 点
+plt.legend()
+
+# 保存图
+plt.savefig(file_path_save)
+# 显示图
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/11.26散点图折线图运行截图.png)
+
+
+
+
+
+
+---
+### np.load
+```python
+@set_module('numpy') 
+def load(file: str,
+         mmap_mode: Optional[str] = None,
+         allow_pickle: Optional[bool] = False,
+         fix_imports: Optional[bool] = True,
+         encoding: Optional[str] = 'ASCII') -> Any
+```
+#### 作用
+- 从.npy, .npz 或 pickled文件导入  arrays 或 pickled 对象
+
+---
+#### 提示
+- 当载入包含使用pickle模型的数组对象时,该模块无法防止错误或恶意构造的数据,因此请考虑`allow_pickle=False`以便安全处理不受信任的源
+- 当文件包含pickle数据时,所有在pickle中存储的数据都会被返回
+- 若文件是`.npy`文件则会返回一个数组
+- 若文件是`.npz文件`
+  - 则会返回一个类似字典的对象
+    - 有键和值
+  - 则支持以下用法:
+    ```
+    with load('foo.npz') as data:
+        a = data['a']
+    ```
+    - 当退出with代码块时文件就会关闭
+
+---
+#### 示例
+- 存储数据到磁盘再将其加载出来
+  ```
+  >>> np.save('/tmp/123', np.array([[1, 2, 3], [4, 5, 6]]))
+  >>> np.load('/tmp/123.npy')
+  array([[1, 2, 3],
+        [4, 5, 6]])
+  ```
+- 存储压缩数据到磁盘再将其加载出来
+  ```
+  >>> a=np.array([[1, 2, 3], [4, 5, 6]])
+  >>> b=np.array([1, 2])
+  >>> np.savez('/tmp/123.npz', a=a, b=b)
+  >>> data = np.load('/tmp/123.npz')
+  >>> data['a']
+  array([[1, 2, 3],
+        [4, 5, 6]])
+  >>> data['b']
+  array([1, 2])
+  >>> data.close()
+  ```
+- Mem-map the stored array, and then access the second row directly from disk:
+  ```
+  >>> X = np.load('/tmp/123.npy', mmap_mode='r')
+  >>> X[1, :]
+  memmap([4, 5, 6])
+  ```
+
+---
+#### 参数
+- file
+  - 要读取的文件
+    - File-like 对象必须支持和``seek()`` 和 ``read()`` 函数
+    - Pickled 文件也需要其 file-like 对象支持``readline()`` 函数
+- mmap_mode 
+  - If not None, then memory-map the file, using the given mode  
+    - see `numpy.memmap` for a detailed description of the modes). 
+  - A memory-mapped array is kept on disk. However, it can be accessed and sliced(切片) like any ndarray.
+  - Memory mapping is especially useful for accessing small fragments(片段) of large files without reading the entire file into memory.
+- allow_pickle 
+  - Allow loading pickled object arrays stored in npy files. 
+  - Reasons for disallowing pickles include security, as loading pickled data can execute(执行) (任意) code. 
+    - **If pickles are disallowed, loading object arrays will fail**. 
+  - Default: False .. versionchanged:: 1.16.3 Made default False in response to CVE-2019-6446.
+- fix_imports
+  - Only useful **when loading Python 2 generated pickled files on Python 3**, which includes npy/npz files containing object arrays. 
+  - If `fix_imports` is True, pickle will try to map the old Python 2 names to the new names used in Python 3.
+- encoding 
+  - What encoding to use when reading Python 2 strings.
+  - Only useful **when loading Python 2 generated pickled files in Python 3**, which includes npy/npz files containing object arrays. Values other than 'latin1', 'ASCII', and 'bytes' are not allowed, as they can corrupt numerical data. Default: 'ASCII'
+
+---
+#### 返回
+- Data stored in the file. 
+- For ``.npz`` files
+  - the returned instance(实例) of NpzFile class must be closed to avoid leaking(泄露) file descriptors(主字码).
+
+---
+#### 引发
+- IOError
+  - If the input file does not exist or cannot be read.
+- **ValueError** 
+  - The file contains an object array, but allow_pickle=False given.
+
+---
+#### 碎碎念
+> 关于函数用法  
+> [numpy中文参考手册](https://www.numpy.org.cn/reference/routines/io.html#numpy%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%EF%BC%88npy%EF%BC%8Cnpz%EF%BC%89)  
+> Pycharm将鼠标移到函数上也会有英文文档
+> ![](../../res/img/BigDataMicroMajor/Python/函数英文文档示例.png)
+
+
+---
+### tight_layout
+- [原文链接](https://blog.csdn.net/du_shuang/article/details/84139716)
+- plt.tight_layout()会自动调整子图参数，使之填充整个图像区域。这是个实验特性，可能在一些情况下不工作。它仅仅检查坐标轴标签、刻度标签以及标题的部分。
+- 使用前
+  - ![](../../res/img/BigDataMicroMajor/Python/tight_layout前.png)
+- 使用后
+  - ![](../../res/img/BigDataMicroMajor/Python/tight_layout后.png)
+- [Matplotlib 中文用户指南 3.4 密致布局指南](https://www.jianshu.com/p/91eb0d616adb)
+
+---
+## 示例
+### @信息1801王伟吉3180803019 
+```python
+'''
+Encoding="utf-8"
+Author:Carus
+Date:2020/11/24 18:52
+'''
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.npz'))
+plt.rcParams['font.family'] = ['simhei']  # 中文正常显示
+
+# 读取npz文件
+A = np.load(file_path_arr, allow_pickle=True)
+full_data, feature = A['data'], A['feature_names']
+
+# 进行图形的打印
+fig = plt.figure(figsize=(16, 4))
+a1 = full_data[0:20, 0]             # 存放年份; (0:20)是因为只有前20行数据时有意义的
+
+fig.add_subplot(1, 2, 1)    # 1行2列子图,第1个子图
+for n in range(1, 6):
+    plt.scatter(a1, full_data[0:20, n])     # 一个循环既做了数据筛选又绘制好了散点图
+plt.title('城镇人口各特征时间变化散点图', fontproperties='FangSong')
+
+fig.add_subplot(1, 2, 2)
+for n in range(1, 6):
+    plt.plot(a1, full_data[0:20, n], label=feature[n])  # 利用数据与属性的列一致性给折线加标签
+    plt.legend()                # 加图例
+
+plt.title('城镇人口各特征时间变化趋势', fontproperties='FangSong')
+plt.savefig('populations.png')
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/11.26-王伟吉.png)
+
+- 数据数组没有一个个拆分出来而是在用到的时候直接整体使用切片操作来获取需要的数据
+  - 一个循环完成了数据的筛选,图像的绘制以及给图片加标签的操作,有效地减少了代码的长度
+
+---
+### @应数1801程博3180101026 
+```python
+import numpy as np
+from matplotlib import pyplot as plt
+import os
+
+file_path_arr = os.path.abspath(os.path.join(os.path.dirname(__file__), './res/populations.npz'))
+
+dataframe = np.load(file_path_arr, encoding="bytes", allow_pickle=True)
+# print(dataframe.files)#查看关键字
+# print(dataframe['feature_names'])查看数据特征
+# print(dataframe['data'])#查看数据
+year = np.linspace(2015, 1996, 20).reshape(-1, 1)               # 自主生成年份数组而没有获取数据第0列
+year_population = dataframe['data'][0:20, 1].reshape(-1, 1)
+man_population = dataframe['data'][0:20, 2].reshape(-1, 1)
+woman_population = dataframe['data'][0:20, 3].reshape(-1, 1)
+city_population = dataframe['data'][0:20, 4].reshape(-1, 1)
+country_population = dataframe['data'][0:20, 5].reshape(-1, 1)  # 重构数组为?行1列,-1使得行数会自动计算
+
+plt.figure(figsize=(8, 8), dpi=120)
+plt.style.use('seaborn')
+plt.figure(1)
+
+plt.subplot(211)
+plt.title('人口与年份折线图')
+plt.ylabel('年份')
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+plt.plot(year, year_population, label='年末总人口')
+plt.plot(year, man_population, label='男性人口')
+plt.plot(year, woman_population, label='女性人口')
+plt.plot(year, city_population, label='城镇人口')
+plt.plot(year, country_population, label='乡村人口')
+plt.legend()
+
+plt.subplot(212)
+plt.title('人口与年份散点图')
+plt.ylabel('年份')
+
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+plt.scatter(year, year_population, alpha=0.6, marker='.', label='年末总人口')
+plt.scatter(year, man_population, alpha=0.6, marker='v', label='男性人口')
+plt.scatter(year, woman_population, alpha=0.6, marker='<', label='女性人口')
+plt.scatter(year, city_population, alpha=0.6, marker='>', label='城镇人口')
+plt.scatter(year, country_population, alpha=0.6, marker='1', label='乡村人口')
+plt.legend()
+plt.show()
+
+```
+- 使用的Matplotlib自带的样式美化,界面比较美观
+- 使用`marker`参数改变了散点形状
+- 代码思路比较清晰
+
+- 运行截图:
+  - ![](../../res/img/BigDataMicroMajor/Python/11.26-程博.png)
+
+---
+## plt.style.use格式美化
+- [原文链接](https://blog.csdn.net/qq_22592457/article/details/105636480)
+- 用matplotlib自带的几种美化样式，就可以很轻松的对生成的图形进行美化。
+- 用法
+  - ```python
+    plt.style.use('字符串')
+    ```
+    - 可以使用matplotlib.pyplot.style.available获取所有的美化样式(即上面所支持的字符串)
+  - ```
+    ['Solarize_Light2', 
+     '_classic_test_patch', 
+     'bmh', 
+     'classic', 
+     'dark_background', 
+     'fast', 
+     'fivethirtyeight', 
+     'ggplot', 
+     'grayscale', 
+     'seaborn', 
+     'seaborn-bright', 
+     'seaborn-colorblind', 
+     'seaborn-dark', 
+     'seaborn-dark-palette', 
+     'seaborn-darkgrid', 
+     'seaborn-deep', 
+     'seaborn-muted', 
+     'seaborn-notebook', 
+     'seaborn-paper', 
+     'seaborn-pastel', 
+     'seaborn-poster', 
+     'seaborn-talk', 
+     'seaborn-ticks', 
+     'seaborn-white', 
+     'seaborn-whitegrid', 
+     'tableau-colorblind10']
+    ```
+- `seaborn`
+  - ![](../../res/img/BigDataMicroMajor/Python/seaborn.png)
+- `Solarize_Light2`
+  - ![](../../res/img/BigDataMicroMajor/Python/solarlight.png)
+- `_classic_test_patch`
+  - ![](../../res/img/BigDataMicroMajor/Python/_classic_test_patch.png)
+- `bmh`
+  - ![](../../res/img/BigDataMicroMajor/Python/bmh.png)
+- `dark_background`
+  - ![](../../res/img/BigDataMicroMajor/Python/dark_background.png)
+- `fivethirtyeight`
+  - ![](../../res/img/BigDataMicroMajor/Python/fivethirtyeight.png)
+- `ggplot`
+  - ![](../../res/img/BigDataMicroMajor/Python/ggplot.png)
+- `grayscale`
+  - ![](../../res/img/BigDataMicroMajor/Python/grayscale.png)
+- `seaborn-dark`
+  - ![](../../res/img/BigDataMicroMajor/Python/seaborn-dark.png)
+- `seaborn-darkgrid`
+  - ![](../../res/img/BigDataMicroMajor/Python/seaborn-darkgrid.png)
+- `seaborn-poster`
+  - ![](../../res/img/BigDataMicroMajor/Python/seaborn-poster.png)
+- `seaborn-whitegrid`
+  - ![](../../res/img/BigDataMicroMajor/Python/seaborn-whitegrid.png)
+- 

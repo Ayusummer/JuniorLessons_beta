@@ -35,6 +35,54 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
   - 中国科学技术大学  
     http://pypi.mirrors.ustc.edu.cn/simple/   
 
+----
+# 程序性能分析
+## 执行时间
+### 使用datetime判断
+```python
+import datetime
+
+# 程序开始处:
+begin = datetime.datetime.now()
+
+# 程序结束处:
+end = datetime.datetime.now()
+print("程序执行时间:{0}".format(end-begin))
+```
+
+
+---
+## 内存占用
+### guppy3
+- 安装
+  ```python
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple guppy3
+  ```
+- 使用
+```python
+from guppy import hpy
+h = hpy()
+print(h.heap())
+```
+
+---
+### 使用memory_profiler查看
+- 安装
+  ```python
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -U memory_profiler
+  ```
+- 使用
+  ```python
+  import memory_profiler
+
+  @memory_profiler.profile
+  def 函数名():
+    你要测试内存占用的代码
+
+
+  函数名()    # 运行此函数
+  ```
+
 
 
 # Pycharm相关
@@ -1250,7 +1298,7 @@ finally:
       - 与Python的range()函数稍有不同的是:
         - np.arange()支持小数的步长，
           - 比如上例中的np.arange(0,1,0.2)就生成了小数步长的数组，而使用Python的range时则会报错。
-    - Numpy还提供 了一个强大的函数np.linspace()，
+    - Numpy还提供 了一个强大的函数np.linspace()
       - 这个函数的功能类似arange()，但是第三个参数不是步长，而是数量。
       - 这个函数可以按照参数中需要生成元素的数量自动选择步长，
         - 上例中的d就是一个例子。
@@ -1259,7 +1307,121 @@ finally:
           - np.e代表自然底数，
           - np.pi是圆周率。
     - 最后np.random.random()函数提供了直接生成随机元素的多维数组的方法，
+
 ---
+### np.linspace
+```python
+numpy.core.function_base 
+@array_function_dispatch(_linspace_dispatcher) 
+def linspace(start: Union[ndarray, Iterable, int, float],
+             stop: Union[ndarray, Iterable, int, float],
+             num: Optional[int] = 50,
+             endpoint: Optional[bool] = True,
+             retstep: Optional[bool] = False,
+             dtype: Optional[object] = None,
+             axis: Optional[int] = 0) -> Any
+```
+- Return evenly spaced numbers over a specified interval.
+  - evenly(均匀地；平均地)
+  - spaced(隔开的)
+  - specified(明确规定；具体说明)
+  - interval(间隔)
+- Returns num evenly spaced samples, calculated over the interval [start, stop].
+- The endpoint of the interval can optionally be excluded.
+  - endpoint(端点,终点)
+  - excluded(排除；拒绝；把…除外；赶出)
+
+---
+#### See Also
+- arange
+  - Similar to linspace, but uses a step size (instead of the number of samples).
+- geomspace
+  - Similar to linspace, but with numbers spaced evenly on a log scale (a geometric progression).
+    - scale(秤；比例尺；范围；刻度)
+    - geometric(几何（学）的；（似）几何图形的)
+- logspace
+  - Similar to geomspace, but with the end points specified as logarithms.
+    - specified(明确规定；具体说明；详述；详列)
+    - logarithms(【数学】对数)
+
+---
+#### Examples
+```python
+>>> np.linspace(2.0, 3.0, num=5)
+array([2.  , 2.25, 2.5 , 2.75, 3.  ]) # 5个数落在[2,3],均分4格,每格0.25
+>>> np.linspace(2.0, 3.0, num=5, endpoint=False) # 6个数均分[2, 3],5格*0.2/格,去掉3
+array([2. ,  2.2,  2.4,  2.6,  2.8])
+>>> np.linspace(2.0, 3.0, num=5, retstep=True)
+(array([2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+```
+
+- Graphical illustration(图解):
+```python
+>>> import matplotlib.pyplot as plt
+>>> N = 8
+>>> y = np.zeros(N)
+>>> x1 = np.linspace(0, 10, N, endpoint=True)
+>>> x2 = np.linspace(0, 10, N, endpoint=False)
+>>> plt.plot(x1, y, 'o')
+[<matplotlib.lines.Line2D object at 0x...>]
+>>> plt.plot(x2, y + 0.5, 'o')
+[<matplotlib.lines.Line2D object at 0x...>]
+>>> plt.ylim([-0.5, 1])
+(-0.5, 1)
+>>> plt.show()
+
+# 完整代码:
+import numpy as np
+import matplotlib.pyplot as plt
+
+N = 8
+y = np.zeros(N)
+x1 = np.linspace(0, 10, N, endpoint=True)
+x2 = np.linspace(0, 10, N, endpoint=False)
+plt.plot(x1, y, 'o')
+plt.plot(x2, y + 0.5, 'o')
+plt.ylim([-0.5, 1])
+plt.show()
+
+```
+- 运行结果
+  ![图解](../../res/img/BigDataMicroMajor/Python/11.26-图解linspace.png)
+
+---
+#### 参数
+- start 
+  - The starting value of the sequence.
+- stop
+  - The end value of the sequence, unless `endpoint` is set to False. 
+    - In that case, the sequence consists of all but the last of ``num + 1`` evenly spaced samples, so that `stop` is excluded. 
+    - Note that the step size changes when `endpoint` is False.
+- num 
+  - Number of samples to generate. 
+  - Default is 50. Must be non-negative.
+    - samples(样品；标本；**实例**)
+    - non-negative(非负数)
+- endpoint 
+  - If True, `stop` is the last sample. 
+    - Otherwise, it is not included. 
+  - Default is True.
+- retstep 
+  - If True, return (`samples`, `step`), where `step` is the spacing between samples.
+- dtype 
+  - The type of the output array. If `dtype` is not given, infer the data type from the other input arguments. .. versionadded:: 1.9.0
+    - infer(推断；推论；暗示；推理)
+- axis
+  - The axis in the result to store the samples. 
+  - Relevant only if start or stop are array-like. 
+  - By default (0), the samples will be along a new axis inserted at the beginning. 
+  - Use `-1` to get an axis at the end. .. versionadded:: 1.16.0
+    - relevant(紧密相关的；切题的；有价值的；**有意义的**)
+    - axis(坐标轴；轴（旋转物体假想的中心线）；对称中心线（将物体平分为二）)
+---
+- 返回:
+  - There are `num` equally spaced samples in the closed interval ``[start, stop]`` or the half-open interval ``[start, stop)`` (depending on whether `endpoint` is True or False).
+
+---
+### 查看数组各项属性
 - 在了解了如何使用Numpy创建数组之后，再来看看如何查看数组的各项属性，参考下面的代码
   ```Python
   import numpy as np
@@ -1558,6 +1720,9 @@ a.H 返回自身的共轭转置
 
 ---
 #### 矩阵相乘实例分析
+[三种乘法](https://blog.csdn.net/zenghaitao0128/article/details/78715140)
+
+---
 - 某工厂生产三种产品,费用支出见表1,生产量见表2
 ![](../../res/img/BigDataMicroMajor/Python/矩阵相乘实例分析表1.png)  
 
@@ -1914,6 +2079,10 @@ print("E_M:\n{0}"
 
 ---
 # Matplotlib
+---
+- [中文文档](https://www.matplotlib.org.cn/)
+
+---
 - 数据可视化
 - 是python的绘图库
   - 可以绘制诸如散点/饼状/线/直方/误差线图
@@ -1952,7 +2121,7 @@ matplotlib.pyplot def figure(num: Union[int, str, None] = None,
            clear: Optional[bool] = False,
            **kwargs: Any) -> Any
 ```
-> 注意:当你使用画布时,务必记得在不使用该画布时使用 .pyplot.close 来关闭画布以清理其占用的**内存**
+> 注意:当你使用画布时,务必记得在不使用该画布时使用 pyplot.close 来关闭画布以清理其占用的**内存**
 > - 否则你可能会因为内存溢出而头痛不已
 - num
   - 图像编号或名称
@@ -1991,10 +2160,14 @@ plt.show()
 
 
 ---
-#### 添加标题
-- (图, xy轴), 设置可读与范围(x, y轴)
+#### 添加图的基本要素
+- 添加标题(图, xy轴), 设置可读与范围(x, y轴)
 - 添加图标题,坐标轴名称,设置刻度与范围
   - 没有先后顺序
+
+![结构示意图](../../res/img/BigDataMicroMajor/Python/Pyplot绘图结构示意图.png)
+
+---
 
 | 函数 | 函数作用 |
 | --   | -- |
@@ -2006,6 +2179,16 @@ plt.show()
 | plt.xticks | 指定x轴可读的数目与取值 |
 | plt.yticks | 指定y轴可读的书目与取值 |
 
+---
+#### rcParams参数
+- [原文链接](https://blog.csdn.net/weixin_39010770/article/details/88200298)
+- plt（matplotlib.pyplot）使用rc配置文件来自定义图形的各种**默认属性**，称之为rc配置或rc参数。
+- 通过rc参数可以修改默认的属性，包括窗体大小、每英寸的点数、线条宽度、颜色、样式、坐标轴、坐标和网络属性、文本、字体等。
+- rc参数存储在字典变量中，通过字典的方式进行访问。
+
+![rcParams](../../res/img/BigDataMicroMajor/Python/rcParams参数.png)
+
+- [matplotlib命令与格式：参数配置文件与参数配置](https://blog.csdn.net/helunqu2017/article/details/78652261)
 
 ---
 #### 正常显示中文和负号
@@ -2025,12 +2208,10 @@ plt.rcParams['axes.unicode_minus'] = False
 ```
 
 ---
-- plt.rcParams
-
+##### 例子:绘制$sin(x)$
+绘制sin(x) ,并添加标题
 
 ---
-##### 例子:绘制$sin(x)$
-绘制sin(x)的图 ,并添加标题
 ```python
 title('文本',fontsize=None,fontweight=None,fontstyle=None) 
 ```
@@ -2057,7 +2238,7 @@ title('文本',fontsize=None,fontweight=None,fontstyle=None)
 - backgroundcolor标题背景颜色
 
 ---
-- 1.使用字体管理器font_manager
+###### 1.使用字体管理器font_manager
 ```python
 import matplotlib.pyplot as plt
 import numpy as np
@@ -2079,7 +2260,7 @@ plt.show()
   [使用fontmanager绘制sin(x)备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_13dae5dc395d4b8e084abbc6312e927a.png)
 
 ---
-- 为不同标题(图、坐标轴)设置不同的字体，大小，采用字体管理器 
+###### 为不同标题(图、坐标轴)设置不同的字体，大小，采用字体管理器 
   ```python
   import matplotlib.pyplot as plt
   import numpy as np
@@ -2100,8 +2281,9 @@ plt.show()
     [sin(x)采用多种字体备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_409fdda16adf62e809a2655eede7d387.png)
 
 ---
-- 显示图中的负号
-  - 配置rc参数 
+###### 显示图中的负号
+> 虽然这里这么写了,但是在字体管理器那里我已经可以正常显示负号了 
+- 配置rc参数 
     ```python
     rcParams['axes.unicode_minus']=False #修改y轴的名称（标题）
     ```  
@@ -2153,6 +2335,10 @@ C:\Users\233\AppData\Local\Programs\Python\Python38\lib\site-packages\matplotlib
   font.set_text(s, 0, flags=flags)
 
 ```
+- ![运行截图](../../res/img/BigDataMicroMajor/Python/11.26-rcParams错误使用.png)
+  - 出错问题在于使用了默认的Unicode负号
+    - ![](../../res/img/BigDataMicroMajor/Python/11.26-Unicode和ASCII负号.png)
+    - 但是用的`SimHei`字体不支持Unicode负号
 
 ---
 ###### 绘制sin(x)，cos(x)
@@ -2247,9 +2433,53 @@ plt.show()
 
   [给子图加标题备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_e0b86349b199a291ed8d7c5adb3b2fbc.png)
 
+---
+- 子图的位置分布
+  - tight_layout可以通过参数pad, w_pad, h_pad来设置一些布局的细节 
+  - 添加总标题 
+    ```
+    plt.suptitle()
+    ```
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+d1 = 2 * a1 + 4
+e1 = a1 ** 2 + 4 * a1 + 3
+plt.figure(figsize=(8, 4))  # 创建画布
+plt.suptitle('Figuer 标题', fontsize=14)
+
+plt.subplot(2, 2, 1)  # plt.subplot(221)
+plt.title('sin(x)')
+plt.plot(a1, b1)
+
+plt.subplot(2, 2, 2)
+plt.title('cos(x)')
+plt.plot(a1, c1)
+
+plt.subplot(223)
+plt.title('直线')
+plt.plot(a1, d1)
+
+plt.subplot(224)
+plt.title('二次函数')
+plt.plot(a1, e1)
+plt.tight_layout(1, 3, 3)
+plt.show()
+
+```
+- 运行截图
+![](../../res/img/BigDataMicroMajor/Python/子图位置分布.png)
+
 
 ---
-##### 例题:营业额折线图
+##### 例题:烧烤店营业额折线图
 - 已知某商场2019年每个月份的营业额如下所示。绘制折线图对该烧烤店全年营业额进行可视化。 
 
 | 月份 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
@@ -2278,10 +2508,22 @@ plt.show()
 
   [烧烤店营业额备用链接](https://codimd.s3.shivering-isles.com/demo/uploads/upload_3c8191fee8c201d31117c42ea9fcab56.png)
 
-
-
-
-
+---
+#### legend.loc参数
+- [原文链接](https://zhuanlan.zhihu.com/p/111108841)
+- legend()不加任何参数
+  - 则默认获取图中曲线的`label`及颜色生成图例在图内
+- loc = 'best'
+  - 图例自动‘安家’在一个坐标面内的数据图表最少的位置
+- loc = 'XXX'
+  - 这里的'XXX'代表了坐标面中的九个位置，例如loc = 'center'表示坐标平面中心位置，九种参数值及所对应位置如下图所示
+  - ![](../../res/img/BigDataMicroMajor/Python/loc字符串示意.png)
+  - ![与数值对应](../../res/img/BigDataMicroMajor/Python/loc字符串数值对照表.png)
+- loc = (x, y)
+  - （x, y）表示图例左下角的位置，这是最灵活的一种放置图例的方法，慢慢调整，总会找到你想要的放置图例的位置
+  - x, y并不是轴域中实际的x, y的值，而是将x轴, y轴分别看成1, 即： 
+    - $( x / (x\_max-x\_min) , y / (y\_max - y\_min) )$
+      - 即进行归一化处理
 
 ---
 #### 设置图例
@@ -2289,6 +2531,7 @@ plt.show()
 - 使用方法
   - matplotlib.pyplot中的legend()函数;
 
+---
 legend的主要参数如下:
 - loc
   - 用来说明图例的位置,可为整数,字符串或实数元组
@@ -2297,7 +2540,13 @@ legend的主要参数如下:
     - upper right(1),upper left(2),
     - lower left(3), lower right(4)
     - right(5),left(6)
-    - lower center(8),upper center(9) 等 
+    - lower center(8),upper center(9)
+    - center(10) 
+  - 通常情况下，legend()如果不设置任何参数，默认是加到图像的内的位置。
+  - 若要放至的图之外，可设置参数`bbox_to_anchor`的值。 
+    - ```python
+      bbox_to_anchor=(levelnum,vernum)
+      ```
 - fontsize	
   - 用来指定图例中的文本使用的字号
   - 可以是表示绝对大小的整数,实数或表示相对大小的字符串.
@@ -2311,6 +2560,79 @@ legend的主要参数如下:
   - 用来指定图例背景透明度的实数
 - title	
   - 用来指定图例标题的字符串
+- handles
+  - 图例对应的plot对象
+- labels
+  - 图例的名称
+    - 能够覆盖在plt.plot( )中label参数值
+
+
+
+---
+##### 例1:给三角函数图加图例
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+plt.title('sin---cos 曲线图')
+plt.plot(a1, c1)
+plt.plot(a1, b1)
+plt.legend(['cosx', 'sinx'], loc=3) # loc=3对应lower left
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/图例实例1.png)
+
+
+---
+##### 给四个子图分别添加图例
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+d1 = 2 * a1 + 4
+e1 = a1 ** 2 + 4 * a1 + 3
+
+plt.figure(figsize=(8, 4))  # 创建画布
+plt.suptitle('Figuer 标题', fontsize=14)
+
+plt.subplot(2, 2, 1)  # plt.subplot(221)
+plt.title('sin(x)')
+plt.plot(a1, b1)
+plt.legend(['sinx'])
+plt.subplot(2, 2, 2)
+plt.title('coswe')
+plt.plot(a1, c1)
+plt.legend(['cosx'])
+plt.subplot(223)
+plt.title('直线')
+plt.plot(a1, d1)
+plt.legend(['straight lines'], edgecolor='r')
+plt.subplot(224)
+plt.title('二次函数')
+plt.plot(a1, e1)
+plt.tight_layout(1, 3, 3)
+plt.show()
+
+```
+- 运行截图
+![](../../res/img/BigDataMicroMajor/Python/图例例2.png)
+
+
+
 
 
 ---
@@ -2326,6 +2648,51 @@ legend的主要参数如下:
   ```python
   ValueError: Format 'bmp' is not supported (supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff)
   ```
+
+---
+###### 实例
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '123.png'))
+
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+a1 = np.linspace(-2 * np.pi, 2 * np.pi)
+b1 = np.sin(a1)
+c1 = np.cos(a1)
+d1 = 2 * a1 + 4
+e1 = a1 ** 2 + 4 * a1 + 3
+plt.figure(figsize=(8, 4))  # 创建画布
+plt.suptitle('Figuer 标题', fontsize=14)
+
+plt.subplot(2, 2, 1)  # plt.subplot(221)
+plt.title('sin(x)')
+plt.plot(a1, b1)
+plt.legend(['sinx'])
+plt.subplot(2, 2, 2)
+plt.title('coswe')
+plt.plot(a1, c1)
+plt.legend(['cosx'])
+plt.subplot(223)
+plt.title('直线')
+plt.plot(a1, d1)
+plt.legend(['straight lines'], edgecolor='r')
+plt.subplot(224)
+plt.title('二次函数')
+plt.plot(a1, e1)
+plt.tight_layout(1, 3, 3)
+
+# 图的保存
+plt.savefig(file_path)
+plt.show()
+
+```
+- 这里将图片保存在了py文件同级目录下
+  - 因为这个文件属于测试冗余文件,放在这里方便删除
+
 
 ---
 ##### 显示
@@ -2350,22 +2717,13 @@ legend的主要参数如下:
   - 5.设置图例
   - 7.保存图
   - 8.显示图
-- ```python
+
+- `plot()`函数
+  ```python
   plot(x轴,y轴,折线形状颜色标记，设置标签显示信息）
   ```
-  | 字符 | 描述 |
-  | - | - |
-  | '-'| 实线 | 
-  | '--' | 虚线 |
-  | '-.' | 点线 |
-  | ':' | 点虚线 |
-  | '.' | 点 |
-  |',' | 像素 |
-  | 'o' | 圆形 |
-  | 'v' | 朝下的三角形 |
-  | '^' | 朝上的三角形 |
-  | 's' | 正方形 |
-  | 'p' | 五角形 |
+
+  ![图例标签](../../res/img/BigDataMicroMajor/Python/图例标签.png)
 
 
 ---
@@ -2382,16 +2740,209 @@ legend的主要参数如下:
     - 顾客购买数量num与商家收益、顾客总消费以及顾客省钱情况的关系
       - 并标记商场收益最大的批发数量和商场收益。
 
+```python
+import matplotlib.pyplot as plt
+import numpy as np
 
+plt.rcParams['font.family'] = ['simhei']
+# 购买数量数据存储
+num = np.array(range(1, 31))
+# 购买数量对应的优惠价
+price = 75
+wnum = np.array([price * (1 - 0.01 * i) for i in num])
+# 商家收益数据
+earnnum = (wnum - 49) * num
+# 顾客总消费
+cusprice = wnum * num
+# 顾客省钱
+cusnum = num * (price - wnum)
+plt.xlabel('顾客购买数量（件）')
+plt.ylabel('金额（元）')
+plt.plot(num, earnnum)
+plt.plot(num, cusprice)
+plt.plot(num, cusnum)
+plt.title('数量--金额关系图')
+plt.legend(['商家收益', '顾客总消费', '顾客省钱'])
+plt.show()
 
+```
+- 运行结果
+  - ![](../../res/img/BigDataMicroMajor/Python/折线图实例1.png)
+
+---
+##### 修改线的形状
+- 可以在plot中增加参数
+  - 修改线的形状： 
+    - '-' 实线
+    - '--' 虚线
+    - '-.' 点线
+    - ':' 点虚线
+    - '.' 点
+    - ','像素
+    - 'o' 圆形
+    - 'v' 朝下的三角形
+    - '^' 朝上的三角形
+    - 's' 正方形
+    - '*' 五角形 
+  - 修改线的颜色:
+    - ‘b’蓝色
+    - ‘g’绿色
+    - ‘r’红色
+    - ‘c’青色
+    - ‘m’品红
+    - ‘y’黄色、
+    - ‘k’黑色
+    - ‘w’ 白色 
+  - 加入图例的标签 
+    - label='文本'
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['simhei']
+num = np.array(range(1, 31))  # 购买数量数据存储
+# 购买数量对应的优惠价
+price = 75
+wnum = np.array([price * (1 - 0.01 * i) for i in num])
+earnnum = (wnum - 49) * num  # 商家收益数据
+cusprice = wnum * num  # 顾客总消费
+cusnum = num * (price - wnum)  # 顾客省钱
+plt.xlabel('顾客购买数量（件）')
+plt.ylabel('金额（元）')
+plt.plot(num, earnnum, '--', label='商家收益')
+plt.plot(num, cusprice, label='顾客总消费')
+plt.plot(num, cusnum, ':', label='顾客省钱')
+plt.title('数量--金额关系图')
+
+plt.legend()
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/折线图实例1.2.png)
+
+---
+### 散点图实战
+
+---
+#### 例1:折线图重绘为散点图
+- 结合折线图和散点图，重新绘制例9-2中要求的图形。
+  - 使用plot()函数依次连接若干端点绘制折线图
+  - 使用scatter()函数在指定的端点处绘制散点图
+  - 结合以上两个函数，可以实现例9-2同样的效果图。
+  - 为了稍做区分，在本例中把端点符号设置为蓝色三角形。
+
+![图](../../res/img/BigDataMicroMajor/Python/11.26-散点图实例1.png)
 
 
 ---
-# 待更新记录点(Python数据科学实践指南)
-[三种乘法](https://blog.csdn.net/zenghaitao0128/article/details/78715140)
----
+#### 例2:商场信号强度
+- 某商场开业三个月后，有顾客反应商场一楼部分位置的手机信号不好，个别收银台有时无法正常使用微信支付或支付宝，商场内也有些位置无法正常使用微信。
+  - 为此，商场安排工作人员在不同位置对手机信号强度进行测试以便进一步提高服务质量和用户体验
+    - 测试数据保存于文件`D:\服务质量保证\商场一楼手机信号强度.txt`中
+      - 文件中每行使用逗号分隔的三个数字分别表示商场内一个位置的x、y坐标和信号强度
+        - 其中x、y坐标值以商场西南角为坐标原点且向东为x正轴（共150米）、向北为y正轴（共30米）
+        - 信号强度以0表示无信号、100表示最强。
+-  编写程序，使用散点图对该商场一楼所有测量位置的手机信号强度进行可视化
+   - 既可以直观地发现不同位置信号的强度以便分析原因
+   - 也方便观察测试位置的分布是否合理。
+   - 在散点图中
+     - 使用横轴表示x坐标位置
+     - 纵轴表示y坐标位置
+     - 使用五角星标记测量位置
+     - 五角星大小表示信号强度
+       - 五角星越大表示信号越强，反之表示信号越弱。
+       - 为了获得更好的可视化效果,信号强度
+         - 高于或等于70的位置使用绿色五角星
+         - 低于70且高于或等于40的使用蓝色五角星
+         - 低于40的位置使用红色五角星。
 
-## 随手记
-- arrange创建数组默认大小是50;
+
+---
+#### 例3:商场优惠折线图散点图结合
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['simhei']
+num = np.array(range(1, 31))  # 购买数量数据存储
+# 购买数量对应的优惠价
+price = 75
+wnum = np.array([price * (1 - 0.01 * i) for i in num])
+earnnum = (wnum - 49) * num  # 商家收益数据
+cusprice = wnum * num  # 顾客总消费
+cusnum = num * (price - wnum)  # 顾客省钱
+plt.xlabel('顾客购买数量（件）')
+plt.ylabel('金额（元）')
+plt.plot(num, earnnum, '--', label='商家收益')
+plt.plot(num, cusprice, label='顾客总消费')
+plt.plot(num, cusnum, ':', label='顾客省钱')
+plt.title('数量--金额关系图')
+# 求商场收益的最大值
+maxearn = max(earnnum)
+# 求商场收益最大值在earnnum中的位置。采用列表求索引的方法
+pos = list(earnnum).index(maxearn)
+# 用散点图标出商场收益的最大值
+plt.scatter(pos + 1, maxearn, marker='*', color='r', s=240)
+plt.legend()
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/散点图例3.png)
+
+---
+##### 标注数字
+- 如何实现标注
+  ```python
+  annotate(s='str', 
+          xy=(x, y), 
+          xytext=(l1, l2), 
+          arrowprops=dict())
+  ```
+- s:标注的文本 
+- xy=(横坐标，纵坐标) 箭头尖端 
+- xytext=(横坐标，纵坐标) 文字的坐标
+- arrowprops= {facecolor= '颜色',shrink = '数字' ,arrowstyle=''}
+
+---
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams['font.family'] = ['simhei']
+num = np.array(range(1, 31))    # 购买数量数据存储
+# 购买数量对应的优惠价
+price = 75
+wnum = np.array([price * (1 - 0.01 * i) for i in num])
+earnnum = (wnum - 49) * num     # 商家收益数据
+cusprice = wnum * num           # 顾客总消费
+cusnum = num * (price - wnum)   # 顾客省钱
+plt.xlabel('顾客购买数量（件）')
+plt.ylabel('金额（元）')
+plt.plot(num, earnnum, '--', label='商家收益')
+plt.plot(num, cusprice, label='顾客总消费')
+plt.plot(num, cusnum, ':', label='顾客省钱')
+plt.title('数量--金额关系图')
+# 求商场收益的最大值
+maxearn = max(earnnum)
+# 求商场收益最大值在earnnum中的位置。采用列表求索引的方法
+pos = list(earnnum).index(maxearn)
+# 用散点图标出商场收益的最大值
+plt.scatter(pos + 1, maxearn, marker='*', color='r', s=240)
+plt.annotate(maxearn, xy=(pos + 1, maxearn + 40),
+             xytext=(pos, maxearn + 300),
+             arrowprops=dict(facecolor='blue',
+                             shrink=5,
+                             )
+             )
+plt.legend()
+plt.show()
+
+```
+- 运行截图
+  - ![](../../res/img/BigDataMicroMajor/Python/散点图例1.2.png)
+
 
 
