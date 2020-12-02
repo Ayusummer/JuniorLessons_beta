@@ -21,6 +21,7 @@
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencc  
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 py -3.8 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 ```
 - 镜像源地址
@@ -2701,7 +2702,7 @@ plt.show()
   ```
 
 ---
-### 绘制折线图:plot()实例
+### 折线图:plot()实例
 - 折线图比较适合描述和比较
   - 多组数据随时间变化的趋势。
   - 或者一组数据对另外一组数据的依赖程度。
@@ -2945,4 +2946,367 @@ plt.show()
   - ![](../../res/img/BigDataMicroMajor/Python/散点图例1.2.png)
 
 
+---
+## Matplotlib数据可视化
 
+---
+### 数据可视化的误区
+- 没有明确可视化的目标
+- 通过特殊图形设置误导受众
+- 选择过于“花哨”的图形却忽略了可视化的本质
+- 缺乏根据信息表达目标选择“最佳”图形的意识
+- 信息过载
+
+---
+### 可视化方式
+- 可视化要表达的信息内容按主题可分为四种：
+  - 趋势
+  - 对比
+  - 结构
+  - 关系
+
+---
+#### 趋势
+- 趋势指多组数据随时间变化的发展趋势，或者一组数据对另个一组数据的依赖程度。
+- 例如走势的高低、状态的变化好坏，按周的订单量趋势、按月的转化率趋势等等通常用于按时间发展的眼光来评估事物的场景。
+- 常用的可视化图形是**折线图**(**plot**())
+  - 在**数据项较少**的情况下，也可以使用**柱形图**(**bar**())。
+
+![折线图与柱形图](../../res/img/BigDataMicroMajor/Python/折线图与柱形图.png)
+- 数据项比较少时用柱状图比较清晰,但是当数据项多时柱状图会显得并排会显得比较挤
+
+---
+##### 示例:商场部门业绩
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+food_d = [60, 40, 46, 50, 57, 76, 70, 33, 70, 61, 49, 45]
+cos_d = [110, 75, 133, 80, 83, 95, 87, 89, 96, 88, 86, 89]
+gold_d = [143, 100, 89, 90, 78, 129, 100, 97, 108, 152, 96, 87]
+
+mo = [str(i) + '月' for i in range(1, 13)]
+
+plt.figure(figsize=(10, 5))
+plt.title('某商场各部门业绩（万元）')
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+# 绘制折线
+plt.plot(month, food_d, linestyle='--', color='blue')
+plt.plot(month, man_d, color='r')
+plt.plot(month, woman_d, color='c', linestyle=':')
+plt.plot(month, cos_d, color='y')
+plt.plot(month, gold_d, linestyle='-.')
+# 添加图例
+plt.legend(['餐饮', '男装', '女装', '化妆品', '金银首饰'])
+
+plt.show()
+
+```
+- 运行截图
+  ![](../../res/img/BigDataMicroMajor/Python/部门业绩折线图.png)
+
+
+---
+#### 对比
+- 对比指不同事物之间或同一事物在不同时间下的优劣等的对照，能够比较清晰地反映数据的差异，一般情况下用来反映分类项目之间的比较。
+- 例如商场中不同部门的月业绩情况，某课程的成绩的分布情况，新用户与老用户的客单价对比、不同广告来源渠道的订单量和利润率对比等。
+- 常用的可视化图形
+  - **对比数据较少**时选
+    - 择柱形图（bar())、条形图(barh())；
+  - 而多个对象的多个指标的同时对比可用
+    - 雷达图(polar())等。
+
+![](../../res/img/BigDataMicroMajor/Python/绘图-对比-1.png)
+![](../../res/img/BigDataMicroMajor/Python/绘图-对比-2.png)
+![](../../res/img/BigDataMicroMajor/Python/绘图-对比-3-雷达图.png)
+
+---
+##### 示例:商场男女装销售对比
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+mo = [str(i) + '月' for i in range(1, 13)]
+plt.figure(figsize=(10, 5))
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+plt.bar(month, man_d, 0.8, color='#FF00FF', label='男装', )
+plt.bar(month, woman_d, color='lightskyblue', label='女装')
+plt.title('某商场各部门业绩（万元）')
+plt.legend()
+plt.show()
+
+```
+![](../../res/img/BigDataMicroMajor/Python/商场各部门业绩1.png)
+
+---
+###### 图形美化-"倒影"柱状图
+- 绘图时另一组数据的纵坐标取相反数
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+plt.rcParams['axes.unicode_minus'] = False
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+# 为了方便取每个数的负数，womana_d转换为数组
+woman_d = np.array([70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60])
+mo = [str(i) + '月' for i in range(1, 13)]
+plt.figure(figsize=(10, 5))
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+plt.bar(month, man_d, 0.8, color='#FF00FF', label='男装', )
+plt.bar(month, -woman_d, color='lightskyblue', label='女装')
+plt.title('某商场各部门业绩（万元）')
+plt.legend()
+plt.show()
+
+```
+- 运行截图
+  !["倒影"柱状图](../../res/img/BigDataMicroMajor/Python/商场各部门业绩2.png)
+
+---
+###### 美化-并列柱状图
+- 一组数据的x轴坐标左/右平移一定距离
+  - $平移的距离应当 \geq 柱状图的宽度$以避免图象重叠
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+plt.rcParams['axes.unicode_minus'] = False
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+mo = [str(i) + '月' for i in range(1, 13)]
+plt.figure(figsize=(10, 5))
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+plt.bar(month - 0.4, man_d, 0.4, color='#FF00FF', label='男装', )
+plt.bar(month, woman_d, 0.4, color='lightskyblue', label='女装')
+plt.title('某商场各部门业绩（万元）')
+plt.legend()
+plt.show()
+
+```
+
+---
+###### 美化:添加注释文字
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+plt.rcParams['axes.unicode_minus'] = False
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+mo = [str(i) + '月' for i in range(1, 13)]
+plt.figure(figsize=(10, 5))
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+plt.bar(month - 0.4, man_d, 0.4, color='#FF00FF', label='男装', )
+plt.bar(month, woman_d, 0.4, color='lightskyblue', label='女装')
+plt.title('某商场各部门业绩（万元）')
+plt.legend()
+
+for i, j in zip(month, man_d):
+    plt.text(i - 0.4, j/2, j, ha='center')
+    # i-0.4 :文字起始(左边沿)横坐标
+    # j/2 :文字起始(下边沿)纵坐标
+    # ha = 'center' : i-0.4作为文字的横向中点,文字均匀分布在i-0.4两侧
+    # j : 待绘制的文字/数值
+
+
+for i, j in zip(month, woman_d):
+    plt.text(i - 0.1, j - 10, j)
+plt.show()
+
+```
+- ```python 
+  for i, j in zip(month, man_d):
+    plt.text(i - 0.4, j/2, j, ha='center')
+  ```
+  - j
+    - 待绘制的文字/数值
+  - i-0.4
+    - 文字/数值起始(左边沿)横坐标
+  - j/2
+    - 文字/数值起始(下边沿)纵坐标
+  - ha = 'center'
+    - i-0.4作为文字的横向中点,文字/数值均匀分布在i-0.4两侧
+
+
+- 运行截图
+  ![](../../res/img/BigDataMicroMajor/Python/商场各部门业绩3.png)
+
+---
+##### 示例2:商场各部门业绩
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+re_d = [60, 40, 46, 50, 57, 76, 70, 33, 70, 61, 49, 45]
+hua_d = [110, 75, 133, 80, 83, 95, 87, 89, 96, 88, 86, 89]
+gl_d = [143, 100, 89, 90, 78, 129, 100, 97, 108, 152, 96, 87]
+mo = [str(i) + '月' for i in range(1, 13)]
+plt.figure(figsize=(10, 5))
+plt.xticks(month, mo)
+plt.xlabel('月份')
+plt.ylabel('营业额（万元）', labelpad=12)
+plt.bar(month - 0.1, re_d, 0.1)
+plt.bar(month, man_d, 0.1, color='r')
+plt.bar(month + 0.1, woman_d, 0.1, color='b')
+plt.bar(month + 0.2, hua_d, 0.1)
+plt.bar(month + 0.3, gl_d, 0.1)
+plt.title('某商场各部门业绩（万元）')
+plt.legend(['餐饮', '男装', '女装', '化妆品', '金银首饰'])
+plt.show()
+
+```
+- 运行截图
+  ![](../../res/img/BigDataMicroMajor/Python/商场各部门业绩4.png)
+  - 显得比较挤,感觉上没有折线图美观
+  - 并且数据项多了之后同一组数据的变化趋势就不明显了
+    - 单作对比数据实用的话这样画柱状图还好
+    - 但是用折线图的话还能同时反映每组数据的变化趋势
+
+---
+###### 转化:条形图:barh()
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = ['simhei']
+# 数据存储
+month = np.array(range(1, 13))  # 存储月份
+man_d = [51, 32, 58, 57, 30, 46, 38, 38, 40, 53, 58, 50]
+woman_d = [70, 30, 48, 73, 82, 80, 43, 25, 30, 49, 79, 60]
+re_d = [60, 40, 46, 50, 57, 76, 70, 33, 70, 61, 49, 45]
+hua_d = [110, 75, 133, 80, 83, 95, 87, 89, 96, 88, 86, 89]
+gl_d = [143, 100, 89, 90, 78, 129, 100, 97, 108, 152, 96, 87]
+mo = [str(i) + '月' for i in range(1, 13)]
+
+plt.figure(figsize=(10, 6))
+plt.ylim(0, 13)
+plt.yticks(month, mo)
+plt.ylabel('月份')
+plt.xlabel('营业额（万元）', labelpad=12)
+plt.barh(month - 0.2, re_d, 0.2, color='pink')
+plt.barh(month, man_d, 0.2, color='r')
+plt.barh(month + 0.2, woman_d, 0.2, color='c')
+plt.barh(month + 0.4, hua_d, 0.2, color='yellow')
+plt.barh(month + 0.6, gl_d, 0.2, color='blue')
+plt.title('某商场各部门业绩（万元）')
+plt.legend(['餐饮', '男装', '女装', '化妆品', '金银首饰'])
+plt.show()
+
+```
+- 运行截图
+  ![](../../res/img/BigDataMicroMajor/Python/商场各部门业绩5_条形图.png)
+
+
+---
+#### 结构
+- 结构也可以称为成分、构成或内容组成，指的是一个整体内有哪些元素组成，以及各个元素的影响因素或程度的大小。
+- 例如不同品类的利润占比、不同类型客户的销售额占比、总体中各组成部分所占比重等。
+- 常用的可视化图形，一般使用饼图（圆形图）及其变体，
+  - 变体例如玫瑰图、扇形图、环形图等；
+
+![](../../res/img/BigDataMicroMajor/Python/绘图-结构-1.png)
+
+
+---
+##### 示例1:成绩分段
+```python
+import matplotlib.pyplot as plt
+import random
+
+plt.rcParams['font.family'] = ['simhei']
+# random.seed(30)
+# 随机生成30位学生的考试成绩
+stu_s = [random.randint(40, 100) for i in range(30)]
+grade = {'0-49': 0,
+         '50-59': 0,
+         '60-69': 0,
+         '70-79': 0,
+         '80-89': 0,
+         '90-100': 0}
+
+plt.figure(figsize=(10, 6))
+plt.title('学生成绩分段统计图')
+plt.ylabel('学生成绩分段人数')
+plt.xlabel('分数段')
+
+for i in stu_s:
+    if i <= 49:
+        s = '0-49'
+        grade[s] = grade.get(s, 0) + 1
+    elif i <= 59:
+        s = '50-59'
+        grade[s] = grade.get(s, 0) + 1
+    elif i <= 69:
+        s = '60-69'
+        grade[s] = grade.get(s, 0) + 1
+    elif i <= 79:
+        s = '70-79'
+        grade[s] = grade.get(s, 0) + 1
+    elif i <= 89:
+        s = '80-89'
+        grade[s] = grade.get(s, 0) + 1
+    else:
+        s = '90-100'
+        grade[s] = grade.get(s, 0) + 1
+
+gr1_name = list()
+gr1_data = list()
+for i in grade:
+    gr1_name.append(i)
+    gr1_data.append(grade[i])
+gr1 = range(len(gr1_name))
+plt.xticks(gr1, gr1_name)
+plt.bar(gr1_name, gr1_data, 0.6, color='c')
+for x, y in zip(gr1_name, gr1_data):
+    plt.text(x, y + 0.1, str(y))
+
+plt.show()
+
+
+```
+
+
+- 图书馆的座位有预约系统
+  - 但是总有占座狗把自己的东西都堆在座位上**不预约座位**
+    - 导致总有人预约了座位结果白去了一趟图书馆;
+    > - 预约都是(当前时间/次日早8点)-晚九点半
+    > - 图书馆的预约系统**有临时签离**  
+    >   - 未签离/临时签离而离开图书馆会释放座位并记违约  
+    > - 图书馆能放下电脑并且有插座的座位不是前一天约很难约到,白天预约很容易约到这种"阴阳位"
+  - 在留给这些占座狗的字条上写什么话才能**阴阳怪气直戳痛处地恶心**这种人呢
+    > 花时间去图书馆结果白来一趟是真的太浪费时间了,很讨厌这种占座的人 
