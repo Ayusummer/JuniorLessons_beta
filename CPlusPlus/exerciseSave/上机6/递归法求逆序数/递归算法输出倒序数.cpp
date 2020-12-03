@@ -5,6 +5,7 @@ using namespace std;
 int reverseNum_assist(int x, int x_reverse) {
 	if (x != 0) {
 		x_reverse = x_reverse * 10 + x % 10;
+		cout << x % 10 << endl;
 		x = x / 10;
 		reverseNum_assist(x, x_reverse);
 	}
@@ -14,7 +15,9 @@ int reverseNum_assist(int x, int x_reverse) {
 
 
 int reverseNum(int x) {
+	cout << "逆序按十进制位分离该数如下:" << endl;
 	int	x_reverse = x % 10;	// 取出x的最低位
+	cout << x % 10 << endl;
 	x = x / 10;				// x去掉最低位
 	return reverseNum_assist(x, x_reverse);
 }
