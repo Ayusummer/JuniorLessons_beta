@@ -3184,3 +3184,47 @@ cobegin{
 - 这种共享只能依托于同一个文件系统
   - 无法实现跨设备更无法基于网络的共享
 
+---
+### 6.3.8 Log-Structured File Systems
+
+---
+#### Problem for reusing disk space
+- LFS has a cleaner thread that spends its time scanning the log circularly to compact it. The cleaner moves along the log, removing old segments from the back and pitting any live data into memory for rewriting in the next segment
+
+
+
+---
+## 6.4 课堂练习
+文件F由200条记录组成，记录从1开始编号，用户打开文件后，欲将内存中的一条记录插入文件F中，作为其第30条记录。请回答下列问题，并说明理由。
+- 1）若文件系统采用连续分配方式，每个磁盘块存放一条记录，文件F的存储区域前后均有足够的空闲磁盘空间，则
+  - 要完成上述操作最少要访问多少次磁盘块？
+    - 向前移动文件的前29条记录，每条记录**读写各1次**，腾出一个磁盘块空间，将该记录插入到此磁盘块作为第30条记录，故最少要访问磁盘块的次数$=29*2+1=59$。
+  - F的文件控制块内容会有哪些改变？
+    - F的文件控制块内容中文件的起始地址和文件长度需要修改
+- 2）若文件系统采用链接分配方式，每个磁盘块存放一条记录和一个链接指针，则
+  - 要完成上述操作最少要访问多少次磁盘块？
+    - 采用链接分配方式需要**读取前29条记录链接指针**，修改第29条记录的链接指针并写盘，第30条记录与链接指针一起写入一个磁盘块，这样完成上述操作最少要访问磁盘块的次数
+      - $=29+1+1=31$
+  - 若每个磁盘块大小为1KB，其中4个字节存放链接指针，则该文件系统支持的文件最大长度是多少?
+    - 4个字节存放指针,指针最多$2^{32}个$,该文件系统支持的文件最大长度是：
+      - $(1024-4) \times 2^{32}B=4080 GB$
+
+---
+- (1) A UNIX file system has 4-KB blocks and 4-byte disk addresses. What is the maximum file size if i-nodes contain 10 direct entries, and one single, double, and triple indirect entry each?
+  - (1) 4K/4=1K; 
+    - 10个直接指针直接指向数据块,1个直接间级,1个二级间级,1个三级间级
+    - 文件的最大尺寸 = $\\10 * 4K + 1K * 4K + 1K * 1K * 4K + 1K * 1K * 1K * 4K \\ = 40K + 4M + 4G + 4T \\ = 4TB 4GB 4MB 40KB$ 
+
+- (2)How many disk operations are needed to fetch the i-node for a file with the path name /usr/ast/courses/os/handout.t? Assume that the i-node for the root directory is in memory, but nothing else along the path is in memory. Also assume that all directories fit in one disk block.
+  - (2) 根目录的i-node在内存，而路径中的其它i-node不在内存。需要下列的磁盘操作：
+    - 读根目录；
+    - 读/usr的 i-节点；
+    - 读/usr的目录；
+    - 读/usr/ast的 i-节点；
+    - 读/usr/ast 的目录；
+    - 读/usr/ast/courses的 i-节点；
+    - 读/usr/ast/courses的目录；
+    - 读/usr/ast/courses/os的 i-节点；
+    - 读/usr/ast/courses/os的目录；
+    - 读/usr/ast/courses/os/handout.t的 i-节点。
+  > - 总共 10次磁盘读操作
