@@ -276,6 +276,8 @@ no new no delete
 ---
 ## 三、实验题目
 - 本实验有三道题目，其中第一题必做，第二，三题中可任选一个。
+  - 题目1:模拟分页式存储管理中硬件的地址转换和产生缺页中断。
+  - 题目2:FIFO算法处理缺页中断
 
 ---
 ### 1.模拟硬件地址转换及缺页中断
@@ -397,6 +399,7 @@ cout<<setw(长度)<<"字符串";
 
 ---
 ### VS读取CSV文件
+- [参考链接](https://blog.csdn.net/sinat_38792591/article/details/100190990)
 ```C++
 	ifstream inFile("page.csv", ios::in);
 	string lineStr;
