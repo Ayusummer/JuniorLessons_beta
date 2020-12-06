@@ -532,16 +532,124 @@ public class UDPReceiver {
 
 
 ---
-# Spring
+# 第1章 Spring的基本应用
 
 ---
-## 1.1 概述
+## 1.1 Spring概述
 - Spring 是当前主流的 Java Web 开发框架，它是为了解决企业应用开发的复杂性问题而产生的;
 
 ---
 ### 1.1.1 什么是Spring
 - 一个分层的 Java SE/EE full-stack (一站式)轻量级开源框架
+  - 以IOC,AOP 为内核，使用基本的 JavaBean 来完成以前只可能由EJB完成的工作，取代了 EJB 的靡肿 低效的开发模式
+  - loC ( Inversion of Control ，控制反转)
+  - AOP ( Aspect Oriented Programming , 面向切面编程)
+  - EJB ( Enterprise Java Beans , Java 企业 Bean)
+- Spring 致力于 Java EE 应用各层的解决方案
+  - 在表现层它提供了 Spring MVC 以及与 Struts框架的整合功能;
+  - 在业务逻辑层可以管理事务 记录日志等;
+  - 在持久层可以整合 $MyBatis$,$Hibernate$,$JdbcTemplate$ 等技术 
+  - 因此，可以说 Spring 是企业应用开发很好的"一站式"选择;
+  - 虽然 Spring 贯穿于表现层 业务逻辑层和持久层，但它并不想取代那些已有的框架，而是以高度的开放性与它们进行无缝整合
 
+---
+### 1.1.2 Spring 框架的优点
+- Spring 具有简单、可测试和松耦合等特点，从这个角度出发， Spring 不仅可以用于服务器端开发，也可以应用于任何 Java 应用的开发中;
+- 关于 Spring 框架优点的总结，具体如下
+  - 非侵入式设计
+    - Spring 是一种非侵入式 ( non-invasive )框架，它可以使应用程序代码对框架的依赖最小化
+  - 方便解耦, 简化开发
+    - Spring 就是一个大工厂，可以将所有对象的创建和依赖关系的维护工作都交给 Spring 容器管理，大大地降低了组件之间的搞合性
+  - 支持 AOP
+    - Spring 提供了对 AOP 的支持，它允许将一些通用任务，如安全,事务,日志等进行集中式处理，从而提高了程序的复用性;
+  - 支持声明式事务处理
+    - 只需要通过配置就可以完成对事务的管理，而无须手动编程
+  - 方便程序的测试
+    - Spring 提供了对 Junit4 的支持，可以通过注解方便地测试 Spring 程序
+  - 方便集成各种优秀框架
+    - Spring 不排斥各种优秀的开源框架，其内部提供了对各种优秀框架的直接支持
+      - 如 Struts Hibernate MyBatis Quartz 等
+  - 降低 Java EE API 的使用难度
+    - Spring 对 Java EE 开发中非常难用的一些 API (如 JDBC JavaMail 等)，都提供了封装，使这些 API 应用难度大大降低
+
+---
+### 1.1.3 Spring 的体系结构
+- Spring 框架采用的是分层架构，它一系列的功能要素被分成 20 个模块，这些模块大体分为
+  - Core Container 
+  - Data Access/lntegration 
+  - Web 
+  - AOP (Aspect Oriented Programming)
+  - Instrwmentation 
+  - Messaging 
+  - Test 
+![Spring的体系结构](../res/img/Java/Spring的体系结构.png)
+- 在上图中，包含 Spring 框架的所有模块
+  - 灰色背景模块为本书中所涉及的主要模块 
+- 接下来分别对体系结构中的模块作用进行简单介绍
+
+---
+#### 1.Core Container (核心容器)
+- Spring 的核心容器是其他模块建立的基础，它主要由 Beans 模块、 Core 模块, Context模块, Context- support 模块和 SpEL 模块组成
+  - Beans模块
+    - 提供了 BeanFa tory ，是工厂模式的经典实现， Spring 将管理对象称为 Bean
+  - Core 核心模块:
+    - 提供了 Spring 框架的基本组成部分，包括 loC 和 DI 功能
+  - Context上下文模块
+    - 建立在 Core 和 Beans 模块的基础之上，它是访问定义和配置的任何对象的媒介;
+    - 其中 ApplicationContext 接口是上下文模块的焦点
+  - Context-support 模块
+    - 提供了对第三方库嵌入 Spring 应用的集成支持,比如:
+      - 缓存( EhCache Guava JCache) 
+      - 邮件服务 (JavaMail) 
+      - 任务调度( CommonJ Quartz) 
+      - 模板引擎( FreeMarker, JasperReports, 速率)
+  - SpEL 模块:
+    - 是 Spring 3.0 后新增的模块，它提供了 Spring Expression Language 支持，是运行时查询和操作对象图的强大的表达式语言;
+    - SpEL( Spring Expression Language , Spring 表达式语言)
+
+---
+#### 2. Data Access/lntegration (数据访问/集成)
+- 数据访问/集成层包括 JDBC, ORM,OXM,JMS 和 Transactions 模块，具体介绍如下
+  - JDBC 模块
+    - 提供了一个 JDBC 的抽象层，大幅度地减少了在开发过程中对数据库操作的编码
+  - ORM 模块
+    - 对流行的对象关系映射 API ，包括 JPA, JDO 和 Hibernate 提供了集成层支持
+  - OXM 模块
+    - 提供了一个支持对象/XML 映射的抽象层实现
+      - 如 JAXB, Castor, XMLBeans, JiBX 和 XStream
+  - JMS 模块
+    - 指 Java 消息传递服务，包含使用和产生信息的特性，自 4.1 版本后支持与 Spring-message 模块的集成;
+  - Transactions 事务模块
+    - 支持对实现特殊接口以及所有 POJO 类的编程和声明式的事务管理
+
+---
+#### 3. Web
+- Spring 的 Web 层包括 WebSocket, Servlet, Web 和 Portlet 模块，具体介绍如下
+  - WebSocket 模块
+    - Spring 4.0 以后新增的模块，它提供了 WebSocket 和 SockJS 的实现，以及对 STOMP 的支持
+  - Servlet 模块
+    - 也称为 Spring-webmvc 模块，包含了 Spring 的模型一视图一控制器(MVC) 和 REST Web Services 实现的 Web 应用程序
+  - Web 模块
+    - 提供了基本的 Web 开发集成特性
+      - 例如:多文件上传功能,使用 Servlet听器来初始化 loC 容器以及 Web 应用上下文
+  - Portlet 模块
+    - 提供了在 Portlet 环境中使用 MVC 实现，类似 Servlet 模块的功能
+
+---
+#### 4. 其他模块
+- Spring 的其他模块还有 AOP, Aspects, Instrumentation 以及 Test 模块，具体介绍如下:
+  - AOP 模块
+    - 提供了面向切面编程实现，允许定义方法拦截器和切入点，将代码按照功能进行分离，以降低搞合性
+  - Aspects 模块
+    - 提供了与 AspectJ 的集成功能
+      - AspectJ 是一个功能强大且成熟的面向切面编程 (AOP) 框架
+  - Instrumentation 模块
+    - 提供了类工具的支持和类加载器的实现，可以在特定的应用服务器中使用
+  - Messaging 模块
+    - Spring 4.0 以后新增的模块
+    - 它提供了对消息传递体系结构和协议的支持
+  - Test 模块
+    - 提供了对单元测试和集成测试的支持
 
 
 
