@@ -1,65 +1,15 @@
-import matplotlib.pyplot as plt
-import random
-import parser
+from pandas import Series
 
-plt.rcParams['font.family'] = ['simhei']
-# random.seed(30)
-# 随机生成30位学生的考试成绩
-stu_s = [random.randint(40, 100) for i in range(30)]
-grade = {'0-49': 0,
-         '50-59': 0,
-         '60-69': 0,
-         '70-79': 0,
-         '80-89': 0,
-         '90-100': 0}
+s1 = Series(range(1, 11))
+s2 = Series({'语文': 90, '数学': 87, '英语': 67, '程序设计': 78})
+# print("s1:\n{0}\ns2:\n{1}".format(s1, s2))
 
-plt.figure(figsize=(10, 6))
-plt.title('学生成绩分段统计图')
-plt.ylabel('学生成绩分段人数')
-plt.xlabel('分数段')
-
-for i in stu_s:
-    if i <= 49:
-        s = '0-49'
-        grade[s] = grade.get(s, 0) + 1
-    elif i <= 59:
-        s = '50-59'
-        grade[s] = grade.get(s, 0) + 1
-    elif i <= 69:
-        s = '60-69'
-        grade[s] = grade.get(s, 0) + 1
-    elif i <= 79:
-        s = '70-79'
-        grade[s] = grade.get(s, 0) + 1
-    elif i <= 89:
-        s = '80-89'
-        grade[s] = grade.get(s, 0) + 1
-    else:
-        s = '90-100'
-        grade[s] = grade.get(s, 0) + 1
-
-gr1_name = list()
-gr1_data = list()
-for i in grade:
-    gr1_name.append(i)
-    gr1_data.append(grade[i])
-gr1 = range(len(gr1_name))
-plt.xticks(gr1, gr1_name)
-plt.bar(gr1_name, gr1_data, 0.6, color='c')
-for x, y in zip(gr1_name, gr1_data):
-    plt.text(x, y + 0.1, str(y))
-
-plt.show()
-
-parser.add_argument()
+# 通过索引，切片访问Series的value
+# print("s1[4] : {0}\ns2['英语'] : {1}".format(s1[4], s2['英语']))
+# print("s1[1:4]:\n{0}\n"
+#       "s2[1:3]:\n{1}".format(s1[1:4], s2[1:3]))
 
 
-
-
-
-
-
-
-
-
-
+# 通过索引修改Series的value，注意字典的键为索引
+s2['程序设计'] = 89
+print("s2:\n{0}".format(s2))
