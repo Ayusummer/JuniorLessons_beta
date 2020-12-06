@@ -607,3 +607,56 @@ int main() {
 - [C++中float和double类型的精度问题说明](https://blog.csdn.net/tiandao2009/article/details/79840017)
 - [double和long long 的精度对比](https://blog.csdn.net/nuanxin_520/article/details/41077227?utm_source=blogxgwz5)
 - [C++基础知识（三）--数据类型转换--混合运算类型转换--赋值类型转换--强制类型转换](https://www.cnblogs.com/southcyy/p/10249117.html)
+
+
+---
+# 上机6
+## 题目1 二分法求零点
+- 1.二分法求方程的根，根据零点定理：设函数f(x)在闭区间[a,b]上连续，且f(a)与 f(b)异号（即f(a)× f(b)<0），那么在开区间（a,b）内至少有函数f(x)的一个零点，即至少有一点ξ（a<ξ<b）使f(ξ)=0。f(x)=x*x*x+x*x-3*x-3  
+- 用二分法求函数f(x)零点近似解的步骤如下：
+	- ①确定区间[a,b]，验证，给定精确度=1e-6
+	- ②求区间(a,b)的中点 X1
+	- ③求 f（x1）,若f（x1）=0，则 ，则x1即方程的根
+	- ④若，则令b= x1 ，反之 则令a= x1
+	- ⑤判断是否达到精确度，若a-b< ,x1即方程的根，否则重复2~4
+ 
+---
+## 题目2 递归求逆序数
+- 2. 输入一个整数，用递归算法将整数倒序输出。分析：在递归过程的递推步骤中用求余运算将整数的各个位分离，并打印出来。
+```C++
+#include <cmath>
+#include <iostream>
+using namespace std;
+
+int reverseNum_assist(int x, int x_reverse) {
+	if (x != 0) {
+		x_reverse = x_reverse * 10 + x % 10;
+		cout << x % 10 << endl;
+		x = x / 10;
+		reverseNum_assist(x, x_reverse);
+	}
+	else
+		return x_reverse;
+}
+
+
+int reverseNum(int x) {
+	cout << "逆序按十进制位分离该数如下:" << endl;
+	int	x_reverse = x % 10;	// 取出x的最低位
+	cout << x % 10 << endl;
+	x = x / 10;				// x去掉最低位
+	return reverseNum_assist(x, x_reverse);
+}
+
+
+int main()
+{
+	int x;
+	cout << "请输入一个整数: ";
+	cin >> x;
+	cout << "该数的逆序数为:" << reverseNum(x) << endl;
+	system("pause");
+	return 0;
+}
+
+```
