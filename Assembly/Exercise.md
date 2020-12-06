@@ -403,3 +403,217 @@ CODE SEGMENT
       - 数据写入存储器
     - $T_4$状态
       - 撤销各控制及状态信号
+
+
+---
+# 第6章 微型计算机输入和输出技术
+
+
+---
+# 第8章 可编程接口芯片
+
+---
+## 8255练习1
+- 设8255A的
+  - A口接3个按键
+  - B口接1个共阴极八段LED显示器
+- 如下图所示。
+  - 根据PA0～PA2引脚的输入状态让LED显示器显示对应的数字0～7。
+- 设
+  - 8255A的端口地址范围为60H～66H
+  - 数字0～7的段选码依次放在数据段DATA自DUANXUAN开始的连续8个存储单元。
+- 请编写实现上述功能的完整程序，初始化时无关项置0。
+
+![](../res/img/Assembly/8255A练习1.png)
+
+---
+- 共阴极数码管
+  - 高电位亮,低电位暗
+
+![数码管字形码](../res/img/Assembly/数码管字形码.png)
+
+- 数据段定义
+
+```
+data segment
+  DUANXUAN db 3FH, 06H, 5BH, 4FH, 66H, 6DH, 7DH, 07H  
+  mesg1 db 0dh,0ah,'Input a num (0--9h):',0dh,0ah,'$'
+data ends
+
+```
+
+
+
+
+
+---
+- 各端口工作方式
+  - A
+    - 方式0输入
+  - B
+    - 方式0输出
+- 方式控制字
+  - $90H$
+    - $10010000B$
+    - | 1 | 00   | 1  | 0  | 0  | 0 | 0 | B |
+      | - | -    | -  | -  | -  | - | - | - |
+      |   | D6D5 | D4 | D3 | D2 | D1 | D0 |
+      | 默认 | 方式0 | A口输入 |  C口上半无关,置零 | 方式0 | 端口B输出 | 端口C下半无关,置零 | 二进制 |
+
+---
+- 8255A端口地址为60H，61H，62H，63H,64H,65H,66H
+- 初始化的程序段：
+  ```
+  mov dx,63h    ; 控制端口为63H
+  mov al,90h    ; 方式控制字
+  out dx,al     ; 或out 63h,al  送到控制端口
+  ```
+
+---
+- 参考答案
+```
+; 数据段
+DATA SEGMENT
+        DUANXUAN DB 3FH,06H,5BH,4FH,66H,7DH,07H
+DATA ENDS    
+; 代码段
+CODE SEGMENT
+        ASSUME DS:DATA, CS:CODE     ; 段设定         
+START:  MOV AX, DATA
+        MOV DS, AX                  ; 装配数据段寄存器
+        MOV AL, 10010000B（90H）  
+        OUT 66H，AL                 ; 初始化(66H是控制端口)      
+        MOV BX，OFFSET  DUANXUAN    ; 初始化段选码基址
+LOP1：  IN  AL, 60H                 ; 读按键值 
+        NOT AL   
+        AND AL, 07H                 ; 屏蔽高5位  
+        XLAT                        ; 查段选码    
+        OUT 62H, AL                 ; 输出段选码
+        JMP LOP1                    ; 循环进行 
+CODE ENDS
+        END START
+
+```
+
+---
+- 完整程序
+```
+data segment
+  DUANXUAN db 3FH, 06H, 5BH, 4FH, 66H, 6DH, 7DH, 07H  
+  mesg1 db 0dh,0ah,'Input a num (0--9h):',0dh,0ah,'$'
+data ends
+
+code segment
+  assume cs:code, ds:data
+start:
+  mov ax, data
+  mov ds, ax
+  mov dx, 63h     ; 控制端口为63H
+  mov al, 90h     ; 方式控制字,均为方式0,A输入,B输出
+  out dx, al      ; 或out 63h,al  送到控制端口
+
+sss:
+  mov dx, offset mesg1 ; 显示提示信息
+  mov ah, 09h
+  int 21h
+
+  mov ah, 01      ; 从键盘接收字符
+  int 21h
+
+  cmp al, '0'     ; 是否小于0
+  jb sss          ; 若是则退出
+  cmp al, '7'     ; 是否大于7
+  ja sss          ; 若是则退出
+
+  and al, 0fh     ; 将所得字符的ASCII码减30H
+  mov bx, offset DUANXUAN  ; bx为数码表的起始地址
+  xlat            ; 求出相应的段码
+
+  mov dx, 61H ; 从8255的B口输出
+  out dx, al
+  jmp sss         ;转SSS
+
+exit:
+  mov ax, 4c00h     ;返回DOS
+  int 21h
+
+code ends
+  end start
+
+```
+
+
+
+
+
+---
+```
+data segment
+  DUANXUAN db 3FH, 06H, 5BH, 4FH, 66H, 6DH, 7DH, 07H  
+data ends
+
+code segment
+  assume cs:code, ds:data
+start:
+  mov dx, 63h     ; 控制端口为63H
+  mov al, 90h     ; 方式控制字,均为方式0,A输入,B输出
+  out dx, al      ; 或out 63h,al  送到控制端口
+  lea bx, DUANXUAN
+
+sss:
+  mov dx, 60h
+  in al, dx
+  and al, 07h
+  alat
+
+  mov dx, 61h
+  out dx, al
+  jmp sss
+
+  mov ax, 4c00h
+  in 21h
+
+code ends
+  end start
+
+```
+
+
+```
+data segment
+ioport equ 2400h-0280h
+io8255a equ ioport+288h
+io8255b equ ioport+28bh
+led db 3fh,06h,5bh,4fh,66h,6dh,7dh,07h,7fh,6fh
+mesg1 db 0dh,0ah,'Input a num (0--9h):',0dh,0ah,'$'
+data ends
+code segment
+assume cs:code,ds:data
+start:
+mov ax,data
+mov ds,ax
+mov dx,io8255b ;使8255的A口为输出方式
+mov ax,10000000b ;80h,A组方式0，A口输出，B组方式0，B口输出，C口输出
+out dx,al
+sss:
+mov dx,offset mesg1 ;显示提示信息
+mov ah,09h
+int 21h
+mov ah,01 ;从键盘接收字符
+int 21h
+cmp al,'0' ;是否小于0
+jb sss ;若是则退出
+cmp al,'9' ;是否大于9
+ja sss ;若是则退出
+and al,0fh ;将所得字符的ASCII码减30H
+mov bx,offset led ;bx为数码表的起始地址
+xlat ;求出相应的段码
+mov dx,io8255a ;从8255的A口输出
+out dx,al
+jmp sss ;转SSS
+exit:
+mov ah,4ch ;返回DOS
+int 21h
+code ends
+end start
+```

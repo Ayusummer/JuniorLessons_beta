@@ -681,27 +681,28 @@ public class TestWait implements Runnable {
 - 采用JDBC-ODBC桥连接
   - ODBC数据源名称为myqq。
 - 在数据库中，共有3张表
-  - （1）FRIEND表
+  - （1）friend表
     - 记录了每个用户所拥有的好友号码
       | 字段名 | 类型 | 长度 | 含义 | 主键否 |
       | -----  | ---  |  -- | --   | --    |
-      | QQNUM  | 长整型 | 自动 | 用户账号 | 是 |
-      | FRIEND | 长整型 | 自动 | 这个账户拥有的好友 | 否 |
-  - QQNUM表
+      | QQNUM  | int | 自动 | 用户账号 | 是 |
+      | FRIEND | int | 自动 | 这个账户拥有的好友 | 否 |
+      - 小体量故而账号使用int类型就够用了
+  - qqnum表
     - 记录了所有合法的账号
       | 字段名 | 类型 | 长度 | 含义 | 主键否 |
       | -----  | ---  |  -- | --   | --    |
-      | ID | 长整型 | 自动 | 用户唯一编码 | 是 |
-      | QQNUM | 长整型 | 自动 | 用户申请的账号 | 否 |
-  - USER_INFO表
+      | ID | int | 自动 | 用户唯一编码 | 是 |
+      | QQNUM | int | 自动 | 用户申请的账号 | 否 |
+  - user_info表
     - 记录了用户的基本信息
 
 | 字段名 | 类型 | 长度 | 含义 | 主键否 |
 | -----  | ---  |  -- | --   | --    |
-| QQNUM  | 长整型 | 自动 | 用户申请的账号 | 是 |
-| Name   | 文本   | 16   | 用户名  | 否 |
-| PASSWORD | 文本 | 10   | 密码    | 否 |
-| STATUS | 整型   | 自动 | 用户目前状态 | 否 |
+| QQNUM  | int | 自动 | 用户申请的账号 | 是 |
+| Name   | varchar   | 16   | 用户名  | 否 |
+| PASSWORD | varchar | 16   | 密码    | 否 |
+| STATUS | int   | 自动 | 用户目前状态 | 否 |
 | IP     | 文本   | 16   | 用户IP地址 | 否 |
 | INFO   | 文本   | 100   | 用户自己留下的描述信息 | 否 |
 | PIC    | 文本   | 50   | 所选头像文件名  | 否 |
@@ -715,11 +716,166 @@ public class TestWait implements Runnable {
 
 
 ---
-## 0
-
+## 系统总体设计
+- 本系统
+  - 基于网络的三层C/S模式
+  - 程序采用JDK1.5开发
+  - 后台数据库采用Access
+  - 客户端之间的通信采用UDP协议
+  - 客户端与服务器之间的通信采用TCP/IP协议
+- 整个系统体系结构如下图所示
+![](../res/img/Java/聊天室-系统体系结构.png)
 
 
 ---
 ## 随笔
 ### IDEA导入jar包
 - File -> Project Structure(Ctrl + Alt + Shift + s) ->  Modules -> Dependencies -> add Jar...
+
+---
+### 安装MySQL
+- [原文链接](https://www.cnblogs.com/winton-nfs/p/11524007.html)
+- 下载[MySQL免安装版](https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.22-winx64.zip)
+  > 该链接指向的是截止2020.12.2最新版的MySQL社区版最新下载链接
+
+- 下载完成后解压到你想把MySQL安装在的目录
+  > 该目录不可有中文与空格
+- 安装MySQL的服务
+  - 打开解压后的文件夹中的bin文件夹,单击Windows文件资源管理器左上角的`文件`->`打开Windows Powershell`->`以管理员身份打开Windows Powershell`
+  - 输入` .\mysqld --install`并回车
+  - 之后会显示安装成功的提示:`Service successfully installed.`
+- 初始化mysql
+  - 输入`.\mysqld --initialize --console`并回车
+  - 将会显示几行文字,复制最后一行`root@localhost:`字样后面的字符串`o?0yxuffh?E.`
+    - 这串字符串是初始化生成的随机密码
+- 开启mysql的服务
+  - 输入`net start mysql`并回车
+  - 将会显示`MySQL 服务已经启动成功`的字样
+- 登录验证MySQL是否安装成功
+  - 输入`.\mysql -u root -p`并回车,将会让你输入密码
+    - 就是刚才生成的临时密码,输入并回车即可
+      > 这里需要注意,若刚才生成临时密码的时候最后有个`.`的话注意这里的`.` 不是句号,而是密码的一部分
+  - 登陆成功后当前光标前面会有`mysql>`
+- 修改密码
+  - 登录成功后输入` alter user 'root'@'localhost' identified by 'root';`
+    - 这样即可将密码改为`root`
+    - 同理,将最后by后面的`root`改成你自己想修改成的密码吧
+    - 修改成功后将会显示`Query OK, 0 rows affected`字样
+    - 输入`exit`并回车以退出MySQL
+    - 验证密码
+      - 输入`.\mysql -u root -p`并回车,将会让你输入密码
+      - 输入你刚才修改好的密码
+      - 能够再次成功进入则修改成功
+- 设置系统的全局变量：
+  - `桌面`->`右键"此电脑"`->`属性`->左侧`高级系统设置`->`环境变量`
+  - 进入后上面是`用户变量`,下面是`系统变量`
+    - 点击**下面的**`新建`按钮,新建一个系统变量
+      - 变量名填`mysql`
+      - 变量值填你将MySQL安装的位置
+        - 例如我填的是`C:\Database\MySQL\mysql-8.0.22-winx64`
+      - 单击`确定`以完成新建
+    - 进入系统变量的`Path`变量
+      - 单击`新建`
+      - 输入`%mysql%\bin`
+    - 完成后逐级确定以完成配置
+- 配置完系统变量之后要登录MySQL只需
+  - `Win + R`输入`cmd`并回车打开命令行窗口
+  - 输入`mysql -u root -p`并回车即可
+- 在mysql目录下创建一个ini或cnf配置文件，在这里我创建的是ini配置文件，里面写的代码是mysql的一些基本配置
+  - mysql目录就是刚才配置环境变量时的MySQL安装位置
+    - 我的就是`C:\Database\MySQL\mysql-8.0.22-winx64`
+    - 打开该文件夹新建一个文本文档并**连同文件扩展名**一同改为`my.ini`
+      - 打开`my.ini`,键入以下配置并保存退出
+        ```
+        [mysqld]
+        character-set-server=utf8mb4
+        bind-address=0.0.0.0
+        port=3306
+        default-storage-engine=INNODB
+        [mysql]
+        default-character-set=utf8mb4
+        [client]
+        default-character-set=utf8mb4
+        ``` 
+- 到这里就已经配置完成了
+- 你可以在Navicat中连接配置好的MySQL
+  - 打开Navicat
+  - 左上`连接`->`MySQL`
+    - 连接名自拟
+    - 主机:`localhost`
+    - 端口:`3306`
+    - 用户名:`root`
+    - 密码:你刚才配置好的MySQL的密码
+  - 输入完成并单击`确定`后会在当前窗口左栏出现一个你自拟的链接名,双击它,若它变绿了就说明连接上你配置的MySQL了
+- 到这里MySQL的安装,配置与连接就已经完成了,更详细的步骤以及**可能出现的问题**可以移步原博主的[博客链接](https://www.cnblogs.com/winton-nfs/p/11524007.html)查看
+  - 如果有空的话别忘了给博主点个`推荐`哦
+
+---
+### MySQL数据类型
+- [原文链接](https://www.runoob.com/mysql/mysql-data-types.html)
+
+---
+- MySQL中定义数据字段的类型对你数据库的优化是非常重要的。
+- MySQL支持多种类型，大致可以分为三类：
+  - 数值
+  - 日期/时间
+  - 字符串(字符)类型。
+
+---
+#### 数值类型
+- MySQL支持所有标准SQL数值数据类型。
+  - 这些类型包括
+    - 严格数值数据类型(INTEGER、SMALLINT、DECIMAL和NUMERIC)
+    - 近似数值数据类型(FLOAT、REAL和DOUBLE PRECISION)。
+- 关键字INT是INTEGER的同义词，关键字DEC是DECIMAL的同义词。
+- BIT数据类型保存位字段值，并且支持MyISAM、MEMORY、InnoDB和BDB表。
+- 作为SQL标准的扩展，MySQL也支持整数类型TINYINT、MEDIUMINT和BIGINT。
+
+---
+- 下面的表显示了需要的每个整数类型的存储和范围。
+![](../res/img/Java/MySQL-数值类型.png)
+
+---
+- Navicat中设计表时,数值类型数据的长度设置与字符类型的长度设置是不一样的
+  - [原文链接](https://blog.csdn.net/guaiguaiknl/article/details/105813770)
+  - **char**类型数据的长度为字符(字母或汉字)的**个数**
+  - **varchar**类型数据的长度为字符(字母或汉字)的**最大个数**
+  - **int**类型的长度指的是**显示宽度**
+    - 长度的设定值范围1~255
+      - 设置0时自动转为11
+      - 不设置时自动转为默认的11
+      - 在此范围内任意长度值的字段值范围都是
+        - -2147483648~2147483647
+          - 即$-2³¹-1$  ~  $2³¹-1$
+        > 也就是说：int(1)、int(4)、int(11)和int(110)表示意思是一样的
+  - 要查看出不同效果记得在创建类型的时候加 zerofill这个值（INT(M) ZEROFILL），表示用0填充，否则看不出效果的
+
+---
+#### 日期和时间类型
+- 表示时间值的日期和时间类型为DATETIME、DATE、TIMESTAMP、TIME和YEAR。
+- 每个时间类型有一个有效值范围和一个"零"值，当指定不合法的MySQL不能表示的值时使用"零"值。
+- TIMESTAMP类型有专有的自动更新特性，将在后面描述。
+
+---
+![](../res/img/Java/MySQL-日期和时间类型.png)
+
+---
+#### 字符串类型
+- 字符串类型指CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET。
+- 该节描述了这些类型如何工作以及如何在查询中使用这些类型。
+
+---
+![](../res/img/Java/MySQL-字符串类型.png)
+
+---
+- 注意:
+  - char(n) 和 varchar(n) 中括号中 n 代表字符的个数，并不代表字节个数，比如 CHAR(30) 就可以存储 30 个字符。
+  - CHAR 和 VARCHAR 类型类似，但它们保存和检索的方式不同。它们的最大长度和是否尾部空格被保留等方面也不同。在存储或检索过程中不进行大小写转换。
+  - BINARY 和 VARBINARY 类似于 CHAR 和 VARCHAR，不同的是它们包含二进制字符串而不要非二进制字符串。也就是说，它们包含字节字符串而不是字符字符串。这说明它们没有字符集，并且排序和比较基于列值字节的数值值。
+  - BLOB 是一个二进制大对象，可以容纳可变数量的数据。
+    - 有 4 种 BLOB 类型：TINYBLOB、BLOB、MEDIUMBLOB 和 LONGBLOB。
+      - 它们区别在于可容纳存储范围不同。
+    - 有 4 种 TEXT 类型：TINYTEXT、TEXT、MEDIUMTEXT 和 LONGTEXT。
+      - 对应的这 4 种 BLOB 类型，可存储的最大长度不同，可根据实际情况选择。
+
+---
