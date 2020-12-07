@@ -2,13 +2,13 @@
 大三上课程_测试版
 
 ---
-## 项目使用说明
+## 项目部署指南
 - 本项目为一个笔记整理型项目,主要工作在本地`VSCode`编辑器中完成,并通过`GitHub Desktop`来快捷提交并推送以及拉取仓库
 - 扫描下面的二维码加入仓库钉钉群获取仓库的实时变动信息以及群文件资源
   - ![钉钉群链接](https://images.gitee.com/uploads/images/2020/1206/201530_ef66247f_7703072.png "屏幕截图.png")
 
 ---
-### 本地环境准备
+### 本地环境配置
 - 首先你要创建一个GitHub账号并且**用GitHub账号**再登录Gitee,并且由加入到笔记仓库以及res仓库
   - 加入仓库由本仓库创建者发起邀请链接
   - 请务必使用GItHub登录Gitee或者Gitee绑定GItHub账户
@@ -36,6 +36,8 @@
         - 步骤和克隆笔记仓库的步骤一致
           - 链接为:`https://gitee.com/junior-lesson_beta/res.git`
           - `Local path`选择上一步笔记仓库本地位置的根目录
+          > `res`仓库正确`clone`后本地笔记仓库的文件结构应当是下面这样的: 
+          ![仓库文件结构](https://images.gitee.com/uploads/images/2020/1207/100533_e59b60e3_7703072.png "屏幕截图.png")
   - [VSCode](https://vscode.cdn.azure.cn/stable/e5a624b788d92b8d34d1392e4c4d9789406efe8f/VSCode-darwin-stable.zip)
     - 这里选用了VSCode来进行笔记的整理,其对Markdown以及其他类型文件的支持性比较好
       - 编写以及预览Markdown文件使用的VSCode扩展
@@ -48,9 +50,10 @@
 ## res包
 - [res包同步更新项目](https://gitee.com/junior-lesson_beta/res)
   - 在clone完本笔记项目后在本地文件资源管理器打开项目的根目录并在此处打开命令行或者powershell,输入`git clone https://gitee.com/junior-lesson_beta/res.git`并回车以克隆res仓库
+    - 或者使用部署指南中的`GitHub Desktop`快速部署
 
 ---
-## 使用建议
+## 修改仓库操作提醒
 - 请注意钉钉群聊的仓库变动提醒,及时将仓库更新`pull`到本地
 - `GitHub Desktop`的基本使用
   > 此部分采用了本地图片,请在正确克隆了res仓库后阅读(毕竟内容主要都在图的注释上)
@@ -68,6 +71,8 @@
     - 将远程仓库的更新拉取到本地
     - ![](res/img/README/Fetch.png)
 
+---
+## 本项目使用到的软件
 - [常用编程软件安装包](https://pan.di.he.cn/#/s/jvBID)
   > - 暂时过期
   >    - 地河佬服务器炸了
@@ -99,5 +104,7 @@
     - DOSBOX
     - UltraEDIT
 
-
+---
+## Markdown的基本使用
+- 见本文件同目录下的`Markdown.md`文件,里面记录着Markdown的一些使用方法
 
