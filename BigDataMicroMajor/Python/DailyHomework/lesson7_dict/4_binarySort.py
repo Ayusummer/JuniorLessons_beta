@@ -14,10 +14,7 @@ def binary_sort(des_num, list1, begin, end):
         binary_sort(des_num, list1, (end + begin) // 2, end)
 
 
-listNum = list()
-# 生成无序数组
-for i in range(30):
-    listNum.append(randint(0, 100))
+listNum = [randint(0, 100) for _ in range(30)]
 # 排序生成有序数组
 listNum.sort()
 print("已知列表为:", listNum)

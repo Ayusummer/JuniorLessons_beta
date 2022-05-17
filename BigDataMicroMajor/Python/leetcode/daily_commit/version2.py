@@ -6,7 +6,7 @@
 # @Function: 排序
 # 实测评价: 内存占用以及运行效率都不如version1,代码简单不代表效率高
 def isAnagram(s: str, t: str) -> bool:
-    return False if sorted(s) != sorted(t) else True
+    return sorted(s) == sorted(t)
 
 
 print(isAnagram('ab', 'a'))

@@ -3,7 +3,7 @@
 # 例如，用户输入”I miss  you”，程序输出”I,m,o,s,u,y” 或”	I,M,O,S,U,Y”
 
 lst1 = list((input("请输入一串英文字符串:")).lower())
-lst2 = list()
+lst2 = []
 for i in lst1:
     if i in lst2 or i == " ":
         continue

@@ -23,10 +23,9 @@ def function_search():
                 for t in i.split(','):
                     if id_search not in t:
                         continue
-                    else:
-                        print("已找到该生信息:\n{0}".format(i))
-                        available_mark = 1
-                        break
+                    print("已找到该生信息:\n{0}".format(i))
+                    available_mark = 1
+                    break
             if not available_mark:
                 print("未查询到该生信息")
                 decision_out = 1  # 决定退出添加功能信号0退出1重新输入
@@ -34,13 +33,9 @@ def function_search():
                 while not available_mark_input:
                     try:
                         decision_out = eval(input("输入0并回车以退出查询模式,输入1并回车以重新输入:"))
-                    except (decision_out != 0 and decision_out != 1) or BaseException:
+                    except decision_out not in [0, 1] or BaseException:
                         decision_out = eval(input("未找到该功能"))
                     else:
                         available_mark_input = 1  # 功能选择有效,退出循环
-                if not decision_out:  # 若选择退出
-                    available_mark = 2
-                    break
-                else:  # 若选择重新输入
-                    available_mark = 0
-                    break
+                available_mark = 0 if decision_out else 2
+                break

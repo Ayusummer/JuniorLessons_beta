@@ -18,11 +18,7 @@ array_result = np.zeros(shape=(5, 5))
 # 很明显这是一个奇偶间隔01的数组,因此利用此性质重构数组
 for i in range(5):
     for j in range(5):
-        if (i + j) % 2 == 0:
-            array_result[i][j] = 1
-        else:
-            array_result[i][j] = 0
-
+        array_result[i][j] = 1 if (i + j) % 2 == 0 else 0
 # 输出数组
 # print(array_result)
 

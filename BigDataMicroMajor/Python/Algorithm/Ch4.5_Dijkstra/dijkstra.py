@@ -17,7 +17,7 @@ w = [4, 8, 3, 8, 1, 6, 2, 6, 4, 2, 7, 14, 9, 10]    # 权
 
 # 无向图的构建
 G = nx.Graph()              # 创建一个无向图
-for i in range(0, len(s)):  # 遍历每一条边
+for i in range(len(s)):  # 遍历每一条边
     G.add_edge(s[i], t[i], weight=w[i])  # 为图G添加边，并且附上权重weight
 
 # 生成节点位置
@@ -54,9 +54,7 @@ def get(G):
     path3 = dict(nx.all_pairs_dijkstra_path(G))
 
     # 实现最短路径的高亮
-    answer = []
-    for i in range(0, len(path1) - 1):
-        answer.append((path1[i], path1[i + 1]))
+    answer = [(path1[i], path1[i + 1]) for i in range(len(path1) - 1)]
     nx.draw_networkx_edges(G, pos, edgelist=answer, width=3.0, alpha=0.5, edge_color='y')
 
 

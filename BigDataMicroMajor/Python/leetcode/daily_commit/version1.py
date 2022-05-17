@@ -14,10 +14,7 @@ def isAnagram(s: str, t: str) -> bool:
         count_dict_s[item] = count_dict_s[item] + 1 if item in count_dict_s else 1
     if count_dict.keys() != count_dict_s.keys():
         return False
-    for i in count_dict.keys():
-        if count_dict[i] != count_dict_s[i]:
-            return False
-    return True
+    return all(value == count_dict_s[i] for i, value in count_dict.items())
 
 
 print(isAnagram('ab', 'a'))

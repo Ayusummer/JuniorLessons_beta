@@ -10,11 +10,11 @@ class BackSack():
     #遍历解空间寻找最优值，i:当前搜索的深度
     def backTrack(self,i):  
         global length, weight, value, goods #全局变量       
-        if(i>length):   
+        if (i>length):   
             if self.current_value>self.best_value: #更新最优值
                 self.best_value=self.current_value
                 self.current_capacity=self.current_weight#当前最优解下的背包重量
-                self.bestgoods=goods[0:5]
+                self.bestgoods = goods[:5]
                 print ('当前最优解:',self.bestgoods)#输出当前的最优解，最后一次输出即是最终的最优解
             return
         if self.current_weight+weight[i]<=self.capacity:#进入左子树，即选取goods[i]放入背包

@@ -8,4 +8,4 @@ for item in lst:
         maxcj=item
     if item<60:
         ntp=ntp+1   #或ntp+=1
-print("最高分是{},不及格人数是{}".format(maxcj,ntp))
+print(f"最高分是{maxcj},不及格人数是{ntp}")

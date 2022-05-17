@@ -2,12 +2,7 @@
 import string   # 用于获取所有大小写字母
 import random
 
-list1 = list()
-for i in range(10):
-    list1.append(i)
-for i in string.ascii_letters:
-    list1.append(i)
-list_IDCode = list()
-for i in range(4):
-    list_IDCode.append(random.choice(list1))
+list1 = list(range(10))
+list1.extend(iter(string.ascii_letters))
+list_IDCode = [random.choice(list1) for _ in range(4)]
 print(list_IDCode)

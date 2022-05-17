@@ -1,9 +1,6 @@
 # 用递归函数实现：输出斐波那契数列的前20项，每行输出4个数字。
 def fib(n):
-    if n == 1 or n == 2:
-        return 1
-    else:
-        return fib(n-1)+fib(n-2)
+    return 1 if n in [1, 2] else fib(n-1)+fib(n-2)
 
 
 def print_fib(n):
