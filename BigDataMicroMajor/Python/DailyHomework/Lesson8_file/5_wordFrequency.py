@@ -9,7 +9,7 @@ with open(file_path, 'r', encoding='UTF-8') as f:
 print("f1.readlines():", my1)
 
 # 过滤掉.\n并生成文件单词列表
-word_list = list()  # 文件中的单词列表
+word_list = []
 for i in my1:
     newLstItem = str()
     for char1 in i:
@@ -18,8 +18,7 @@ for i in my1:
         if char1 == '.':
             break
     newLstItem = newLstItem.split()
-    for t in newLstItem:
-        word_list.append(t)
+    word_list.extend(iter(newLstItem))
 print(word_list)
 
 count_dict = {}

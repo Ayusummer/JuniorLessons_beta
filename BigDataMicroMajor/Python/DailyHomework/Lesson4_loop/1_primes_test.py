@@ -3,7 +3,7 @@ import math
 
 for i in range(2, 301):             # 1不是素数,忽略掉
     sq = int(math.sqrt(i))
-    if sq+1 <= 2:
+    if sq <= 1:
         print(i)
     else:
         for k in range(2, sq+1):    # k遍历[2,sq)

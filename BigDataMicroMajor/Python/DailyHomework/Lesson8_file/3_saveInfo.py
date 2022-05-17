@@ -3,14 +3,8 @@
 import csv
 import os
 
-stu1 = list()
-stu2 = list()
-
-stu1.append(input("请输入第一名学生的语文成绩:")+"")
-stu1.append(input("请输入第一名学生的数学成绩:")+"\n")
-stu2.append(input("请输入第一名学生的语文成绩:")+"")
-stu2.append(input("请输入第一名学生的数学成绩:")+"\n")
-
+stu1 = [input("请输入第一名学生的语文成绩:")+"", input("请输入第一名学生的数学成绩:")+"\n"]
+stu2 = [input("请输入第一名学生的语文成绩:")+"", input("请输入第一名学生的数学成绩:")+"\n"]
 file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), './test.csv'))
 with open(file_path, 'a', encoding='UTF-8') as f:       # append追加模式
     f.write(",".join(stu1))

@@ -2,10 +2,10 @@ import math     # 后面开平方要用
 
 
 def primes_tolist(max_limit):
-    l_primes = list()                # 存储数据用列表
+    l_primes = []
     for i in range(2, max_limit+1):  # 1不是素数,忽略掉
         sq = int(math.sqrt(i))
-        if sq + 1 <= 2:
+        if sq <= 1:
             l_primes.append(i)
         else:
             for k in range(2, sq + 1):  # k遍历[2,sq)

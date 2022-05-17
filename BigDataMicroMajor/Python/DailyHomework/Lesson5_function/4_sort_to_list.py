@@ -4,9 +4,7 @@ from random import randint
 
 def sort_nums(m, n):    # 随机返回一个有10个从大到小排列的元素的列表
     # 参数要求:m>n且均为整数
-    list_nums = list()
-    for i in range(10):
-        list_nums.append(randint(m, n))
+    list_nums = [randint(m, n) for _ in range(10)]
     list_nums.sort(reverse=True)
     return list_nums
 

@@ -27,7 +27,7 @@ for i in range(3):
 array_data_down = np.zeros(shape=(3, 5))  # 三门学科成绩
 for i in range(3):
     for j in range(100):
-        if array_data[i][j] in range(0, 60):
+        if array_data[i][j] in range(60):
             array_data_down[i][0] = array_data_down[i][0] + 1
         elif array_data[i][j] in range(60, 70):
             array_data_down[i][1] = array_data_down[i][1] + 1

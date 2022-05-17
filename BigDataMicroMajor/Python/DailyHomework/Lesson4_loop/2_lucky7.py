@@ -6,7 +6,7 @@
 from random import randint
 
 suc_time = 0
-for i in range(10000):
+for _ in range(10000):
     r1 = randint(1, 6)
     r2 = randint(1, 6)
     if r1+r2 == 7:

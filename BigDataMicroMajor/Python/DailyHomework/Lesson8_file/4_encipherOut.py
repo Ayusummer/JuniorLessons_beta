@@ -4,7 +4,7 @@
 import os
 
 # 生成编码字典
-dictResult = dict()
+dictResult = {}
 for i in range(26):
     if i < 23:
         dictResult[chr(ord('a') + i)] = chr(ord('a') + i + 2)
@@ -19,7 +19,7 @@ with open(file_path, 'r', encoding='UTF-8') as f1:
     my2 = f1.readlines()
 
 # 生成密文
-lst1 = list()
+lst1 = []
 str1 = str()
 for i in my2:
     lst1 = list(filter(str.isalpha, i))
